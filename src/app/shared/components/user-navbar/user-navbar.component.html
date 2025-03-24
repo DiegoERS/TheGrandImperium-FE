@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="navbar-logo"><a href="">The Grand Imperium | Hotel & Resort</a></div>
+
+
+
+  <!-- Menú -->
+  <ul class="navbar-menu"  [class.active]="isMenuOpen">
+    <li><a routerLink="/rooms">ROOMS</a></li>
+    <li><a routerLink="/experiences">EXPERIENCES</a></li>
+    <li><a routerLink="/location">LOCATION</a></li>
+  </ul>
+
+  <div class="navbar-actions">
+    <button class="book-tickets">BOOK TICKETS</button>
+  </div>
+
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" aria-label="Toggle menu" (click)="toggleMenu()">
+      <i class="fa-solid" [class.fa-bars]="!isMenuOpen" [class.fa-times]="isMenuOpen"></i>
+  
+    </button>
+</nav>
