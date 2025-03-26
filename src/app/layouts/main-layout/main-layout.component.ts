@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserNavbarComponent } from "../../shared/components/user-navbar/user-navbar.component";
 import { FooterComponent } from "../../shared/components/footer/footer.component";
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
@@ -10,8 +10,5 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
   styleUrl: './main-layout.component.scss'
 })
 export class MainLayoutComponent {
- route= inject(ActivatedRoute);
-  ngOnInit() {
-    this.route.url.subscribe(url => console.log("Ruta actual:", url));
-  }
+  
 }
