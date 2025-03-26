@@ -1,0 +1,66 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; // Permite que los elementos se ajusten en móviles
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #ddd;
+    text-align: center;
+  
+    .social-media, .contact {
+      flex: 1; // Distribuye el espacio de forma uniforme
+      min-width: 250px; // Evita que los elementos se reduzcan demasiado
+      margin: 10px;
+    }
+  
+    h3 {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+  
+    .icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+  
+      a {
+        text-decoration: none;
+        font-size: 1.5rem;
+        color: #333;
+        transition: color 0.3s;
+  
+        &:hover {
+          color: #d9a55c;
+        }
+      }
+    }
+  
+    .contact-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #d9a55c;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background 0.3s;
+  
+      &:hover {
+        background: #b8863b;
+      }
+    }
+  
+    // Responsive para móviles
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+  
+      .icons {
+        justify-content: center;
+      }
+    }
+  }
+  
