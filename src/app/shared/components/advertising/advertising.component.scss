@@ -1,0 +1,26 @@
+#postion-carousel {
+    position: fixed; /* Fija el carrusel en la pantalla */
+    bottom: 130px; /* Lo coloca justo en la parte inferior */
+    left: 10px; /* Pegado al borde izquierdo */
+    width: 200px; /* Ajusta el ancho del carrusel */
+    height: 380px; /* Ajusta la altura del carrusel */
+    z-index: 1000; /* Asegura que el carrusel se muestre sobre otros elementos */
+}
+
+.carousel-inner img {
+    height: 280px; /* Ajusta la altura de las imágenes */
+}
+
+@media (max-width: 768px) {
+    #postion-carousel {
+        bottom: 120px; /* Ajusta la posición inferior */
+        left: 5px; /* Reduce el margen izquierdo */
+        width: 150px; /* Reduce el ancho del carrusel */
+        height: 300px; /* Reduce la altura del carrusel */
+    }
+
+    .carousel-inner img {
+        height: 120px; /* Reduce la altura de las imágenes */
+    }
+}
+
