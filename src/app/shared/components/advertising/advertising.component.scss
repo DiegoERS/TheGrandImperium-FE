@@ -1,11 +1,11 @@
 .modal {
     position: fixed !important;
     display: block !important;
-    bottom: 130px !important;
-    left: 10px !important;
-    margin-top: 250px;
-    width: 200px !important;
-    height: 320px !important;
+    bottom: 60% !important;
+    left: 1% !important;
+    margin-top: 16%;
+    width: 11% !important;
+    height: 47% !important;
     opacity: 1 !important;
     z-index: 1000 !important;
     pointer-events: none;
@@ -91,11 +91,11 @@
     .modal {
         position: fixed !important;
         display: block !important;
-        bottom: 130px !important;
-        left: 10px !important;
-        margin-top: 230px;
-        width: 110px !important;
-        height: 160px !important;
+        bottom: 30% !important;
+        left: 5%x !important;
+        margin-top: 60%;
+        width: 25% !important;
+        height: 20% !important;
         opacity: 1 !important;
         z-index: 1 !important;  /* Asegúrate de que sea menor que otros elementos */
         pointer-events: none; /* Deshabilita interacciones directas con el modal */
