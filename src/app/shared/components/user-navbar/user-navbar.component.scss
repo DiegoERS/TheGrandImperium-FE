@@ -5,6 +5,7 @@
   padding: 15px 20px;
   background: linear-gradient(to right, #ddd, #aaa);
   position: relative; // Importante para menú en móviles
+  z-index: 2000; // Asegura que el navbar esté por encima de otros elementos
 
   .navbar-logo-usuario {
     font-size: 1.3rem;
