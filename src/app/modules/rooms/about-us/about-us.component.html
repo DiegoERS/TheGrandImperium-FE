@@ -1,1 +1,29 @@
 
+<div class="about-us-container">
+  <div class="content">
+    <h2>Sobre Nosotros</h2>
+    <p>
+      Lorem ipsum dolor sit amet, maiores ornare ac fermentum, imperdiet ut vivamus a, nam lectus at nunc. Cum quam euismod sem, semper ut potenti pellentesque quisque. In eget sapien sed, sit duis vestibulum ultricies, placerat morbi amet vel, nullam in in lorem vel. In molestie elit dui dictum, praesent nascetur pulvinar sed, in dolor pede in aliquam, risus nec error quis pharetra.
+    </p>
+    <h3>Galeria</h3>
+    <div class="gallery-container">
+      <!-- Imagen seleccionada -->
+      <img
+        class="selected-image"
+        [src]="selectedImage"
+        [alt]="'Selected Image ' + selectedImage"
+      />
+
+      <!-- Galería de imágenes pequeñas -->
+      <div class="image-grid">
+        <img
+          *ngFor="let img of images"
+          [src]="img"
+          [alt]="'Image ' + img"
+          [class.selected]="img === selectedImage"
+          (click)="selectImage(img)"
+        />
+      </div>
+    </div>
+  </div>
+</div>
