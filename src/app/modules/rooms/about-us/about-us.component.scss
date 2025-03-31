@@ -1,0 +1,64 @@
+/* Contenedor principal de la sección */
+.about-us-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr; /* Tres columnas: menú, contenido, publicidad */
+  gap: 16px;
+  max-width: 1200px; /* Ancho máximo */
+  margin: 0 auto; /* Centra el contenido horizontalmente */
+  padding: 16px; /* Espaciado interno */
+  box-sizing: border-box;
+}
+
+/* Contenedor del contenido principal */
+.content {
+  grid-column: 2; /* Ocupa la columna central */
+}
+
+/* Contenedor de la galería */
+.gallery-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
+}
+
+/* Imagen grande (imagen seleccionada) */
+.selected-image {
+  flex: 1;
+  max-width: 400px;
+  height: auto;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor de la galería de imágenes pequeñas */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Tres columnas */
+  gap: 8px; /* Espaciado entre imágenes */
+  flex: 1;
+  max-width: 300px; /* Limita el ancho de la galería */
+}
+
+/* Estilo para cada imagen pequeña */
+.image-grid img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover; /* Ajusta la imagen para que se recorte si es necesario */
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+/* Efecto hover */
+.image-grid img:hover {
+  transform: scale(1.05);
+  border-color: #007bff; /* Color azul para el borde */
+}
+
+/* Imagen seleccionada en la galería */
+.image-grid img.selected {
+  border-color: #c4e62d; /* Color verde para la imagen seleccionada */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
