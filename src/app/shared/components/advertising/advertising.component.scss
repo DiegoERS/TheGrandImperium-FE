@@ -89,7 +89,7 @@
 
 @media (max-width: 768px) {
     .modal {
-        position: fixed !important;
+        position: absolute !important;
         display: block !important;
         bottom: 30% !important;
         left: 5%x !important;
