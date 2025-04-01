@@ -1,12 +1,13 @@
-.navbar {
+.navbar-usuario {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
   background: linear-gradient(to right, #ddd, #aaa);
   position: relative; // Importante para menú en móviles
+  z-index: 2000; // Asegura que el navbar esté por encima de otros elementos
 
-  .navbar-logo {
+  .navbar-logo-usuario {
     font-size: 1.3rem;
     font-weight: bold;
     a {
@@ -16,7 +17,7 @@
     }
   }
 
-  .navbar-menu {
+  .navbar-menu-usuario {
     list-style: none;
     display: flex;
     gap: 20px;
@@ -30,12 +31,12 @@
     }
   }
 
-  .navbar-actions {
+  .navbar-actions-usuario {
     display: flex;
     align-items: center;
     gap: 10px;
 
-    .book-tickets {
+    .button-tickets {
       background: #d9a55c;
       color: black;
       padding: 8px 15px;
@@ -51,7 +52,7 @@
   }
 
   // Botón hamburguesa
-  .hamburger {
+  .boton-hamburguesa {
     display: none;
     background: none;
     border: none;
@@ -61,14 +62,14 @@
 
   // Responsive para móviles
   @media (max-width: 768px) {
-    .hamburger {
+    .boton-hamburguesa {
       display: block;
 
     }
 
-    .navbar-menu {
+    .navbar-menu-usuario {
       position: absolute;
-      top: 60px;
+      top: 89px;
       right: 0;
       width: 100%;
       background: #ddd;
@@ -80,7 +81,7 @@
       transition: all 0.3s ease-in-out;
     }
 
-    .navbar-menu.active {
+    .navbar-menu-usuario.active {
       display: flex;
     }
   }
