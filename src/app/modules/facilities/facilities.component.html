@@ -1,0 +1,32 @@
+<div class="facilities-container">
+    <h1>Facilidades</h1>
+    
+    <p class="facilities-intro">
+      Disfrute de nuestras excelentes instalaciones diseñadas para hacer su estadía más placentera en The Grand Imperium Hotel & Resort.
+    </p>
+  
+    <div class="facilities-grid">
+      <div *ngFor="let facility of facilities" class="facility-card">
+        <div class="facility-image">
+          <img [src]="facility.imageUrl" [alt]="facility.name">
+        </div>
+        <div class="facility-details">
+          <h3>{{ facility.name }}</h3>
+          <p>{{ facility.description }}</p>
+          <div class="facility-features">
+            <h4>Características:</h4>
+            <ul>
+              <li *ngFor="let feature of facility.features">{{ feature }}</li>
+            </ul>
+          </div>
+          <p *ngIf="facility.schedule" class="facility-schedule">
+            <strong>Horario:</strong> {{ facility.schedule }}
+          </p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="advertising-area">
+      Área de publicidad
+    </div>
+  </div>
