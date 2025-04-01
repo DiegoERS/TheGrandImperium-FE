@@ -4,7 +4,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { NgModule } from '@angular/core';
 
 //ROUTES
-import { AboutUsComponent } from './modules/rooms/about-us/about-us.component';
+import { AboutUsComponent } from './modules/about-us/about-us.component';
 import { HomeComponent } from './modules/home/home.component';
 import { RoomsComponent } from './modules/rooms/rooms.component';
 import { FacilitiesComponent } from './modules/facilities/facilities.component';
