@@ -24,7 +24,7 @@ export const routes: Routes = [{
     ]
   },
   { path: '**', redirectTo: '' } // Redirección en caso de ruta no encontrada];
-]; 
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
