@@ -135,13 +135,13 @@
   display: flex;
   gap: 16px;
   align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
-  flex-wrap: wrap; /* Permite que los elementos se ajusten en varias filas */
+  flex-wrap: nowrap; /* Permite que los elementos se ajusten en varias filas */
 }
 
 /* Imagen grande (imagen seleccionada) */
 .selected-image {
   flex: 1;
-  max-width: 300px;
+  max-width: 400px;
   height: auto;
   border: 2px solid #007bff;
   border-radius: 8px;
@@ -151,16 +151,16 @@
 /* Contenedor de la galería de imágenes pequeñas */
 .image-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Cuatro columnas */
-  gap: 8px; /* Espaciado entre imágenes */
+  grid-template-columns: repeat(3, 1fr); /* Cuatro columnas */
+  gap: 10px; /* Espaciado entre imágenes */
   flex: 1;
-  max-width: 300px; /* Limita el ancho de la galería */
+  max-width: 400px; /* Limita el ancho de la galería */
 }
 
 /* Estilo para cada imagen pequeña */
 .image-grid img {
-  width: 100%; /* Ajusta el ancho al contenedor */
-  height: auto; /* Mantiene la proporción de la imagen */
+  width: 90%; /* Ajusta el ancho al contenedor */
+  height: 90%; /* Mantiene la proporción de la imagen */
   object-fit: cover; /* Ajusta la imagen para que se recorte si es necesario */
   border: 2px solid transparent;
   border-radius: 8px;
