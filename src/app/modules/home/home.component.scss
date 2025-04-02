@@ -89,3 +89,16 @@ p {
   font-size: 25px;
   margin-top: 40px;
 }
+
+@media (max-width: 600px) {
+.content{
+  .content-container{
+    flex-direction: column;
+    .image-placeholder{
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+}
+}
