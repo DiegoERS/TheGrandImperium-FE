@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './user-navbar.component.scss'
 })
 export class UserNavbarComponent {
-  isMenuOpen = true;
+  isMenuOpen = false;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -17,5 +17,5 @@ export class UserNavbarComponent {
   closeMenu() {
     this.isMenuOpen = false;
   }
-  
+
 }
