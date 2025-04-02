@@ -9,20 +9,12 @@ import { CommonModule } from '@angular/common';
 })
 export class AboutUsComponent {
   images = [
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://images.unsplash.com/photo-1729508419473-b2d296bffbb2?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-     'https://images.unsplash.com/photo-1729508419473-b2d296bffbb2?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-  ];
+    'https://www.hotelsanbada.com/es/imgs/fitness/fitness_01.jpg',
+    'https://mltmemkhoc5e.i.optimole.com/7-_IgtM.jy4g~52f45/w:800/h:541/q:mauto/f:avif/https://dbd.es/wp-content/uploads/2022/02/SALONEVENTOSHOTEL1.jpg',
+    'https://expospa.wordpress.com/wp-content/uploads/2016/11/spa-toulouse-centre.jpg?w=680',
+    'https://s.ineventos.com/cr/2020/02/126955/la-33-gastropub-298342-i-360w.jpg',
+    'https://www.fluidra.com/wp-content/uploads/2022/04/iStock-641448082_iStock-641448082-1.webp'
+    ];
   selectedImage = this.images[0];
   selectImage(img: string) {
     this.selectedImage = img;
