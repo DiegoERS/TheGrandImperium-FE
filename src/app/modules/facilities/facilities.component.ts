@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PageInformationService } from '../../core/services/page-information.service';
+import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 
 interface Facility {
   id: number;
@@ -19,8 +21,18 @@ interface Facility {
 })
 export class FacilitiesComponent implements OnInit {
   facilities: Facility[] = [];
-  
+  private pageInformationService=inject(PageInformationService);
+  pageInformation: PageInformationDTO | null = null;
+    
+    
+    
   ngOnInit(): void {
+
+    console.log(JSON.parse(localStorage.getItem('selectedPage')|| '{}'));
+    this.pageInformationService.getByPage(1).subscribe((data: PageInformationDTO) => {
+      this.pageInformation = data;
+      console.log(data);
+    });
     // Cargar las facilidades del hotel (en un caso real, esto vendría de un servicio)
     this.facilities = [
       {
