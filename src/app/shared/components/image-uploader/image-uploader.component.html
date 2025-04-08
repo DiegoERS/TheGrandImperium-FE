@@ -1,0 +1,23 @@
+<div
+  class="drop-zone"
+  (drop)="onDrop($event)"
+  (dragover)="onDragOver($event)"
+>
+  <p>Arrastra imágenes aquí o</p>
+  <label class="upload-label">
+    <input type="file" multiple accept="image/*" (change)="onFileSelect($event)" hidden />
+    <span class="browse-button">Selecciona archivos</span>
+  </label>
+</div>
+
+<div class="preview-container" *ngIf="images.length">
+    <div class="image-preview" *ngFor="let imageUrl of imageUrls; let i = index">
+      <img [src]="imageUrl" />
+      <button (click)="removeImage(i)">✕</button>
+    </div>
+  </div>
+
+  <div class="save-button-wrapper" *ngIf="images.length">
+    <button class="save-button" (click)="onSaveImages()">Guardar imágenes</button>
+  </div>
+
