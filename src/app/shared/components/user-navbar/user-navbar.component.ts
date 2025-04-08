@@ -41,4 +41,9 @@ export class UserNavbarComponent implements OnInit {
     this.router.navigate(['/', page.name]);
   }
 
+  deletePageName() {
+    localStorage.removeItem('activePageName');
+    this.activePageName = null;
+  }
+
 }

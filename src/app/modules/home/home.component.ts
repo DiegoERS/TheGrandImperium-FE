@@ -13,21 +13,14 @@ export class HomeComponent implements OnInit {
   private pageId: number = 1;
   private pageInformationService=inject(PageInformationService);
   pageInformation: PageInformationDTO | null = null;
-
+  images: string[] = [];
+  selectedImage: string | null = "";
 
   ngOnInit(): void {
     this.pageInformationService.getByPage(this.pageId).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
-      console.log(data);
+      this.images = data.pageInformationImageDTOs.map(imgDTO => imgDTO.imageDTO.url);
+       this.selectedImage = this.images.length > 0 ? this.images[0] : null;
     });
-  }
-  images: string[] = [
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-  ];
-
-  selectedImage: string = this.images[0];
-
-  selectImage(img: string): void {
-    this.selectedImage = img;
   }
 }
