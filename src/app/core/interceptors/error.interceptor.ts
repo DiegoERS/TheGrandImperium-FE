@@ -13,9 +13,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse): Observable<never> => {
       let errorMessage = 'Ocurrió un error inesperado';
 
-      if (error.error instanceof ErrorEvent) {
-        // Error del lado del cliente
-        errorMessage = `Error: ${error.error.message}`;
+ if (error.status === 0) {
+        // Error de red o el servidor no responde
+        errorMessage = 'No se puede conectar con el servidor. Verifica tu conexión.';
       } else {
         // Error del lado del servidor
         switch (error.status) {

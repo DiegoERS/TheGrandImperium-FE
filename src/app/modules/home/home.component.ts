@@ -1,5 +1,7 @@
-import { Component,OnInit} from '@angular/core';
+import { Component,inject,OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PageInformationService } from '../../core/services/page-information.service';
+import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 
 @Component({
   selector: 'app-home',
@@ -7,14 +9,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
-  images: string[] = [
-    'https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png',
-  ];
+export class HomeComponent implements OnInit {
+  private pageId: number = 1;
+  private pageInformationService=inject(PageInformationService);
+  pageInformation: PageInformationDTO | null = null;
+  images: string[] = [];
+  selectedImage: string | null = "";
 
-  selectedImage: string = this.images[0];
-
-  selectImage(img: string): void {
-    this.selectedImage = img;
+  ngOnInit(): void {
+    this.pageInformationService.getByPage(this.pageId).subscribe((data: PageInformationDTO) => {
+      this.pageInformation = data;
+      this.images = data.pageInformationImageDTOs.map(imgDTO => imgDTO.imageDTO.url);
+       this.selectedImage = this.images.length > 0 ? this.images[0] : null;
+    });
   }
 }
