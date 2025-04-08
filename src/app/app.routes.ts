@@ -9,6 +9,8 @@ import { AboutUsComponent } from './modules/about-us/about-us.component';
 import { HomeComponent } from './modules/home/home.component';
 import { RoomsComponent } from './modules/rooms/rooms.component';
 import { FacilitiesComponent } from './modules/facilities/facilities.component';
+import { ContactUsComponent } from './modules/contact-us/contact-us.component';
+import { HowToGetToComponent } from './modules/how-to-get-to/how-to-get-to.component';
 import { LoginComponent } from './modules/login/login.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 
@@ -17,11 +19,13 @@ export const routes: Routes = [{
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: '', component: HomeComponent },
+      {path: '', component: HomeComponent },
       {path: 'rooms', component: RoomsComponent},
       { path: 'facilities', component: FacilitiesComponent },
       {path: 'about-us', component: AboutUsComponent},
       {path: 'login', component: LoginComponent},
+      {path: 'contact-us', component: ContactUsComponent},
+      {path: 'how-to-get-to', component: HowToGetToComponent}
     ]
   },
   {
