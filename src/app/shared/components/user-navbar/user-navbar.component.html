@@ -1,21 +1,21 @@
 <nav class="navbar-usuario">
-  <div class="navbar-logo-usuario"><a routerLink="" (click)="closeMenu()">The Grand Imperium | Hotel & Resort</a></div>
+  <div class="navbar-logo-usuario"><a routerLink="" (click)="deletePageName(); closeMenu()" >The Grand Imperium | Hotel & Resort</a></div>
 
   <!-- Menú -->
-  <ul class="navbar-menu-usuario"  [class.active]="isMenuOpen">
-    <li><a routerLink="/rooms" (click)="closeMenu()">ROOMS</a></li>
-    <li><a routerLink="/about-us" (click)="closeMenu()">ABOUT US</a></li>
-    <li><a routerLink="/aboutUs" (click)="closeMenu()">EXPERIENCES</a></li>
-    <li><a routerLink="/location" (click)="closeMenu()">LOCATION</a></li>
-    <li><a routerLink="/facilities" (click)="closeMenu()">FACILITIES</a></li>
+  <ul class="navbar-menu-usuario" [class.active]="isMenuOpen">
+    <li *ngFor="let page of pages.slice(1)" [class.active]="activePageName === page.name">
+      <a (click)="selectPage(page)">
+        {{ page.title }}
+      </a>
+    </li>
   </ul>
 
   <div class="navbar-actions-usuario">
-    <button class="button-tickets">BOOK TICKETS</button>
+    <button class="button-tickets">¡Reserva ya!</button>
   </div>
 
     <!-- Botón hamburguesa -->
-    <button class="boton-hamburguesa" aria-label="Toggle menu" (click)="toggleMenu()">
+    <button class="boton-hamburguesa" aria-label="Toggle menu" (click)="deletePageName(); toggleMenu()">
       <i class="fa-solid" [class.fa-bars]="!isMenuOpen" [class.fa-times]="isMenuOpen"></i>
     </button>
 </nav>

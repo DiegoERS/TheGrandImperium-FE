@@ -1,0 +1,88 @@
+$primary-color: #007bff;
+$danger-color: #ff4d4d;
+$border-radius: 10px;
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: $border-radius;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #fafafa;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  p {
+    margin: 0 0 10px 0;
+  }
+
+  .upload-label {
+    cursor: pointer;
+    color: $primary-color;
+    font-weight: bold;
+
+    .browse-button {
+      text-decoration: underline;
+    }
+  }
+}
+
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  gap: 10px;
+
+  .image-preview {
+    position: relative;
+
+    img {
+      height: 100px;
+      border-radius: $border-radius;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: $danger-color;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.save-button {
+    margin: 20px auto 0 auto; // centrar horizontalmente
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-weight: bold;
+    outline: none;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #218838;
+    }
+  }
+
+  .save-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }

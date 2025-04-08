@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PageInformationService } from '../../core/services/page-information.service';
+import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 
 interface Room {
   id: number;
@@ -19,8 +21,16 @@ interface Room {
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
+  private pageInformationService = inject(PageInformationService);
+  pageInformation: PageInformationDTO | null = null;
   
   ngOnInit(): void {
+    var page=JSON.parse(localStorage.getItem('selectedPage')|| '{}');
+    this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
+      this.pageInformation = data;
+      console.log(data);
+    });
+
     // Esto se debe cargar del back
     this.rooms = [
       {
