@@ -1,0 +1,65 @@
+.contact-us-container {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 600px; /* Limita el ancho máximo */
+    width: 90%; /* Asegura que el contenedor se ajuste en pantallas pequeñas */
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #d9a55c;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-us-container h2 {
+    font-size: 2rem;
+    color: #0e0e0e;
+    margin-bottom: 20px;
+  }
+  
+  .contact-card {
+    background-color: #fbfafa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-info p {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    word-wrap: break-word;
+    overflow: break-word;
+    text-overflow: ellipsis;
+  }
+  
+  .contact-info i {
+    color: #040404;
+    font-size: 1.2rem;
+  }
+
+  .contact-info a {
+    color: #0b0b0b; /* Color del enlace */
+    word-break: break-word; /* Permite que el correo se divida */
+    overflow-wrap: anywhere; /* Asegura que el texto largo se ajuste */
+  }
+  
+  @media (max-width: 768px) {
+    .contact-info p {
+      font-size: 1rem;
+      gap: 5px; /* Reduce el espacio entre los elementos */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .contact-info p {
+      font-size: 0.9rem;
+      gap: 5px;
+      text-align: center; /* Centra el texto para mejorar la apariencia */
+    }
+  }
