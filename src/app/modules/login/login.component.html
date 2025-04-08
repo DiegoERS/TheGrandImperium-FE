@@ -1,3 +1,60 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Iniciar Sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          placeholder="ejemplo@correo.com"
+        />
+        <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Ingrese un correo válido.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="password-input">
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            id="password"
+            formControlName="password"
+            [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+            placeholder="••••••••"
+          />
+          <span (click)="togglePasswordVisibility()" class="toggle-eye">
+            {{ hidePassword ? '👁️' : '🙈' }}
+          </span>
+        </div>
+        <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          La contraseña es obligatoria.
+        </small>
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Ingresar</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--TODO LO RELACIONADO CON EL DRAG AND DROP DE LAS IMAGENES-->
 <app-image-uploader (imagesChange)="onImagesChanged($event)" (save)="onSave($event)" #uploader></app-image-uploader>
 
 
