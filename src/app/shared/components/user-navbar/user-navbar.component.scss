@@ -10,11 +10,10 @@
   .navbar-logo-usuario {
     font-size: 1.3rem;
     font-weight: bold;
+
     a {
       text-decoration: none;
       color: black;
-
-
     }
   }
 
@@ -28,12 +27,20 @@
         text-decoration: none;
         color: black;
         font-weight: 500;
-        &:hover{
+        cursor: pointer;
+
+        &:hover {
           text-decoration: underline;
           text-decoration-color: #FFD700;
           color: #FFD700;
         }
       }
+    }
+
+    li.active a {
+      text-decoration: underline;
+      color: #FFD700;
+      font-weight: bold;
     }
   }
 
@@ -70,7 +77,6 @@
   @media (max-width: 768px) {
     .boton-hamburguesa {
       display: block;
-
     }
 
     .navbar-menu-usuario {
@@ -89,6 +95,12 @@
 
     .navbar-menu-usuario.active {
       display: flex;
+    }
+
+    .navbar-menu-usuario li.active a {
+      text-decoration: underline;
+      color: #FFD700;
+      font-weight: bold;
     }
   }
 }

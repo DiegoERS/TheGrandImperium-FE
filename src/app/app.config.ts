@@ -12,11 +12,9 @@ import { AppRoutingModule } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes),
-    importProvidersFrom(AppRoutingModule), 
-    importProvidersFrom(CommonModule),
+    importProvidersFrom(AppRoutingModule,CommonModule,MatSnackBarModule), 
     provideClientHydration(withEventReplay()),
     provideAnimations(),
     provideHttpClient(withInterceptors([errorInterceptor])),
-    importProvidersFrom(MatSnackBarModule)
   ]
 };
