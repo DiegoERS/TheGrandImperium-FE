@@ -25,8 +25,8 @@ export class RoomsComponent implements OnInit {
   pageInformation: PageInformationDTO | null = null;
   
   ngOnInit(): void {
-    console.log(JSON.parse(localStorage.getItem('selectedPage')|| '{}'));
-    this.pageInformationService.getByPage(1).subscribe((data: PageInformationDTO) => {
+    var page=JSON.parse(localStorage.getItem('selectedPage')|| '{}');
+    this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
       console.log(data);
     });

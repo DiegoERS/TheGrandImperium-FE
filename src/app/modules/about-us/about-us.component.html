@@ -1,18 +1,12 @@
 <div class="about-us-container">
   <div class="content">
     <div class="about-us-text">
-      <h2 class="titulo-sobre">Sobre Nosotros</h2>
+      <h2 class="titulo-sobre">{{pageInformation?.pageDTO?.title}} </h2>
       <p>
-        Bienvenido a The Grand Imperium | Hotel & Resort, tu refugio frente al mar donde la brisa, el sol y la tranquilidad se combinan para ofrecerte una experiencia inolvidable. Ubicado en la hermosa costa de  Tamarindo, nuestro hotel es el destino ideal para quienes buscan relajarse, disfrutar de la naturaleza y vivir momentos únicos.
-
-En The Grand Imperium | Hotel & Resort, nos apasiona brindar un servicio excepcional, garantizando el máximo confort y hospitalidad en cada detalle. Nuestras habitaciones y suites están diseñadas para ofrecerte vistas espectaculares del océano, mientras que nuestras instalaciones te invitan a disfrutar de piscinas, spa, restaurantes de cocina local e internacional, y actividades recreativas para toda la familia.
-
-Ya sea que busques una escapada romántica, unas vacaciones en familia o un retiro de bienestar, en The Grand Imperium | Hotel & Resort encontrarás el equilibrio perfecto entre lujo y naturaleza. Déjanos ser parte de tu historia y descubre la magia de un paraíso frente al mar.
-
-¡Te esperamos con los brazos abiertos!
+       {{pageInformation?.description}}
       </p>
     </div>
-    <h3 class="titulo-galeria">Galeria</h3>
+    <h3 class="titulo-galeria">{{pageInformation?.subtitle}}</h3>
     <div class="gallery-container">
       <!-- Imagen seleccionada -->
       <img

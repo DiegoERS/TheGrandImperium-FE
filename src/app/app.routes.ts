@@ -8,6 +8,7 @@ import { AboutUsComponent } from './modules/about-us/about-us.component';
 import { HomeComponent } from './modules/home/home.component';
 import { RoomsComponent } from './modules/rooms/rooms.component';
 import { FacilitiesComponent } from './modules/facilities/facilities.component';
+import { LoginComponent } from './modules/login/login.component';
 
 export const routes: Routes = [{
     path: '',
@@ -16,7 +17,8 @@ export const routes: Routes = [{
       { path: '', component: HomeComponent },
       {path: 'rooms', component: RoomsComponent},
       { path: 'facilities', component: FacilitiesComponent },
-      {path: 'about-us', component: AboutUsComponent}
+      {path: 'about-us', component: AboutUsComponent},
+      {path: 'login', component: LoginComponent},
     ]
   },
   {

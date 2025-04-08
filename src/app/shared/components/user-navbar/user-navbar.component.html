@@ -1,5 +1,5 @@
 <nav class="navbar-usuario">
-  <div class="navbar-logo-usuario"><a routerLink="" (click)="closeMenu()">The Grand Imperium | Hotel & Resort</a></div>
+  <div class="navbar-logo-usuario"><a routerLink="" (click)="activePageName = null; closeMenu()" >The Grand Imperium | Hotel & Resort</a></div>
 
   <!-- Menú -->
   <ul class="navbar-menu-usuario" [class.active]="isMenuOpen">
@@ -15,7 +15,7 @@
   </div>
 
     <!-- Botón hamburguesa -->
-    <button class="boton-hamburguesa" aria-label="Toggle menu" (click)="toggleMenu()">
+    <button class="boton-hamburguesa" aria-label="Toggle menu" (click)="activePageName = null; toggleMenu()">
       <i class="fa-solid" [class.fa-bars]="!isMenuOpen" [class.fa-times]="isMenuOpen"></i>
     </button>
 </nav>

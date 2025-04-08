@@ -1,0 +1,13 @@
+<app-image-uploader (imagesChange)="onImagesChanged($event)" (save)="onSave($event)" #uploader></app-image-uploader>
+
+
+<div *ngIf="isUploading">Subiendo imágenes...</div>
+
+<div *ngIf="uploadedUrls.length">
+  <h4>Imágenes guardadas:</h4>
+  <ul>
+    <li *ngFor="let url of uploadedUrls">
+      <a [href]="url" target="_blank">{{ url }}</a>
+    </li>
+  </ul>
+</div>
