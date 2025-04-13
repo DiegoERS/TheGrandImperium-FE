@@ -7,12 +7,13 @@
         <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
       </div>
     </div>
-  
+
     <div class="contact">
       <h3>¿Tienes alguna pregunta?</h3>
       <p>Conéctate con nosotros en The Grand Imperium. Estamos aquí para ayudarte.</p>
       <a routerLink="/contact-us" routerLinkActive="router-link-active"  class="contact-btn">Contacta con nosotros</a>
       <br>
-      <a routerLink="/login" routerLinkActive="router-link-active"  class="btn-primary">Login</a>
+      <a routerLink="/login" routerLinkActive="router-link-active"  class="btn-primary">Login</a><br>
+      <a class="btn-primary" (click)="logout()">Log Out</a>
     </div>
   </footer>

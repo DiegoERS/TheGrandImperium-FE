@@ -1,1 +1,17 @@
-<p>admin-navbar works!</p>
+<nav class="navbar-usuario">
+  <div class="navbar-logo-usuario"><a routerLink="" (click)="deletePageName(); closeMenu()" >The Grand Imperium | Hotel & Resort</a></div>
+
+  <!-- Menú -->
+  <ul class="navbar-menu-usuario" [class.active]="isMenuOpen">
+    <li *ngFor="let page of pages.slice(1)" [class.active]="activePageName === page.name">
+      <a (click)="selectPage(page)">
+        {{ page.title }}
+      </a>
+    </li>
+  </ul>
+
+    <!-- Botón hamburguesa -->
+    <button class="boton-hamburguesa" aria-label="Toggle menu" (click)="deletePageName(); toggleMenu()">
+      <i class="fa-solid" [class.fa-bars]="!isMenuOpen" [class.fa-times]="isMenuOpen"></i>
+    </button>
+</nav>
