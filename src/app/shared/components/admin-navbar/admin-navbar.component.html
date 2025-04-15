@@ -1,22 +1,22 @@
-<nav class="navbar-usuario">
-  <div class="navbar-logo-usuario"><a routerLink="" (click)="deletePageName(); closeMenu()" >The Grand Imperium | Hotel & Resort</a></div>
+<nav class="navbar-admin">
+  <div class="navbar-logo-admin">
+    <a routerLink="" (click)="deletePageName(); closeMenu()">The Grand Imperium | Hotel & Resort</a>
+  </div>
 
   <!-- Menú -->
-  <ul class="navbar-menu-usuario" [class.active]="isMenuOpen">
+  <ul class="navbar-menu-admin" [class.active]="isMenuOpen">
     <li *ngFor="let page of pages.slice(1)" [class.active]="activePageName === page.name">
       <a (click)="selectPage(page)">
         {{ page.title }}
       </a>
     </li>
-    <li *ngIf="isAuthenticated()">
-      <a (click)="logout()">
-        Log out
-      </a>
+    <li *ngIf="isAuthenticated()" class="logout">
+      <a (click)="logout()">Log out</a>
     </li>
   </ul>
 
-    <!-- Botón hamburguesa -->
-    <button class="boton-hamburguesa" aria-label="Toggle menu" (click)="deletePageName(); toggleMenu()">
-      <i class="fa-solid" [class.fa-bars]="!isMenuOpen" [class.fa-times]="isMenuOpen"></i>
-    </button>
+  <!-- Botón hamburguesa -->
+  <button class="boton-hamburguesa" aria-label="Toggle menu" (click)="deletePageName(); toggleMenu()">
+    <i class="fa-solid" [class.fa-bars]="!isMenuOpen" [class.fa-times]="isMenuOpen"></i>
+  </button>
 </nav>

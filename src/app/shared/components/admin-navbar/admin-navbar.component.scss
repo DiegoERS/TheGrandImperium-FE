@@ -1,13 +1,13 @@
-.navbar-usuario {
+.navbar-admin {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
   background: linear-gradient(to right, #ddd, #aaa);
-  position: relative; // Importante para menú en móviles
-  z-index: 2000; // Asegura que el navbar esté por encima de otros elementos
+  position: relative;
+  z-index: 2000;
 
-  .navbar-logo-usuario {
+  .navbar-logo-admin {
     font-size: 1.3rem;
     font-weight: bold;
 
@@ -17,10 +17,11 @@
     }
   }
 
-  .navbar-menu-usuario {
+  .navbar-menu-admin {
     list-style: none;
     display: flex;
     gap: 20px;
+
 
     li {
       a {
@@ -44,27 +45,17 @@
     }
   }
 
-  .navbar-actions-usuario {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    .button-tickets {
-      background: #d9a55c;
-      color: black;
-      padding: 8px 15px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      border-radius: 5px;
-
-      &:hover {
-        background: #b8863b;
-      }
-    }
+  .logout {
+    background-color: #d9a55c;
+    color: black;
+    margin-left: 270px;
+    padding: 10px 15px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
   }
 
-  // Botón hamburguesa
   .boton-hamburguesa {
     display: none;
     background: none;
@@ -73,13 +64,12 @@
     cursor: pointer;
   }
 
-  // Responsive para móviles
   @media (max-width: 768px) {
     .boton-hamburguesa {
       display: block;
     }
 
-    .navbar-menu-usuario {
+    .navbar-menu-admin {
       position: absolute;
       top: 89px;
       right: 0;
@@ -93,11 +83,11 @@
       transition: all 0.3s ease-in-out;
     }
 
-    .navbar-menu-usuario.active {
+    .navbar-menu-admin.active {
       display: flex;
     }
 
-    .navbar-menu-usuario li.active a {
+    .navbar-menu-admin li.active a {
       text-decoration: underline;
       color: #FFD700;
       font-weight: bold;
