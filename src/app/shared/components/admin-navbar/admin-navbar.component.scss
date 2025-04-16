@@ -1,0 +1,96 @@
+.navbar-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: linear-gradient(to right, #ddd, #aaa);
+  position: relative;
+  z-index: 2000;
+
+  .navbar-logo-admin {
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  .navbar-menu-admin {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+
+
+    li {
+      a {
+        text-decoration: none;
+        color: black;
+        font-weight: 500;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+          text-decoration-color: #FFD700;
+          color: #FFD700;
+        }
+      }
+    }
+
+    li.active a {
+      text-decoration: underline;
+      color: #FFD700;
+      font-weight: bold;
+    }
+  }
+
+  .logout {
+    background-color: #d9a55c;
+    color: black;
+    margin-left: 270px;
+    padding: 10px 15px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+  }
+
+  .boton-hamburguesa {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .boton-hamburguesa {
+      display: block;
+    }
+
+    .navbar-menu-admin {
+      position: absolute;
+      top: 89px;
+      right: 0;
+      width: 100%;
+      background: #ddd;
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+      padding: 20px;
+      display: none;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-menu-admin.active {
+      display: flex;
+    }
+
+    .navbar-menu-admin li.active a {
+      text-decoration: underline;
+      color: #FFD700;
+      font-weight: bold;
+    }
+  }
+}
