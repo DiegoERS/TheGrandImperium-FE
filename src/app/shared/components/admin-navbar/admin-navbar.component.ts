@@ -1,11 +1,67 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { PageDTO } from '../../../core/models/PageDTO';
+import { PageService } from '../../../core/services/page.service';
 
 @Component({
   selector: 'app-admin-navbar',
-  imports: [],
+  imports: [CommonModule, RouterModule],
   templateUrl: './admin-navbar.component.html',
-  styleUrl: './admin-navbar.component.scss'
+  styleUrl: './admin-navbar.component.scss',
 })
-export class AdminNavbarComponent {
+export class AdminNavbarComponent implements OnInit {
+  private pageService = inject(PageService);
+  private router = inject(Router);
 
+  isMenuOpen = false;
+  pages: PageDTO[] = [];
+  activePageName: string | null = null;
+
+  ngOnInit(): void {
+    this.pageService.getAllPages().subscribe((pages) => {
+      this.pages = pages;
+      this.activePageName = localStorage.getItem('activePageName');
+    });
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
+  selectPage(page: PageDTO) {
+    localStorage.setItem('selectedPage', JSON.stringify(page));
+    localStorage.setItem('activePageName', page.name);
+    this.activePageName = page.name;
+    this.closeMenu();
+    this.router.navigate(['/', page.name]);
+  }
+
+  deletePageName() {
+    localStorage.removeItem('activePageName');
+    this.activePageName = null;
+  }
+
+  logout(): void {
+    if (this.isAuthenticated()) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      this.router.navigate(['/login']);
+    } else {
+      alert('No hay un usuario logeado');
+    }
+  }
+
+  isAuthenticated(): boolean {
+    if (localStorage.getItem('user')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

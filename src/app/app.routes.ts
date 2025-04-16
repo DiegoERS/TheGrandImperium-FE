@@ -13,6 +13,7 @@ import { ContactUsComponent } from './modules/contact-us/contact-us.component';
 import { HowToGetToComponent } from './modules/how-to-get-to/how-to-get-to.component';
 import { LoginComponent } from './modules/login/login.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { TodayHotelComponent } from './modules/today-hotel/today-hotel.component';
 
 
 export const routes: Routes = [{
@@ -21,11 +22,12 @@ export const routes: Routes = [{
     children: [
       {path: '', component: HomeComponent },
       {path: 'rooms', component: RoomsComponent},
-      { path: 'facilities', component: FacilitiesComponent },
+      {path: 'facilities', component: FacilitiesComponent },
       {path: 'about-us', component: AboutUsComponent},
       {path: 'login', component: LoginComponent},
       {path: 'contact-us', component: ContactUsComponent},
-      {path: 'how-to-get-to', component: HowToGetToComponent}
+      {path: 'how-to-get-to', component: HowToGetToComponent},
+      {path: 'today-hotel', component: TodayHotelComponent } 
     ]
   },
   {

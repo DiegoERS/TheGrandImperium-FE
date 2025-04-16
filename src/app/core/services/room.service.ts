@@ -1,9 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { RoomsDTO } from '../models/RoomsDTO';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
+  private readonly apiUrl = `${environment.apiUrl}/Room`;
 
-  constructor() { }
+  private http = inject(HttpClient);
+
+  getAllRooms(): Observable<RoomsDTO[]> {
+      return this.http.get<RoomsDTO[]>(this.apiUrl);
+    }
+
 }
