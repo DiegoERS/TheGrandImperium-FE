@@ -1,0 +1,30 @@
+<h2>Estado del Hotel Hoy</h2>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Numero de Habitacion</th>
+      <th>Tipo</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="rooms.length > 0; else sinDatos">
+    <tr *ngFor="let room of rooms">
+      <td>{{ room.roomNumber }}</td>
+      <td>{{ room.roomTypeDTO.name }}</td>
+      <td>DISPONIBLE</td>
+    </tr>
+  </tbody>
+  <ng-template #sinDatos>
+    <tr>
+      <td colspan="3">No hay habitaciones disponibles</td>
+    </tr>
+  </ng-template>
+  
+</table>
+
+<!-- Icono de guardar -->
+<div style="text-align: center; margin-top: 20px;">
+  <img src="assets/save-icon.png" alt="Guardar" width="40" height="40">
+</div>
