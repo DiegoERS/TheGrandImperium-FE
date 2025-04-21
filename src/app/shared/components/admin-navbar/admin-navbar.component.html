@@ -1,18 +1,20 @@
 <nav class="sidebar-admin" [class.open]="isMenuOpen">
   <div class="sidebar-logo-admin">
-    <a routerLink="" (click)="deletePageName(); closeMenu()">The Grand Imperium   Hotel & Resort</a>
+    <span>The Grand Imperium Hotel & Resort</span>
   </div>
 
-  <!-- Menú vertical -->
+  <!-- Menú vertical estático sin enlaces -->
   <ul class="sidebar-menu-admin">
-    <li *ngFor="let page of pages.slice(1)" [class.active]="activePageName === page.name">
-      <a (click)="selectPage(page)">
-        {{ page.title }}
-      </a>
+    <li [class.active]="activePageName === 'home'">Home</li>
+    <li [class.active]="activePageName === 'modificar'">Modificar Páginas</li>
+    <li [class.active]="activePageName === 'reservaciones'">Listado de reservaciones</li>
+    <li [class.active]="activePageName === 'habitaciones'">Administrar habitaciones</li>
+    <li [class.active]="activePageName === 'estado-hotel'">Ver estado del hotel hoy</li>
+    <li [class.active]="activePageName === 'disponibilidad'">
+      <a routerLink="/admin/booking" routerLinkActive="router-link-active" class="button">Consultar
+        disponibilidad de habitaciones</a>
     </li>
-    <li *ngIf="isAuthenticated()" class="logout">
-      <a (click)="logout()">Log out</a>
-    </li>
+    <li [class.active]="activePageName === 'publicidad'">Publicidad</li>
+    <li *ngIf="isAuthenticated()" class="logout" (click)="logout()">Log out</li>
   </ul>
-
 </nav>
