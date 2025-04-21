@@ -14,6 +14,7 @@ import { HowToGetToComponent } from './modules/how-to-get-to/how-to-get-to.compo
 import { LoginComponent } from './modules/login/login.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { TodayHotelComponent } from './modules/today-hotel/today-hotel.component';
+import { BookingComponent } from './modules/booking/booking.component';
 
 
 export const routes: Routes = [{
@@ -27,7 +28,7 @@ export const routes: Routes = [{
       {path: 'login', component: LoginComponent},
       {path: 'contact-us', component: ContactUsComponent},
       {path: 'how-to-get-to', component: HowToGetToComponent},
-      {path: 'today-hotel', component: TodayHotelComponent } 
+      {path: 'today-hotel', component: TodayHotelComponent },
     ]
   },
   {
@@ -35,6 +36,7 @@ export const routes: Routes = [{
     component: AdminLayoutComponent,
     children: [
       {path: 'dashboard', component: DashboardComponent, canActivate:[authGuard]}, // Aquí puedes agregar la lógica de autenticación si es necesario
+      { path: 'booking', component: BookingComponent },
     ]
   },
   { path: '**', redirectTo: '' } // Redirección en caso de ruta no encontrada];
