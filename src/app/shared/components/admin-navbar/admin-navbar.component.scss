@@ -1,15 +1,25 @@
-.navbar-admin {
+.sidebar-admin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background: linear-gradient(to bottom, #ddd, #aaa);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: linear-gradient(to right, #ddd, #aaa);
-  position: relative;
+  flex-direction: column;
   z-index: 2000;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
 
-  .navbar-logo-admin {
+  &.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-logo-admin {
     font-size: 1.3rem;
     font-weight: bold;
+    padding: 20px;
+    border-bottom: 1px solid #bbb;
 
     a {
       text-decoration: none;
@@ -17,11 +27,15 @@
     }
   }
 
-  .navbar-menu-admin {
+  .sidebar-menu-admin {
     list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
-    gap: 20px;
-
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    flex: 1; // Esto empuja el logout hacia abajo
 
     li {
       a {
@@ -29,68 +43,64 @@
         color: black;
         font-weight: 500;
         cursor: pointer;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
 
         &:hover {
           text-decoration: underline;
-          text-decoration-color: #FFD700;
           color: #FFD700;
+          background-color: transparent;
         }
+      }
+
+      &.active a {
+        background-color: transparent;
+        font-weight: bold;
+        color: #FFD700;
+        text-decoration: underline;
       }
     }
 
-    li.active a {
-      text-decoration: underline;
-      color: #FFD700;
+    .logout {
+      margin-top: auto;
+      background-color: #d9a55c;
+      color: black;
+      padding: 6px 12px; 
+      text-align: left;
       font-weight: bold;
+      border-radius: 6px;
+      width: fit-content;
+      a {
+        color: black;
+        text-decoration: none;
+        display: block;
+      }
     }
+
+
   }
 
-  .logout {
-    background-color: #d9a55c;
-    color: black;
-    margin-left: 270px;
-    padding: 10px 15px;
-    display: inline-block;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 8px;
-  }
-
-  .boton-hamburguesa {
-    display: none;
+  .sidebar-toggle-btn {
+    position: absolute;
+    top: 15px;
+    right: -45px;
     background: none;
     border: none;
     font-size: 1.8rem;
     cursor: pointer;
+    color: black;
   }
 
   @media (max-width: 768px) {
-    .boton-hamburguesa {
-      display: block;
+    transform: translateX(-100%);
+
+    &.open {
+      transform: translateX(0);
     }
 
-    .navbar-menu-admin {
-      position: absolute;
-      top: 89px;
-      right: 0;
-      width: 100%;
-      background: #ddd;
-      flex-direction: column;
-      text-align: center;
-      gap: 15px;
-      padding: 20px;
-      display: none;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .navbar-menu-admin.active {
-      display: flex;
-    }
-
-    .navbar-menu-admin li.active a {
-      text-decoration: underline;
-      color: #FFD700;
-      font-weight: bold;
+    .sidebar-toggle-btn {
+      right: -45px;
     }
   }
 }
