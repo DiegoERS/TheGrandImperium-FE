@@ -28,7 +28,7 @@ export const routes: Routes = [{
       {path: 'login', component: LoginComponent},
       {path: 'contact-us', component: ContactUsComponent},
       {path: 'how-to-get-to', component: HowToGetToComponent},
-      {path: 'today-hotel', component: TodayHotelComponent },
+      
     ]
   },
   {
@@ -36,7 +36,8 @@ export const routes: Routes = [{
     component: AdminLayoutComponent,
     children: [
       {path: 'dashboard', component: DashboardComponent, canActivate:[authGuard]}, // Aquí puedes agregar la lógica de autenticación si es necesario
-      { path: 'booking', component: BookingComponent },
+      { path: 'booking', component: BookingComponent, canActivate:[authGuard] },
+      {path: 'today-hotel', component: TodayHotelComponent, canActivate:[authGuard] },
     ]
   },
   { path: '**', redirectTo: '' } // Redirección en caso de ruta no encontrada];
