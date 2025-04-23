@@ -100,3 +100,8 @@
   z-index: 3000;
   cursor: pointer;
 }
+@media (min-width: 769px) {
+  .sidebar-toggle-btn {
+    display: none;
+  }
+}
