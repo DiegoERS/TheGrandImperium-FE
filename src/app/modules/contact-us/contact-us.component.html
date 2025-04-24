@@ -1,17 +1,12 @@
 <div class="contact-us-container">
-    <h2>Contáctenos</h2>
-    <div class="contact-card">
-      <div class="contact-info">
-        <p><i class="fa-solid fa-hotel"></i> <strong>The Grand Imperium Hotel & Resort</strong></p>
-        <p><i class="fa-solid fa-phone"></i> Tel: 2222-2222 / 2222-2323</p>
-        <p>
-            <i class="fa-solid fa-envelope"></i>
-            <a href="mailto:TheGrandImperiumHotelAndResort@gmail.com">
-              TheGrandImperiumHotelAndResort&#64;gmail.com
-            </a>
-          </p>
-          
-        <p><i class="fa-solid fa-map-marker-alt"></i> Apdo Postal XYZ</p>
-      </div>
+  <h2 class="titulo-contactenos">
+    {{pageInformation?.pageDTO?.title}}
+  </h2>
+  <div class="contact-card">
+    <div class="contact-info">
+      <p *ngFor="let item of descriptions">
+        <i class="fa-solid" [ngClass]="getIcon(item)"></i> {{ item }}
+      </p>
     </div>
   </div>
+</div>

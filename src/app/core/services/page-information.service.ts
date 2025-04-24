@@ -13,19 +13,18 @@ export class PageInformationService {
   private http=inject(HttpClient);
 
   getByPage(page: number): Observable<PageInformationDTO> {
-    console.log(`${this.apiUrl}/${page}`);
     return this.http.get<PageInformationDTO>(`${this.apiUrl}/${page}`);
   }
 
-  create(data: PageInformationDTO): Observable<PageInformationDTO> {
-    return this.http.post<PageInformationDTO>(this.apiUrl, data);
+  create(data: PageInformationDTO): Observable<number> {
+    return this.http.post<number>(this.apiUrl, data);
   }
 
-  update(data: PageInformationDTO): Observable<PageInformationDTO> {
-    return this.http.put<PageInformationDTO>(this.apiUrl, data);
+  update(data: PageInformationDTO): Observable<number> {
+    return this.http.put<number>(this.apiUrl, data);
   }
 
-  delete(pageInformationId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${pageInformationId}`);
+  delete(pageInformationId: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/${pageInformationId}`);
   }
 }
