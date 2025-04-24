@@ -16,15 +16,15 @@ export class PageService {
     return this.http.get<PageDTO[]>(this.apiUrl);
   }
 
-  createPage(page: PageDTO): Observable<PageDTO> {
-    return this.http.post<PageDTO>(this.apiUrl, page);
+  createPage(page: PageDTO): Observable<number> {
+    return this.http.post<number>(this.apiUrl, page);
   }
 
-  updatePage(page: PageDTO): Observable<PageDTO> {
-    return this.http.put<PageDTO>(this.apiUrl, page);
+  updatePage(page: PageDTO): Observable<number> {
+    return this.http.put<number>(this.apiUrl, page);
   }
 
-  deletePage(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deletePage(id: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/${id}`);
   }
 }
