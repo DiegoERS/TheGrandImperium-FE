@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PageDTO } from '../../../core/models/PageDTO';
@@ -17,6 +17,7 @@ export class AdminNavbarComponent implements OnInit {
   isMenuOpen = false;
   pages: PageDTO[] = [];
   activePageName: string | null = null;
+  private touchStartX = 0;
 
   ngOnInit(): void {
     this.pageService.getAllPages().subscribe((pages) => {
@@ -58,10 +59,28 @@ export class AdminNavbarComponent implements OnInit {
   }
 
   isAuthenticated(): boolean {
-    if (localStorage.getItem('user')) {
-      return true;
-    } else {
-      return false;
+    return !!localStorage.getItem('user');
+  }
+
+  // 👇 Manejo de gestos táctiles (swipe)
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.touches[0].clientX;
+  }
+
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent) {
+    const touchEndX = event.changedTouches[0].clientX;
+    const swipeDistance = touchEndX - this.touchStartX;
+
+    // Abrir el menú si se desliza desde el borde izquierdo
+    if (this.touchStartX < 50 && swipeDistance > 50) {
+      this.isMenuOpen = true;
+    }
+
+    // Cerrar el menú si se desliza hacia la izquierda
+    if (this.touchStartX > 200 && swipeDistance < -50) {
+      this.isMenuOpen = false;
     }
   }
 }
