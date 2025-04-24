@@ -2,37 +2,36 @@
      id="exampleModal"
      tabindex="-1"
      aria-labelledby="exampleModalLabel"
-     *ngIf="modalVisible"> <div class="modal-dialog">
+     *ngIf="modalVisible">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
         <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal()"></button>
 
         <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button *ngFor="let ad of advertisings; let i = index"
+                    type="button"
+                    [attr.data-bs-target]="'#carouselExampleCaptions'"
+                    [attr.data-bs-slide-to]="i"
+                    [class.active]="i === 0"
+                    [attr.aria-current]="i === 0 ? 'true' : null"
+                    [attr.aria-label]="'Slide ' + (i + 1)">
+            </button>
           </div>
+
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <a href="https://www.coca-cola.com/cr/es" target="_blank">
-                <img src="https://www.inboundcycle.com/hs-fs/hubfs/anuncios%20publicitarios%20recordatorios.jpg?width=480&height=600&name=anuncios%20publicitarios%20recordatorios.jpg" class="d-block w-100" alt="Imagen de coca cola">
+            <div *ngFor="let ad of advertisings; let i = index" class="carousel-item" [class.active]="i === 0">
+              <a [href]="ad.link" target="_blank">
+                <img [src]="ad.advertisingImageDTO.imageDTO.url" class="d-block w-100" [alt]="'Imagen de ' + ad.name">
               </a>
-              <div class="carousel-caption d-none d-md-block"></div>
-            </div>
-            <div class="carousel-item">
-              <a href="https://www.doritos.com/es" target="_blank">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3_nMfLWPEflrOEvJf_U9Mx5KA8OTKgT5zDQ&s" class="d-block w-100" alt="Imagen de doritos">
-              </a>
-              <div class="carousel-caption d-none d-md-block"></div>
-            </div>
-            <div class="carousel-item">
-              <a href="https://www.heinz.com/es-ES" target="_blank">
-                <img src="https://neoattack.com/wp-content/uploads/2016/06/Anuncios-publicitarios-100-Mejores-ejemplos-creativos-del-mundo96.jpg" class="d-block w-100" alt="Imagen de heinz">
-              </a>
-              <div class="carousel-caption d-none d-md-block"></div>
+              <div class="carousel-caption d-none d-md-block">
+                <!-- Opcional: puedes mostrar el nombre -->
+                <h5>{{ ad.name }}</h5>
+              </div>
             </div>
           </div>
+
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -42,6 +41,7 @@
             <span class="visually-hidden">Next</span>
           </button>
         </div>
+
       </div>
     </div>
   </div>

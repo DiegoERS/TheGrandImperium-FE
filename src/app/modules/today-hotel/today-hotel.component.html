@@ -13,7 +13,7 @@
     <tr *ngFor="let room of rooms">
       <td>{{ room.roomNumber }}</td>
       <td>{{ room.roomTypeDTO.name }}</td>
-      <td>DISPONIBLE</td>
+      <td>{{ room.isActive ? 'DISPONIBLE' : 'NO DISPONIBLE' }}</td>
     </tr>
   </tbody>
   <ng-template #sinDatos>
@@ -26,5 +26,7 @@
 
 <!-- Icono de guardar -->
 <div style="text-align: center; margin-top: 20px;">
-  <img src="assets/save-icon.png" alt="Guardar" width="40" height="40">
+  <button class="btn" style="background-color: #e3af4b; color: white;"  (click)="exportarPDF()">
+    <i class="fas fa-save me-2"></i> Guardar
+  </button>
 </div>
