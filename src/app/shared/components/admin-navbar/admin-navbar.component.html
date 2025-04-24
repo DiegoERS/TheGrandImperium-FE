@@ -1,26 +1,31 @@
+
+<button class="sidebar-toggle-btn" (click)="isMenuOpen = !isMenuOpen">
+  ☰
+</button>
+
 <nav class="sidebar-admin" [class.open]="isMenuOpen">
   <div class="sidebar-logo-admin">
-    <span> <a routerLink="/home" routerLinkActive="router-link-active" class="button">
+    <a routerLink="/home" routerLinkActive="router-link-active" class="button">
       The Grand Imperium Hotel & Resort
-    </a></span>
+    </a>
   </div>
 
-  <!-- Menú vertical estático sin enlaces -->
   <ul class="sidebar-menu-admin">
     <li [class.active]="activePageName === 'home'">
-      <a routerLink="/admin/dashboard" routerLinkActive="router-link-active" class="button">
-      Home
-    </a>
+      <a routerLink="/admin/dashboard" routerLinkActive="router-link-active" class="button">Home</a>
     </li>
     <li [class.active]="activePageName === 'modificar'">Modificar Páginas</li>
     <li [class.active]="activePageName === 'reservaciones'">Listado de reservaciones</li>
     <li [class.active]="activePageName === 'habitaciones'">Administrar habitaciones</li>
     <li [class.active]="activePageName === 'estado-hotel'">
-      <a routerLink="/admin/today-hotel" routerLinkActive="router-link-active" class="button">Ver estado del hotel hoy</a>
-      </li>
+      <a routerLink="/admin/today-hotel" routerLinkActive="router-link-active" class="button">
+        Ver estado del hotel hoy
+      </a>
+    </li>
     <li [class.active]="activePageName === 'disponibilidad'">
-      <a routerLink="/admin/booking" routerLinkActive="router-link-active" class="button">Consultar
-        disponibilidad de habitaciones</a>
+      <a routerLink="/admin/booking" routerLinkActive="router-link-active" class="button">
+        Consultar disponibilidad de habitaciones
+      </a>
     </li>
     <li [class.active]="activePageName === 'publicidad'">Publicidad</li>
     <li *ngIf="isAuthenticated()" class="logout" (click)="logout()">Log out</li>
