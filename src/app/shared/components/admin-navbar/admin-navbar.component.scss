@@ -29,13 +29,12 @@
 
   .sidebar-menu-admin {
     list-style: none;
-    padding: 0;
+    padding: 0 20px;
     margin: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 20px;
-    flex: 1; // Esto empuja el logout hacia abajo
+    flex: 1;
 
     li {
       a {
@@ -66,31 +65,18 @@
       margin-top: auto;
       background-color: #d9a55c;
       color: black;
-      padding: 6px 12px; 
-      text-align: left;
+      padding: 6px 12px;
       font-weight: bold;
       border-radius: 6px;
       width: fit-content;
       cursor: pointer;
+
       a {
         color: black;
         text-decoration: none;
         display: block;
       }
     }
-
-
-  }
-
-  .sidebar-toggle-btn {
-    position: absolute;
-    top: 15px;
-    right: -45px;
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: black;
   }
 
   @media (max-width: 768px) {
@@ -99,9 +85,23 @@
     &.open {
       transform: translateX(0);
     }
+  }
+}
 
-    .sidebar-toggle-btn {
-      right: -45px;
-    }
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: #fff;
+  border: 2px solid #aaa;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 1.8rem;
+  z-index: 3000;
+  cursor: pointer;
+}
+@media (min-width: 769px) {
+  .sidebar-toggle-btn {
+    display: none;
   }
 }
