@@ -1,0 +1,128 @@
+/* Estilos generales */
+.admin-home {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0; /* Fondo gris claro */
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0px, transparent 40px, rgba(0, 0, 0, 0.1) 40px, rgba(0, 0, 0, 0.1) 80px),
+    repeating-linear-gradient(-45deg, transparent 0px, transparent 40px, rgba(0, 0, 0, 0.1) 40px, rgba(0, 0, 0, 0.1) 80px),
+    url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/palm-tree.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px; /* Tamaño de cada ícono de palmera */
+}
+
+/* Sección de bienvenida */
+.welcome-section {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
+  border-radius: 15px;
+  padding: 50px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 500px;
+  opacity: 0;
+  transform: scale(1.2);
+  animation: shrinkIn 1s ease-out forwards, fadeIn 2s ease-in-out forwards;
+}
+
+/* Estilo del título */
+.greeting h3 {
+  font-size: 2.5rem;
+  color: #00796b;
+  margin-bottom: 15px;
+  font-weight: bold;
+  animation: colorPulse 3s infinite alternate, slideIn 1.5s ease-out forwards;
+}
+
+/* Estilo del subtítulo */
+.greeting p {
+  font-size: 1.2rem;
+  color: #37474f;
+  margin-top: 0;
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeInText 1.5s 1s forwards;
+}
+
+/* Animación de encogimiento */
+@keyframes shrinkIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animación de pulsación de color */
+@keyframes colorPulse {
+  0% {
+    color: #00796b;
+  }
+  50% {
+    color: #FFD700;
+  }
+  100% {
+    color: #4a554cd7;
+  }
+}
+
+/* Animación de entrada desde el lado */
+@keyframes slideIn {
+  0% {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Animación para que el subtítulo aparezca */
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 768px) {
+  .welcome-section {
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  .greeting h3 {
+    font-size: 2rem;
+  }
+
+  .greeting p {
+    font-size: 1rem;
+  }
+}

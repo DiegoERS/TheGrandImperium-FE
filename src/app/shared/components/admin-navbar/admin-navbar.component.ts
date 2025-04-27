@@ -19,11 +19,15 @@ export class AdminNavbarComponent implements OnInit {
   activePageName: string | null = null;
   private touchStartX = 0;
 
+  userName: string = ''; // 👈 Agregado
+
   ngOnInit(): void {
     this.pageService.getAllPages().subscribe((pages) => {
       this.pages = pages;
       this.activePageName = localStorage.getItem('activePageName');
     });
+
+    this.userName = this.getUserName(); // 👈 Agregado
   }
 
   toggleMenu() {
@@ -62,7 +66,21 @@ export class AdminNavbarComponent implements OnInit {
     return !!localStorage.getItem('user');
   }
 
-  // 👇 Manejo de gestos táctiles (swipe)
+  getUserName(): string { // 👈 Agregado
+    const user = localStorage.getItem('user');
+    console.log(user);
+    if (user) {
+      try {
+        const parsedUser = JSON.parse(user);
+        return parsedUser.name || parsedUser.userName || 'Usuario'; // Ajusta según tu modelo
+      } catch (error) {
+        console.error('Error parsing user from localStorage', error);
+        return 'Usuario';
+      }
+    }
+    return 'Usuario';
+  }
+
   @HostListener('touchstart', ['$event'])
   onTouchStart(event: TouchEvent) {
     this.touchStartX = event.touches[0].clientX;
