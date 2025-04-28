@@ -1,4 +1,9 @@
-<div class="login-container">
+<div *ngIf="isLoading" class="spinner-container">
+  <mat-spinner diameter="80" color="primary"></mat-spinner>
+</div>
+
+
+<div  *ngIf="!isLoading" class="login-container">
   <div class="login-card">
     <h2>Iniciar Sesión</h2>
 

@@ -8,6 +8,11 @@
         {{ page.title }}
       </a>
     </li>
+    <li *ngIf="isAuthenticated()" [class.active]="activePageName === 'admin'">
+      <a routerLink="/admin/dashboard" (click)="deletePageName(); closeMenu()">
+        Administración
+      </a>
+
   </ul>
 
   <div class="navbar-actions-usuario">

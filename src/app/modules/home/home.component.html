@@ -1,5 +1,8 @@
+<div *ngIf="loading" class="spinner-container">
+  <mat-spinner diameter="80" color="primary"></mat-spinner>
+</div>
 
-<div class="content">
+<div  *ngIf="!loading" class="content">
   <div class="content-container">
     <div class="image-placeholder">
       <img
