@@ -1,4 +1,9 @@
-<div class="about-us-container">
+
+<div *ngIf="loading" class="spinner-container">
+  <mat-spinner diameter="80" color="primary"></mat-spinner>
+</div>
+
+<div *ngIf="!loading" class="about-us-container">
   <div class="content">
     <div class="about-us-text">
       <h2 class="titulo-sobre">{{pageInformation?.pageDTO?.title}} </h2>
