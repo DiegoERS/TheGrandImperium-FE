@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface Room {
   id: number;
@@ -15,12 +16,13 @@ interface Room {
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss'
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
+  loading = true;
   private pageInformationService = inject(PageInformationService);
   pageInformation: PageInformationDTO | null = null;
   
@@ -28,7 +30,7 @@ export class RoomsComponent implements OnInit {
     var page=JSON.parse(localStorage.getItem('selectedPage')|| '{}');
     this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
-      console.log(data);
+      this.loading = false;
     });
 
     // Esto se debe cargar del back

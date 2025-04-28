@@ -9,10 +9,12 @@ import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app.routes';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes),
-    importProvidersFrom(AppRoutingModule,CommonModule,MatSnackBarModule), 
+    importProvidersFrom(AppRoutingModule,CommonModule,MatSnackBarModule, MatProgressSpinnerModule), 
     provideClientHydration(withEventReplay()),
     provideAnimations(),
     provideHttpClient(withInterceptors([errorInterceptor])),
