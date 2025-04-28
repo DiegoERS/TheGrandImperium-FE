@@ -3,11 +3,12 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
   selector: 'app-contact-us',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatProgressSpinnerModule],
   templateUrl: './contact-us.component.html',
   styleUrl: './contact-us.component.scss'
 })
@@ -15,6 +16,7 @@ export class ContactUsComponent implements OnInit {
 
   pageInformation: PageInformationDTO | null = null;
   descriptions: string[] = [];
+  loading = true;
   private pageInformationService = inject(PageInformationService);
 
 
@@ -28,6 +30,7 @@ export class ContactUsComponent implements OnInit {
           this.descriptions[i] = this.descriptions[i].replace('&#64;', '@');
         }
       }
+      this.loading = false; // <--- ¡Carga terminada!
     });
   }
 

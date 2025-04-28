@@ -3,6 +3,7 @@ import { Router,RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PageDTO } from '../../../core/models/PageDTO';
 import { PageService } from '../../../core/services/page.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-user-navbar',
@@ -13,6 +14,7 @@ import { PageService } from '../../../core/services/page.service';
 export class UserNavbarComponent implements OnInit {
   private pageService = inject(PageService);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   isMenuOpen = false;
   pages: PageDTO[] =[];
@@ -44,6 +46,10 @@ export class UserNavbarComponent implements OnInit {
   deletePageName() {
     localStorage.removeItem('activePageName');
     this.activePageName = null;
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
   }
 
 }

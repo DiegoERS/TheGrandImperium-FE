@@ -5,16 +5,18 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-how-to-get-to',
-  imports : [CommonModule, RouterModule],
+  imports : [CommonModule, RouterModule, MatProgressSpinnerModule],
   templateUrl: './how-to-get-to.component.html',
   styleUrls: ['./how-to-get-to.component.scss']
 })
 export class HowToGetToComponent implements OnInit {
  
   pageInformation: PageInformationDTO | null = null;
+  loading = false;
   private pageInformationService= inject(PageInformationService);
 
  

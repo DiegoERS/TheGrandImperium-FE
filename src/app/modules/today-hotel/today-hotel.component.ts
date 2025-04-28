@@ -1,19 +1,23 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { RoomsDTO } from '../../core/models/RoomsDTO';
 import { RoomService } from '../../core/services/room.service';
-import { CommonModule } from '@angular/common';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { CommonModule, DatePipe } from '@angular/common';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable';
+import { CustomMatPaginatorIntlComponent } from '../../shared/components/custom-mat-paginator-intl/custom-mat-paginator-intl.component';
 
 
 @Component({
   selector: 'app-today-hotel',
-  imports: [CommonModule],
+  imports: [CommonModule,MatPaginatorModule, MatTableModule],
   templateUrl: './today-hotel.component.html',
-  styleUrl: './today-hotel.component.scss'
+  styleUrl: './today-hotel.component.scss',
+  providers: [
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlComponent}
+  ]
 })
 
 export class TodayHotelComponent implements OnInit {
@@ -22,7 +26,12 @@ export class TodayHotelComponent implements OnInit {
   currentDate: Date = new Date();
   estadosHabitacion: { [key: number]: string } = {};
   
+  dataSource = new MatTableDataSource<RoomsDTO>([]);
+  displayedColumns: string[] = ['roomNumber', 'roomType', 'isActive'];
+
   private roomService = inject(RoomService);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
     this.obtenerHabitaciones();
@@ -31,6 +40,8 @@ export class TodayHotelComponent implements OnInit {
   obtenerHabitaciones(): void {
     this.roomService.getAllRooms().subscribe((data: RoomsDTO[]) => {
       this.rooms = data;
+      this.dataSource.data = data;
+      this.dataSource.paginator = this.paginator;
     });
   }
 

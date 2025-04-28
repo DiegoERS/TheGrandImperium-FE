@@ -1,0 +1,11 @@
+.content-oficial {
+    margin-left: 250px; /* mismo tamaño que el sidebar */
+    padding: 20px;
+  }
+
+  @media (max-width: 768px) {
+  
+    .content-oficial {
+      margin-left: 0; /* En móvil no le dejes margen */
+    }
+  }
