@@ -1,4 +1,9 @@
-<div class="how-to-get-to-container">
+<div *ngIf="loading" class="spinner-container">
+  <mat-spinner diameter="80" color="primary"></mat-spinner>
+</div>
+
+
+<div *ngIf="!loading" class="how-to-get-to-container">
     <div class="info">
       <h2 class="titulo-como-llegar">{{pageInformation?.pageDTO?.title}} </h2>
       <p>

@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface Facility {
   id: number;
@@ -15,12 +16,13 @@ interface Facility {
 @Component({
   selector: 'app-facilities',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
   templateUrl: './facilities.component.html',
   styleUrl: './facilities.component.scss'
 })
 export class FacilitiesComponent implements OnInit {
   facilities: Facility[] = [];
+  loading = true;
   private pageInformationService=inject(PageInformationService);
   pageInformation: PageInformationDTO | null = null;
     
@@ -31,6 +33,7 @@ export class FacilitiesComponent implements OnInit {
     this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
       console.log(data);
+      this.loading = false;
     });
     // Cargar las facilidades del hotel (en un caso real, esto vendría de un servicio)
     this.facilities = [

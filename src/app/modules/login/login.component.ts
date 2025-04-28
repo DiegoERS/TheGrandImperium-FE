@@ -7,10 +7,11 @@ import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserDTO } from '../../core/models/UserDTO';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login',
-  imports: [ImageUploaderComponent,CommonModule,ReactiveFormsModule],
+  imports: [ImageUploaderComponent,CommonModule,ReactiveFormsModule,MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
   private router= inject(Router);
    loginForm: FormGroup = this.fb.group({});
   hidePassword = true;
+  isLoading = false; // Variable para controlar el estado de carga
 
 
   ngOnInit(): void {
@@ -29,6 +31,10 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+
+    if(this.authService.isAuthenticated()) {
+      this.router.navigate(['/admin/dashboard']);
+    }
   }
 
   togglePasswordVisibility(): void {
@@ -38,6 +44,7 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (this.loginForm.invalid) return;
   
+    this.isLoading = true; // Inicia el estado de carga
     const { email, password } = this.loginForm.value;
   
     const user: UserDTO = {
@@ -50,8 +57,10 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(user).subscribe({
       next: (userData: UserDTO | undefined) => {
+        
         if (!userData) {
           alert('Correo o contraseña incorrectos.');
+          this.isLoading = false; // Termina el estado de carga
           return;
         }
     
@@ -59,8 +68,13 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', userData.token);
         localStorage.setItem('refreshToken', userData.refreshToken);
         localStorage.setItem('user', JSON.stringify(userData));
-        this.router.navigate(['/admin/dashboard']);
+        this.router.navigate(['/admin/dashboard']).then(() => {
+          this.isLoading = false; // Termina el estado de carga
+        });
+
+
       }
+      
     });
   }
 

@@ -3,9 +3,10 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-about-us',
-  imports: [ CommonModule,RouterModule],
+  imports: [ CommonModule,RouterModule, MatProgressSpinnerModule],
   templateUrl: './about-us.component.html',
   styleUrl: './about-us.component.scss'
 })
@@ -14,6 +15,7 @@ export class AboutUsComponent implements OnInit {
   pageInformation: PageInformationDTO | null = null;
   selectedImage: string | null = "";
   images: string[] = [];
+  loading: boolean = true;
   private pageInformationService= inject(PageInformationService);
 
 
@@ -24,6 +26,7 @@ export class AboutUsComponent implements OnInit {
 
        this.images = data.pageInformationImageDTOs.map(imgDTO => imgDTO.imageDTO.url);
        this.selectedImage = this.images.length > 0 ? this.images[0] : null;
+       this.loading = false; // <--- ¡Carga terminada!
     });
   }
 
