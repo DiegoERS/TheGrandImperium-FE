@@ -1,14 +1,22 @@
-
-<button class="sidebar-toggle-btn" (click)="isMenuOpen = !isMenuOpen">
-  ☰
-</button>
-
 <nav class="sidebar-admin" [class.open]="isMenuOpen">
   <div class="sidebar-logo-admin">
-    <a routerLink="/home" routerLinkActive="router-link-active" class="button">
+    <a class="button">
       The Grand Imperium Hotel & Resort
     </a>
   </div>
+
+<!-- Nuevo bloque de bienvenida con animación -->
+<div class="sidebar-welcome" *ngIf="userName">
+  <div class="welcome-container">
+    <div class="welcome-icon">👋</div>
+    <div class="welcome-text">
+      <span>Bienvenido</span>
+      <strong>{{ userName }}</strong>
+    </div>
+  </div>
+</div>
+
+
 
   <ul class="sidebar-menu-admin">
     <li [class.active]="activePageName === 'home'">
