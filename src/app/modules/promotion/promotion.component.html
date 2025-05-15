@@ -1,4 +1,3 @@
-
 <div class="promotion-container">
   <h1 class="promotion-title">Administrar Promoción</h1>
 
@@ -31,12 +30,13 @@
     </div>
 
     <div class="action-buttons">
-      <button type="submit" class="accept-button">Guardar</button>
-      <button type="button" class="cancel-button">Cancelar</button>
+      <button *ngIf="!isEditing" type="button" class="accept-button" (click)="savePromotion()">Guardar</button>
+      <button *ngIf="isEditing" type="button" class="accept-button" (click)="updatePromotion()">Actualizar</button>
+      <button type="button" class="cancel-button" (click)="clearForm()">Cancelar</button>
+      <button type="button" class="clear-button" (click)="clearForm()">Limpiar</button>
     </div>
   </form>
 </div>
-<!-- ...tu formulario arriba... -->
 
 <!-- Tabla de promociones -->
 <table class="promotion-table">
@@ -56,7 +56,7 @@
       <td>{{ promo.discount }}</td>
       <td>{{ promo.startDate | date:'yyyy-MM-dd' }}</td>
       <td>{{ promo.endDate | date:'yyyy-MM-dd' }}</td>
-      <td>{{ promo.roomTypeDTO?.name }}</td>
+      <td>{{ promo.roomTypeDTO.name }}</td>
       <td>
         <button type="button" (click)="editPromotion(promo)">Editar</button>
         <button type="button" (click)="deletePromotion(promo)">Eliminar</button>

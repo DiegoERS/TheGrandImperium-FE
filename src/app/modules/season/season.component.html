@@ -1,5 +1,6 @@
 <div class="season-container">
-    <form>
+    <h1 class="season-title">Administrar Temporadas</h1>
+    <form (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="season-name">Nombre de la temporada:</label>
             <input id="season-name" type="text" [(ngModel)]="season.name" name="seasonName" />
@@ -17,10 +18,14 @@
         </div>
 
         <div class="action-buttons">
-            <button type="submit" class="accept-button">
-                {{ isEditing ? 'Actualizar' : 'Guardar' }}
+            <button *ngIf="!isEditing" type="button" class="accept-button" (click)="saveSeason()">
+                Guardar
             </button>
-            <button type="button" class="cancel-button" (click)="cancelEdit()">Cancelar</button>
+            <button *ngIf="isEditing" type="button" class="accept-button" (click)="updateSeason()">
+                Actualizar
+            </button>
+            <button type="button" class="cancel-button" (click)="clearForm()">Cancelar</button>
+            <button type="button" class="clear-button" (click)="clearForm()">Limpiar</button>
         </div>
     </form>
 

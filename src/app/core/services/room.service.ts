@@ -9,15 +9,11 @@ import { roomTypeDTO } from '../models/RoomType.DTO';
 })
 export class RoomService {
   private readonly apiUrl = `${environment.apiUrl}/Room`;
-  private readonly apiUrlType = `${environment.apiUrl}/RoomType`;
-  private http = inject(HttpClient);
+ private http = inject(HttpClient);
 
   getAllRooms(): Observable<RoomsDTO[]> {
       return this.http.get<RoomsDTO[]>(this.apiUrl);
     }
 
-  getAllRoomTypes(): Observable<roomTypeDTO[]> {
-    return this.http.get<roomTypeDTO[]>(this.apiUrlType);
-  }
   
 }

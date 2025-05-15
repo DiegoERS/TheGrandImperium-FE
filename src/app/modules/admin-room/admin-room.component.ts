@@ -5,6 +5,7 @@ import { PageInformationService } from '../../core/services/page-information.ser
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { roomTypeDTO } from '../../core/models/RoomType.DTO';
+import { RoomTypeService } from '../../core/services/roomType.service';
 import { RoomService } from '../../core/services/room.service';
 
 @Component({
@@ -17,13 +18,15 @@ import { RoomService } from '../../core/services/room.service';
 export class AdminRoomComponent implements OnInit {
   loading = true;
   private pageInformationService = inject(PageInformationService);
+  private roomService = inject(RoomService);
+  private roomTypeService = inject(RoomTypeService);
+
   pageInformation: PageInformationDTO | null = null;
 
   rooms: roomTypeDTO[] = [];
   selectedRoomId: number | null = null; // ID de la habitación seleccionada
   selectedRoom: roomTypeDTO | null = null; // Habitación seleccionada
 
-  constructor(private roomService: RoomService) {}
 
   ngOnInit(): void {
     // Cargar información de la página
@@ -40,7 +43,7 @@ export class AdminRoomComponent implements OnInit {
     });
 
     // Cargar tipos de habitaciones
-    this.roomService.getAllRoomTypes().subscribe({
+    this.roomTypeService.getAll().subscribe({
       next: (data: roomTypeDTO[]) => {
         this.rooms = data;
         if (this.rooms.length > 0) {

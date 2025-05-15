@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { RoomService } from '../../core/services/room.service';
+import { RoomTypeService } from '../../core/services/roomType.service';
 import { roomTypeDTO } from '../../core/models/RoomType.DTO';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -19,6 +20,7 @@ export class RoomsComponent implements OnInit {
   loading = true;
   private pageInformationService = inject(PageInformationService);
   private roomService = inject(RoomService);
+  private roomTypeService = inject(RoomTypeService);
   pageInformation: PageInformationDTO | null = null;
   
   ngOnInit(): void {
@@ -29,7 +31,7 @@ export class RoomsComponent implements OnInit {
     });
 
      // Cargar las habitaciones desde el servicio en rooms 
-    this.roomService.getAllRoomTypes().subscribe((data: roomTypeDTO[]) => {
+    this.roomTypeService.getAll().subscribe((data: roomTypeDTO[]) => {
       this.rooms = data;
       this.loading = false;
     });
