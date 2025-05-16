@@ -12,6 +12,7 @@ import { SeasonDTO } from '../../core/models/SeasonDTO';
   styleUrl: './season.component.scss'
 })
 export class SeasonComponent implements OnInit {
+  
 onSubmit() {
   if (this.isEditing) {
     this.updateSeason();
@@ -20,13 +21,11 @@ onSubmit() {
   }
 }
   isEditing = false;
+
   seasons: SeasonDTO[] = [];
-  season: SeasonDTO = {     
-    seasonId: 0,
-    name: '',
-    percentageChange: 0,
-    isActive: true
-  };
+
+  season: SeasonDTO = {} as SeasonDTO;
+
   loading = true;
   private seasonService = inject(SeasonService);
 
@@ -75,12 +74,7 @@ saveSeason() {
   }
 
   clearForm() {
-    this.season = {
-      seasonId: 0,
-      name: '',
-      percentageChange: 0,
-      isActive: true
-    };
+    this.season = {} as SeasonDTO;
     this.isEditing = false;
   }
 }

@@ -26,6 +26,7 @@ if (this.isEditing) {
   isEditing = false;
 
   promotions: promotionDTO[] = [];
+  
   imageDTO: ImageDTO = {
     imageId: 0,
     url: ''

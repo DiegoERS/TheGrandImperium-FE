@@ -1,10 +1,6 @@
-<div *ngIf="loading" class="spinner-container">
-    <p>Cargando datos...</p>
-  </div>
   
-  <div *ngIf="!loading" class="modify-room-container">
-    <h1 class="modify-page">{{ pageInformation?.pageDTO?.title }}</h1>
-  
+  <div class="modify-room-container">
+    <h2>Modificar Habitación</h2>
     <!-- Selección de tipo de habitación -->
     <div class="room-selector">
       <label for="room-select">Seleccionar Habitación:</label>
@@ -34,10 +30,7 @@
         <label>Imagen actual:</label>
         <img [src]="selectedRoom?.roomTypeImageDTO?.imageDTO?.url" alt="Imagen actual" />
       </div>
-      <div class="upload-image">
-        <label for="new-image">Subir nueva imagen:</label>
-        <input id="new-image" type="file" />
-      </div>
+      <app-image-uploader (imagesChange)="onImagesChanged($event)" (save)="onSave($event)" #uploader></app-image-uploader>
     </div>
   
     <!-- Botones de acción -->
@@ -46,3 +39,14 @@
       <button class="cancel-button">Cancelar</button>
     </div>
   </div>
+
+<div *ngIf="isUploading">Subiendo imágenes...</div>
+
+<div *ngIf="uploadedUrls.length">
+  <h4>Imágenes guardadas:</h4>
+  <ul>
+    <li *ngFor="let url of uploadedUrls">
+      <a [href]="url" target="_blank">{{ url }}</a>
+    </li>
+  </ul>
+</div>

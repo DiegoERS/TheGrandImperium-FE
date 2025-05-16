@@ -33,6 +33,7 @@ export class RoomsComponent implements OnInit {
      // Cargar las habitaciones desde el servicio en rooms 
     this.roomTypeService.getAll().subscribe((data: roomTypeDTO[]) => {
       this.rooms = data;
+      console.log(this.rooms);
       this.loading = false;
     });
 
