@@ -5,5 +5,4 @@ export interface RoomsDTO {
     roomNumber: string;
     isActive: boolean;
     roomTypeDTO: roomTypeDTO;
-
 }

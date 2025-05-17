@@ -15,7 +15,9 @@ import { LoginComponent } from './modules/login/login.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { TodayHotelComponent } from './modules/today-hotel/today-hotel.component';
 import { BookingComponent } from './modules/booking/booking.component';
-
+import { AdminRoomComponent } from './modules/admin-room/admin-room.component';
+import { SeasonComponent } from './modules/season/season.component';
+import { PromotionComponent } from './modules/promotion/promotion.component';
 
 export const routes: Routes = [{
     path: '',
@@ -38,6 +40,9 @@ export const routes: Routes = [{
       {path: 'dashboard', component: DashboardComponent, canActivate:[authGuard]}, // Aquí puedes agregar la lógica de autenticación si es necesario
       { path: 'booking', component: BookingComponent, canActivate:[authGuard] },
       {path: 'today-hotel', component: TodayHotelComponent, canActivate:[authGuard] },
+      {path: 'admin-room', component: AdminRoomComponent, canActivate:[authGuard] },
+      {path: 'season', component: SeasonComponent, canActivate:[authGuard] },
+      {path: 'promotion', component: PromotionComponent, canActivate:[authGuard] }
     ]
   },
   { path: '**', redirectTo: '' } // Redirección en caso de ruta no encontrada];
