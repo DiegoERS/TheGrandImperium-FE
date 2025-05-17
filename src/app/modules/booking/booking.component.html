@@ -4,20 +4,20 @@
     <div class="text-content">
       <h2>Consultar Disponibilidad de Habitaciones</h2>
 
-      <form class="formulario">
+      <form [formGroup]="consultForm" class="formulario" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="llegada">Fecha de Llegada</label>
-          <input type="date" id="llegada" name="llegada">
+          <input type="date" id="llegada"  formControlName="entryDate">
         </div>
 
         <div class="form-group">
           <label for="salida">Fecha de Salida</label>
-          <input type="date" id="salida" name="salida">
+          <input type="date" id="salida"   formControlName="departureDate">
         </div>
 
         <div class="form-group">
           <label for="habitacion">Tipo de Habitación</label>
-          <select id="habitacion" name="habitacion">
+          <select id="habitacion"  formControlName="roomTypeId">
             <option disabled selected>Tipo de Habitación</option>
             <option value="1">Estándar</option>
             <option value="2">Junior</option>
@@ -25,9 +25,31 @@
           </select>
         </div>
 
-        <button type="submit">Consultar</button>
+        <button type="submit" [disabled]="consultForm.invalid" >Consultar</button>
       </form>
     </div>
 
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!-- Número de habitación -->
+      <ng-container matColumnDef="roomNumber">
+        <th mat-header-cell *matHeaderCellDef> Número de Habitación </th>
+        <td mat-cell *matCellDef="let room"> {{ room.roomNumber }} </td>
+      </ng-container>
+
+      <!-- Tipo -->
+      <ng-container matColumnDef="roomType">
+        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+        <td mat-cell *matCellDef="let room"> {{ room.roomTypeDTO.name }} </td>
+      </ng-container>
+
+      <!-- Encabezado y filas -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 </div>

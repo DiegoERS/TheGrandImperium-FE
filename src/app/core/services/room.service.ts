@@ -16,4 +16,8 @@ export class RoomService {
       return this.http.get<RoomsDTO[]>(this.apiUrl);
     }
 
+    getAllRoomsByDate(entryDate:String,departureDate:String,roomTypeId:String): Observable<RoomsDTO[]> {
+      return this.http.get<RoomsDTO[]>(`${this.apiUrl}/GetRoomsForReservation/${entryDate}/${departureDate}/${roomTypeId}`);
+    }
+
 }
