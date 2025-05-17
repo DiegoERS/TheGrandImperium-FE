@@ -4,30 +4,31 @@
 
 
 <div *ngIf="!loading" class="rooms-container">
-  <h1>Habitaciones y Tarifas</h1>
+  <h1 class="titulo-como-llegar">{{pageInformation?.pageDTO?.title}} </h1>
   
   <p class="rooms-intro">
-    Explore nuestras exclusivas habitaciones diseñadas para brindarle el máximo confort durante su estadía en The Grand Imperium Hotel & Resort.
+    {{pageInformation?.description}}
   </p>
 
   <div class="rooms-grid">
     <div *ngFor="let room of rooms" class="room-card">
       <div class="room-image">
-        <img [src]="room.imageUrl" [alt]="room.name">
+        <img [src]="room.roomTypeImageDTO.imageDTO.url" [alt]="room.name">
       </div>
       <div class="room-details">
         <h3>{{ room.name }}</h3>
-        <p>{{ room.description }}</p>
+        <p class="room-description">{{ room.description }}</p>
         <div class="room-features">
           <h4>Características:</h4>
           <ul>
-            <li *ngFor="let feature of room.features">{{ feature }}</li>
+            <li *ngFor="let feature of room.features">{{ feature.name }}</li>
           </ul>
         </div>
-        <p *ngIf="room.schedule" class="room-price">
-          <strong>Precio por noche:</strong> {{ room.schedule }}
+        <p *ngIf="room.basePrice" class="room-price">
+          <strong>Precio por noche:</strong> {{ room.basePrice | currency:'USD':'symbol':'1.2-2' }}
         </p>
       </div>
     </div>
   </div>
+
 </div>

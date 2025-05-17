@@ -1,0 +1,52 @@
+  
+  <div class="modify-room-container">
+    <h2>Modificar Habitación</h2>
+    <!-- Selección de tipo de habitación -->
+    <div class="room-selector">
+      <label for="room-select">Seleccionar Habitación:</label>
+      <select id="room-select" [(ngModel)]="selectedRoomId" (change)="onRoomChange()">
+        <option *ngFor="let room of rooms" [value]="room.roomTypeId">{{ room.name }}</option>
+      </select>
+    </div>
+  
+    <!-- Información de la habitación -->
+    <div class="room-info">
+      <label for="room-name">Nombre:</label>
+      <span id="room-name">{{ selectedRoom?.name }}</span>
+  
+      <label for="room-price">Tarifa Diaria:</label>
+      <input id="room-price" type="text" [value]="selectedRoom?.basePrice" />
+    </div>
+  
+     <!-- Descripción de la habitación -->
+  <div class="room-description">
+    <label for="description-editor">Descripción:</label>
+    <textarea id="description-editor" rows="5">{{ selectedRoom?.description }}</textarea>
+  </div>
+  
+    <!-- Imágenes de la habitación -->
+    <div class="room-images">
+      <div class="current-image">
+        <label>Imagen actual:</label>
+        <img [src]="selectedRoom?.roomTypeImageDTO?.imageDTO?.url" alt="Imagen actual" />
+      </div>
+      <app-image-uploader (imagesChange)="onImagesChanged($event)" (save)="onSave($event)" #uploader></app-image-uploader>
+    </div>
+  
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+      <button class="accept-button">Aceptar</button>
+      <button class="cancel-button">Cancelar</button>
+    </div>
+  </div>
+
+<div *ngIf="isUploading">Subiendo imágenes...</div>
+
+<div *ngIf="uploadedUrls.length">
+  <h4>Imágenes guardadas:</h4>
+  <ul>
+    <li *ngFor="let url of uploadedUrls">
+      <a [href]="url" target="_blank">{{ url }}</a>
+    </li>
+  </ul>
+</div>
