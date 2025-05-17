@@ -94,7 +94,7 @@ async updateRoomType() {
 
    Swal.fire({
     title: 'Enviando...',
-    text: 'Por favor espera mientras procesamos tu suscripción',
+    text: 'Por favor espera mientras procesamos tu acción',
     allowOutsideClick: false,
     allowEscapeKey: false,
     showConfirmButton: false,
