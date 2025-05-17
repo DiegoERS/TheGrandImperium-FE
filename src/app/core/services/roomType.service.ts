@@ -17,4 +17,8 @@ getAll(): Observable<roomTypeDTO[]> {
     return this.http.get<roomTypeDTO[]>(this.apiUrl);
   }
 
+update(RoomType: roomTypeDTO): Observable<number> {
+    return this.http.put<number>(`${this.apiUrl}`, RoomType);
+  } 
+
 }
