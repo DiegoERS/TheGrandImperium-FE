@@ -27,10 +27,24 @@
     </li>
     <li [class.active]="activePageName === 'modificar'">Modificar Páginas</li>
     <li [class.active]="activePageName === 'reservaciones'">Listado de reservaciones</li>
-    <li [class.active]="activePageName === 'habitaciones'">Administrar habitaciones</li>
+     <li [class.active]="activePageName === 'habitaciones'">
+      <a routerLink="/admin/admin-room" routerLinkActive="router-link-active" class="button">
+        Administrar habitaciones
+      </a>
+    </li>
     <li [class.active]="activePageName === 'estado-hotel'">
       <a routerLink="/admin/today-hotel" routerLinkActive="router-link-active" class="button">
         Ver estado del hotel hoy
+      </a>
+    </li>
+    <li [class.active]="activePageName === 'season'">
+      <a routerLink="/admin/season" routerLinkActive="router-link-active" class="button">
+        Temporada
+      </a>
+    </li>
+    <li [class.active]="activePageName === 'promociones'">
+      <a routerLink="/admin/promotion" routerLinkActive="router-link-active" class="button">
+        Promociones
       </a>
     </li>
     <li [class.active]="activePageName === 'disponibilidad'">

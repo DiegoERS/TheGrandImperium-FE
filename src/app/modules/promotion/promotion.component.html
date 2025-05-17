@@ -1,0 +1,66 @@
+<div class="promotion-container">
+  <h1 class="promotion-title">Administrar Promoción</h1>
+
+  <form>
+    <div class="form-group">
+      <label for="promotion-name">Nombre de la promoción:</label>
+      <input id="promotion-name" type="text" [(ngModel)]="promotion.name" name="promotionName" />
+    </div>
+
+    <div class="form-group">
+      <label for="promotion-discount">Descuento (%):</label>
+      <input id="promotion-discount" type="number" [(ngModel)]="promotion.discount" name="promotionDiscount" min="0" max="100" />
+    </div>
+
+    <div class="form-group">
+      <label for="promotion-start">Fecha de inicio:</label>
+      <input id="promotion-start" type="date" [(ngModel)]="promotion.startDate" name="promotionStart" [min]="today"/>
+    </div>
+
+    <div class="form-group">
+      <label for="promotion-end">Fecha de fin:</label>
+      <input id="promotion-end" type="date" [(ngModel)]="promotion.endDate" name="promotionEnd" [min]="promotion.startDate || today"/>
+    </div>
+
+    <div class="form-group">
+      <label for="room-type">Tipo de habitación:</label>
+      <select id="room-type" [(ngModel)]="promotion.roomTypeDTO.roomTypeId" name="roomType">
+        <option *ngFor="let room of roomTypes" [value]="room.roomTypeId">{{ room.name }}</option>
+      </select>
+    </div>
+
+    <div class="action-buttons">
+      <button *ngIf="!isEditing" type="button" class="accept-button" (click)="savePromotion()">Guardar</button>
+      <button *ngIf="isEditing" type="button" class="accept-button" (click)="updatePromotion()">Actualizar</button>
+      <button type="button" class="cancel-button" (click)="clearForm()">Cancelar</button>
+      <button type="button" class="clear-button" (click)="clearForm()">Limpiar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Tabla de promociones -->
+<table class="promotion-table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descuento (%)</th>
+      <th>Inicio</th>
+      <th>Fin</th>
+      <th>Tipo de habitación</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let promo of promotions">
+      <td>{{ promo.name }}</td>
+      <td>{{ promo.discount }}</td>
+      <td>{{ promo.startDate | date:'yyyy-MM-dd' }}</td>
+      <td>{{ promo.endDate | date:'yyyy-MM-dd' }}</td>
+      <td>{{ promo.roomTypeDTO.name }}</td>
+      <td>
+        <button type="button" (click)="editPromotion(promo)">Editar</button>
+        <button type="button" (click)="deletePromotion(promo)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
