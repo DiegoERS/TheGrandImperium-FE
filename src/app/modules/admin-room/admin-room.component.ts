@@ -7,10 +7,11 @@ import { RoomTypeService } from '../../core/services/roomType.service';
 import { RoomService } from '../../core/services/room.service';
 import { ImageUploaderComponent } from '../../shared/components/image-uploader/image-uploader.component';
 import { CloudinaryService } from '../../core/services/cloudinary.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-room',
-  imports: [CommonModule, MatProgressSpinnerModule, FormsModule, ImageUploaderComponent],
+  imports: [CommonModule, MatProgressSpinnerModule, FormsModule],
   standalone: true,
   templateUrl: './admin-room.component.html',
   styleUrl: './admin-room.component.scss'
@@ -90,6 +91,18 @@ export class AdminRoomComponent implements OnInit {
 
 async updateRoomType() {
   console.log("entro");
+
+   Swal.fire({
+    title: 'Enviando...',
+    text: 'Por favor espera mientras procesamos tu suscripción',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: false,
+    willOpen: () => {
+      Swal.showLoading();
+    },
+    backdrop: true
+  });
   // Si hay una nueva imagen seleccionada, súbela primero
   if (this.uploadImage) {
     
@@ -112,6 +125,12 @@ async updateRoomType() {
       this.rooms[index] = { ...this.selectedRoom };
       this.imagePreview = null;
     }
+  });
+  Swal.fire({
+    title: 'Éxito',
+    text: 'La habitación se ha actualizado correctamente',
+    icon: 'success',
+    confirmButtonText: 'Aceptar'
   });
 }
 
