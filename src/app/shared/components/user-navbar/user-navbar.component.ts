@@ -1,6 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router,RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PageDTO } from '../../../core/models/PageDTO';
 import { PageService } from '../../../core/services/page.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -15,15 +15,22 @@ export class UserNavbarComponent implements OnInit {
   private pageService = inject(PageService);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private platformId = inject(PLATFORM_ID);
 
   isMenuOpen = false;
   pages: PageDTO[] =[];
   activePageName: string |null = null;
 
+    private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
   ngOnInit(): void {
     this.pageService.getAllPages().subscribe(pages => {
       this.pages = pages;
-      this.activePageName = localStorage.getItem('activePageName');
+      if (this.isBrowser()) {
+        this.activePageName = localStorage.getItem('activePageName');
+      }
     });
   }
 
@@ -36,15 +43,19 @@ export class UserNavbarComponent implements OnInit {
   }
 
   selectPage(page: PageDTO) {
-    localStorage.setItem('selectedPage', JSON.stringify(page));
-    localStorage.setItem('activePageName', page.name);
+    if (this.isBrowser()) {
+      localStorage.setItem('selectedPage', JSON.stringify(page));
+      localStorage.setItem('activePageName', page.name);
+    }
     this.activePageName = page.name;
     this.closeMenu();
     this.router.navigate(['/', page.name]);
   }
 
   deletePageName() {
-    localStorage.removeItem('activePageName');
+    if (this.isBrowser()) {
+      localStorage.removeItem('activePageName');
+    }
     this.activePageName = null;
   }
 

@@ -17,7 +17,6 @@ export class AdvertisingComponent implements OnInit {
   ngOnInit() {
     this.advertisingService.getAdvertisings().subscribe((data: AdvertisingDTO[]) => {
       this.advertisings = data;
-      console.log(this.advertisings);
     }
     );
     this.modalVisible = true; // Asegúrate de que el modal esté visible al iniciar el componente

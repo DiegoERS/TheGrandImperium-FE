@@ -1,13 +1,14 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ImageUploaderComponent } from '../../shared/components/image-uploader/image-uploader.component';
 import { CloudinaryService } from '../../core/services/cloudinary.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserDTO } from '../../core/models/UserDTO';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +22,14 @@ export class LoginComponent implements OnInit {
   private fb= inject(FormBuilder);
   private authService= inject(AuthService);
   private router= inject(Router);
+  private platformId = inject(PLATFORM_ID);
    loginForm: FormGroup = this.fb.group({});
   hidePassword = true;
   isLoading = false; // Variable para controlar el estado de carga
+
+   private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
 
 
   ngOnInit(): void {
@@ -54,20 +60,41 @@ export class LoginComponent implements OnInit {
       refreshToken:"",
       token:"",
     };
+    Swal.fire({
+      title: 'Cargando...',
+      text: 'Por favor, espera un momento.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
 
     this.authService.login(user).subscribe({
       next: (userData: UserDTO | undefined) => {
         
         if (!userData) {
-          alert('Correo o contraseña incorrectos.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Usuario o contraseña incorrectos.',
+            confirmButtonText: 'Aceptar'
+          });
           this.isLoading = false; // Termina el estado de carga
           return;
         }
     
-        console.log('Usuario autenticado:', userData);
+        Swal.close(); // Cierra el modal de carga
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Inicio de sesión exitoso.',
+          confirmButtonText: 'Aceptar'
+        });
+        if (this.isBrowser()) {
         localStorage.setItem('token', userData.token);
         localStorage.setItem('refreshToken', userData.refreshToken);
         localStorage.setItem('user', JSON.stringify(userData));
+        }
         this.router.navigate(['/admin/dashboard']).then(() => {
           this.isLoading = false; // Termina el estado de carga
         });
