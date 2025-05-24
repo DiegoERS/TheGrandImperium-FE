@@ -33,57 +33,54 @@ export class HowToGetToComponent implements OnInit {
 
   
   async ngOnInit(): Promise<void> {
-    
-    var page=JSON.parse(localStorage.getItem('selectedPage')|| '{}');
+  if (isPlatformBrowser(this.platformId)) {
+    const page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
+
     this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
     });
 
-    if (isPlatformBrowser(this.platformId)) {
-      const L = await import('leaflet');
-      await import('leaflet-routing-machine');
+    const L = await import('leaflet');
+    await import('leaflet-routing-machine');
 
-      this.initMap(L);
+    this.initMap(L);
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
-            this.map.setView([userLat, userLng], 13);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          this.map.setView([userLat, userLng], 13);
 
-            const userMarker = L.marker([userLat, userLng]).addTo(this.map);
+          const userMarker = L.marker([userLat, userLng]).addTo(this.map);
 
-            // Configuración del control de rutas
-            const control = L.Routing.control({
-              waypoints: [L.latLng(userLat, userLng), L.latLng(this.lat, this.lng)],
-              routeWhileDragging: true,
-              lineOptions: {
-                styles: [{ color: 'black', weight: 4 }], 
-                extendToWaypoints: false,
-                missingRouteTolerance: 0
-              },
-              show: true // Oculta el modal predeterminado de instrucciones
-            }).addTo(this.map);
+          const control = L.Routing.control({
+            waypoints: [L.latLng(userLat, userLng), L.latLng(this.lat, this.lng)],
+            routeWhileDragging: true,
+            lineOptions: {
+              styles: [{ color: 'black', weight: 4 }],
+              extendToWaypoints: false,
+              missingRouteTolerance: 0
+            },
+            show: true
+          }).addTo(this.map);
 
-            // Escucha el evento de rutas encontradas para personalizar las instrucciones
-            control.on('routesfound', (e: any) => {
-              const routes = e.routes;
-              const summary = routes[0].summary;
-              console.log(`Distancia: ${summary.totalDistance} m`);
-              console.log(`Duración: ${summary.totalTime} s`);
-              // Aquí puedes renderizar las instrucciones en un componente personalizado
-            });
-          },
-          (error) => {
-            console.error('Error al obtener la ubicación del usuario', error);
-          }
-        );
-      } else {
-        console.error('Geolocalización no está soportada por este navegador.');
-      }
+          control.on('routesfound', (e: any) => {
+            const routes = e.routes;
+            const summary = routes[0].summary;
+            console.log(`Distancia: ${summary.totalDistance} m`);
+            console.log(`Duración: ${summary.totalTime} s`);
+          });
+        },
+        (error) => {
+          console.error('Error al obtener la ubicación del usuario', error);
+        }
+      );
+    } else {
+      console.error('Geolocalización no está soportada por este navegador.');
     }
   }
+}
 
   initMap(L: any) {
     const lat = this.lat ?? 9.9387;
