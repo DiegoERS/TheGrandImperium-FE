@@ -7,8 +7,7 @@ import { PageInformationService } from '../../core/services/page-information.ser
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-// Importar leaflet CSS para que los iconos funcionen bien
-import 'leaflet/dist/leaflet.css';
+
 
 @Component({
   selector: 'app-how-to-get-to',
@@ -40,7 +39,7 @@ export class HowToGetToComponent implements OnInit {
   if (isPlatformBrowser(this.platformId)) {
     const page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
 
-    this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
+    this.pageInformationService.getByPage(4).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
     });
 
@@ -48,7 +47,11 @@ export class HowToGetToComponent implements OnInit {
     const L = await import('leaflet');
     await import('leaflet-routing-machine');
 
-
+    L.Icon.Default.mergeOptions({
+  iconRetinaUrl: '/leaflet/marker-icon-2x.png',
+  iconUrl: '/leaflet/marker-icon.png',
+  shadowUrl: '/leaflet/marker-shadow.png'
+});
 
     this.initMap(L);
 
