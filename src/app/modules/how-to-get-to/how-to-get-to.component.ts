@@ -47,11 +47,7 @@ export class HowToGetToComponent implements OnInit {
     const L = await import('leaflet');
     await import('leaflet-routing-machine');
 
-    L.Icon.Default.mergeOptions({
-  iconRetinaUrl: '/leaflet/marker-icon-2x.png',
-  iconUrl: '/leaflet/marker-icon.png',
-  shadowUrl: '/leaflet/marker-shadow.png'
-});
+  
 
     this.initMap(L);
 
