@@ -1,6 +1,6 @@
-import { Component, inject, OnInit, HostListener } from '@angular/core';
+import { Component, inject, OnInit, HostListener, PLATFORM_ID } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PageDTO } from '../../../core/models/PageDTO';
 import { PageService } from '../../../core/services/page.service';
 
@@ -19,12 +19,21 @@ export class AdminNavbarComponent implements OnInit {
   activePageName: string | null = null;
   private touchStartX = 0;
 
+    private platformId = inject(PLATFORM_ID);
+
+   private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
   userName: string = ''; // 👈 Agregado
 
   ngOnInit(): void {
     this.pageService.getAllPages().subscribe((pages) => {
       this.pages = pages;
-      this.activePageName = localStorage.getItem('activePageName');
+      if (this.isBrowser()) {
+        this.activePageName = localStorage.getItem('activePageName');
+      }
+      
     });
 
     this.userName = this.getUserName(); // 👈 Agregado
@@ -63,12 +72,18 @@ export class AdminNavbarComponent implements OnInit {
   }
 
   isAuthenticated(): boolean {
+    if (this.isBrowser()) {
     return !!localStorage.getItem('user');
+    }
+    return false;
   }
 
   getUserName(): string { // 👈 Agregado
-    const user = localStorage.getItem('user');
-    console.log(user);
+    var user;
+    if (this.isBrowser()) {
+       user = localStorage.getItem('user');
+      console.log(user);
+    }
     if (user) {
       try {
         const parsedUser = JSON.parse(user);
