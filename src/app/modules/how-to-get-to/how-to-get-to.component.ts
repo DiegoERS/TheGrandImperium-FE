@@ -25,11 +25,12 @@ export class HowToGetToComponent implements OnInit {
   map: any;
   marker: any;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+
+  private router= inject(Router);
+  private platformId = inject(PLATFORM_ID);
+  private route= inject(ActivatedRoute);
+
+ 
 
   
   async ngOnInit(): Promise<void> {
