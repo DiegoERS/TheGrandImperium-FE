@@ -7,6 +7,9 @@ import { PageInformationService } from '../../core/services/page-information.ser
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+// Importar leaflet CSS para que los iconos funcionen bien
+import 'leaflet/dist/leaflet.css';
+
 @Component({
   selector: 'app-how-to-get-to',
   imports : [CommonModule, RouterModule, MatProgressSpinnerModule],
@@ -41,8 +44,11 @@ export class HowToGetToComponent implements OnInit {
       this.pageInformation = data;
     });
 
+    // Importar leaflet y routing machine
     const L = await import('leaflet');
     await import('leaflet-routing-machine');
+
+
 
     this.initMap(L);
 
@@ -91,7 +97,7 @@ export class HowToGetToComponent implements OnInit {
       zoomControl: true,
       maxZoom: 20,
       minZoom: 2,
-      center: new L.LatLng(lat, lng),
+      center: L.LatLng(lat, lng),
       zoom: 15,
     });
 
@@ -112,8 +118,8 @@ export class HowToGetToComponent implements OnInit {
   }
 
   renderMarker(L: any) {
-    this.marker.setLatLng(new L.LatLng(this.lat, this.lng));
-    this.map.panTo(new L.LatLng(this.lat, this.lng));
+    this.marker.setLatLng(L.LatLng(this.lat, this.lng));
+    this.map.panTo( L.LatLng(this.lat, this.lng));
     this.router.navigate([], {
       queryParams: { lat: this.lat, lng: this.lng },
       relativeTo: this.route,
