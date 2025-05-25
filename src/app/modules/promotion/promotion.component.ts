@@ -7,6 +7,7 @@ import { roomTypeDTO } from '../../core/models/RoomType.DTO';
 import { promotionDTO } from '../../core/models/PromotionDTO';
 import { RoomTypeImageDTO } from '../../core/models/RoomTypeImageDTO';
 import { ImageDTO } from '../../core/models/ImageDTO';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-promotion',
   imports: [CommonModule, FormsModule],
@@ -81,28 +82,82 @@ if (this.isEditing) {
     });
   }
   savePromotion() {
+       Swal.fire({
+        title: 'Enviando...',
+        text: 'Por favor espera mientras procesamos tu acción',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        willOpen: () => {
+          Swal.showLoading();
+        },
+        backdrop: true
+      });
     this.promotionService.create(this.promotion).subscribe((createdId: number) => {
       this.promotionService.getById(createdId).subscribe((createdPromotion: promotionDTO) => {
         this.promotions.push(createdPromotion);
         this.clearForm();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Promoción guardada correctamente',
+          showConfirmButton: true,
+          timer: 2000
+        });
       });
     });
   }
   updatePromotion() {
+    Swal.fire({
+      title: 'Enviando...',
+      text: 'Por favor espera mientras procesamos tu acción',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      willOpen: () => {
+        Swal.showLoading();
+      },
+      backdrop: true
+    });
     this.promotionService.update(this.promotion).subscribe(() => {
       const index = this.promotions.findIndex(p => p.promotionId === this.promotion.promotionId);
       if (index !== -1) {
         this.promotions[index] = { ...this.promotion };
       }
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Promoción actualizada correctamente',
+        showConfirmButton: true,
+        timer: 2000
+      });
       this.clearForm();
     });
   }
   
   deletePromotion(promo: promotionDTO) {
-    this.promotionService.delete(promo.promotionId).subscribe(() => {
-      this.promotions = this.promotions.filter(p => p.promotionId !== promo.promotionId);
-      this.clearForm();   
-    });
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.promotionService.delete(promo.promotionId).subscribe(() => {
+        this.promotions = this.promotions.filter(p => p.promotionId !== promo.promotionId);
+        this.clearForm();   
+        });
+        Swal.fire(
+          'Eliminado!',
+          'La promoción ha sido eliminada.',
+          'success'
+        )
+      }
+    })
+   
   }
   // Editar promoción: carga los datos en el formulario
   editPromotion(promo: promotionDTO) {
