@@ -1,0 +1,258 @@
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
+import { roomTypeDTO } from '../../core/models/RoomType.DTO';
+import { RoomsDTO } from '../../core/models/RoomsDTO';
+import { promotionDTO } from '../../core/models/PromotionDTO';
+import { SeasonDTO } from '../../core/models/SeasonDTO';
+import { RoomService } from '../../core/services/room.service';
+import { RoomTypeService } from '../../core/services/roomType.service';
+import { ReservationService } from '../../core/services/reservation.service';
+import { promotionService } from '../../core/services/promotion.service';
+import { SeasonService } from '../../core/services/season.service';
+import { CustomMatPaginatorIntlComponent } from '../../shared/components/custom-mat-paginator-intl/custom-mat-paginator-intl.component';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+@Component({
+  selector: 'app-reservation',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatDatepickerModule,
+     MatNativeDateModule,   // Importar adaptador de fecha nativo
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatCardModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatButtonModule,
+    MatCheckboxModule,
+  ],
+  templateUrl: './reservation.component.html',
+  styleUrls: ['./reservation.component.scss'],
+  providers: [
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlComponent },
+  ],
+})
+export class ReservationComponent implements OnInit {
+  private roomService = inject(RoomService);
+  private roomTypeService = inject(RoomTypeService);
+  private reservationService = inject(ReservationService);
+  private promotionService = inject(promotionService);
+  private seasonService = inject(SeasonService);
+
+  tiposHabitacion: roomTypeDTO[] = [];
+  tipoSeleccionado: number | null = null;
+  habitaciones: RoomsDTO[] = [];
+  dataSource = new MatTableDataSource<RoomsDTO>([]);
+  total = 0;
+
+  promociones: promotionDTO[] = [];
+  temporadas: SeasonDTO[] = [];
+
+  fechaEntrada: Date | null = null;
+  fechaSalida: Date | null = null;
+   minFechaHoy: Date = new Date();
+  minFechaSalida: Date = new Date();
+  columnas: string[] = ['numero', 'tipo', 'precioBase', 'precioConDescuento', 'seleccionar'];
+  habitacionesSeleccionadas: RoomsDTO[] = [];
+  cliente = { nombre: '', apellido: '', email: '', tarjeta: '' };
+
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngOnInit() {
+    this.cargarDatos();
+    this.minFechaHoy.setHours(0,0,0,0);  // Asegurarse que sea solo la fecha de hoy
+    this.minFechaSalida = new Date(this.minFechaHoy);
+  }
+
+  cargarDatos() {
+    this.roomTypeService.getAll().subscribe(data => this.tiposHabitacion = data);
+    this.promotionService.getAll().subscribe(data => this.promociones = data);
+    this.seasonService.getAll().subscribe(data => this.temporadas = data);
+  }
+
+   onFechaEntradaChange() {
+    if (this.fechaEntrada) {
+      this.minFechaSalida = new Date(this.fechaEntrada);
+      if (this.fechaSalida && this.fechaSalida < this.fechaEntrada) {
+        this.fechaSalida = null;  // Reset si fechaSalida inválida
+      }
+    } else {
+      this.minFechaSalida = new Date(this.minFechaHoy);
+    }
+  }
+
+
+  calcularPrecioConDescuento(roomType: roomTypeDTO): number {
+    let precio = roomType.basePrice;
+    let descuento = 0;
+
+    const promo = this.promociones.find(p => p.roomTypeDTO.roomTypeId === roomType.roomTypeId);
+    if (promo) descuento += promo.discount;
+
+    const temporada = this.temporadas.find(t => t.isActive);
+    if (temporada) descuento += temporada.percentageChange;
+
+    return precio * (1 - descuento / 100);
+  }
+
+  filtrarHabitaciones() {
+    if (!this.fechaEntrada || !this.fechaSalida || !this.tipoSeleccionado) {
+      Swal.fire('Fechas requeridas', 'Debes seleccionar fecha de entrada y salida.', 'warning');
+      return;
+    }
+
+    this.roomService.getAllRoomsByDate(this.fechaEntrada.toDateString(), this.fechaSalida.toDateString(), this.tipoSeleccionado).subscribe((habitaciones: RoomsDTO[]) => {
+      this.habitaciones = habitaciones.map(habitacion => ({
+        ...habitacion,
+        precioBase: habitacion.roomTypeDTO.basePrice,
+        precioConDescuento: this.calcularPrecioConDescuento(habitacion.roomTypeDTO)
+      }));
+      this.dataSource = new MatTableDataSource(this.habitaciones);
+      this.dataSource.paginator = this.paginator;
+      this.total = this.habitaciones.length;
+    });
+  }
+  
+formatearTarjeta(): void {
+  if (!this.cliente?.tarjeta) return;
+
+  // Elimina todo lo que no sea número
+  const soloNumeros = this.cliente.tarjeta.replace(/\D/g, '');
+
+  // Aplica el formato ####-####-####-####
+  const partes = [];
+  for (let i = 0; i < soloNumeros.length; i += 4) {
+    partes.push(soloNumeros.substring(i, i + 4));
+  }
+
+  this.cliente.tarjeta = partes.join('-').substring(0, 19);
+}
+
+esTarjetaValida(tarjeta: string): boolean {
+  const regex = /^\d{4}-\d{4}-\d{4}-\d{4}$/;
+  return regex.test(tarjeta);
+}
+
+permitirSoloNumeros(event: KeyboardEvent): void {
+  const tecla = event.key;
+
+  // Permitir teclas de navegación y borrado
+  if (
+    ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'].includes(tecla)
+  ) {
+    return;
+  }
+
+  // Bloquear si no es número
+  if (!/^\d$/.test(tecla)) {
+    event.preventDefault();
+  }
+}
+
+bloquearPegarLetras(event: ClipboardEvent): void {
+  const texto = event.clipboardData?.getData('text') || '';
+  if (!/^\d+$/.test(texto.replace(/\D/g, ''))) {
+    event.preventDefault();
+  }
+}
+
+
+
+toggleSeleccion(habitacion: RoomsDTO, event: MatCheckboxChange): void {
+  if (event.checked) {
+    if (!this.habitacionesSeleccionadas.some(h => h.roomId === habitacion.roomId)) {
+      if (this.habitacionesSeleccionadas.length < 3) {
+        this.habitacionesSeleccionadas.push(habitacion);
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Límite alcanzado',
+          text: 'Solo puedes seleccionar hasta 3 habitaciones.',
+          confirmButtonColor: '#3f51b5'
+        });
+      }
+    }
+  } else {
+    this.habitacionesSeleccionadas = this.habitacionesSeleccionadas.filter(
+      h => h.roomId !== habitacion.roomId
+    );
+  }
+}
+
+  isMaxSelected(habitacion: RoomsDTO): boolean {
+    return this.habitacionesSeleccionadas.length >= 3 && !this.habitacionesSeleccionadas.includes(habitacion);
+  }
+
+confirmarReserva() {
+  if (this.habitacionesSeleccionadas.length === 0) {
+    Swal.fire('Selecciona habitaciones', 'Debes seleccionar al menos una habitación para reservar.', 'warning');
+    return;
+  }
+
+const reservas = this.habitacionesSeleccionadas.map(habitacion => {
+  // Crear una copia limpia del objeto habitacion eliminando campos no esperados
+  const habitacionLimpia = { ...habitacion } as any;  // Temporalmente usar 'any'
+  delete habitacionLimpia.precioConDescuento;  // Eliminar campo derivado
+  delete habitacionLimpia.precioBase;  // Si es necesario eliminar también
+
+  const reserva = {
+    reservationId: 0,
+    reservationDate: new Date().toISOString(),
+    startDate: this.fechaEntrada?.toISOString() || '',
+    endDate: this.fechaSalida?.toISOString() || '',
+    roomDTO: habitacionLimpia,
+    customerDTO: {
+      customerId: 0,
+      name: this.cliente.nombre,
+      lastName: this.cliente.apellido,
+      email: this.cliente.email,
+      creditCard: this.cliente.tarjeta
+    }
+  };
+
+  console.log(reserva);
+
+  return this.reservationService.create(reserva).toPromise();
+});
+
+  Promise.all(reservas)
+    .then(resultados => {
+      const resumen = this.habitacionesSeleccionadas.map((h, i) =>
+        `<li>${h.roomNumber} - ${h.roomTypeDTO.name} - $${this.calcularPrecioConDescuento(h.roomTypeDTO).toFixed(2)}</li>`
+      ).join('');
+
+      Swal.fire({
+        title: 'Reservas Confirmadas',
+        html: `
+          <p><strong>${this.cliente.nombre} ${this.cliente.apellido}</strong></p>
+          <p>Email: ${this.cliente.email}</p>
+          <ul>${resumen}</ul>
+        `,
+        icon: 'success'
+      });
+      this.habitacionesSeleccionadas = [];  // Limpiar selección
+    })
+    .catch(error => {
+      Swal.fire('Error', 'Ocurrió un error al confirmar las reservas.', 'error');
+      console.error(error);
+    });
+}
+}

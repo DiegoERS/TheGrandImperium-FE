@@ -15,8 +15,24 @@ export class RoomService {
       return this.http.get<RoomsDTO[]>(this.apiUrl);
     }
 
-    getAllRoomsByDate(entryDate:String,departureDate:String,roomTypeId:String): Observable<RoomsDTO[]> {
+  getAllRoomsByDate(entryDate:string,departureDate:string,roomTypeId:number): Observable<RoomsDTO[]> {
       return this.http.get<RoomsDTO[]>(`${this.apiUrl}/GetRoomsForReservation/${entryDate}/${departureDate}/${roomTypeId}`);
     }
+
+  getRoomById(roomId: number): Observable<RoomsDTO> {
+    return this.http.get<RoomsDTO>(`${this.apiUrl}/GetSomeRoom/${roomId}`);
+  }
+
+  create(data: RoomsDTO): Observable<number> {
+    return this.http.post<number>(this.apiUrl, data);
+  }
+  
+  update(data: RoomsDTO): Observable<number> {
+    return this.http.put<number>(this.apiUrl, data);
+  }
+
+  delete(roomId: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/${roomId}`);
+  }
 
 }

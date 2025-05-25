@@ -18,6 +18,8 @@ import { BookingComponent } from './modules/booking/booking.component';
 import { AdminRoomComponent } from './modules/admin-room/admin-room.component';
 import { SeasonComponent } from './modules/season/season.component';
 import { PromotionComponent } from './modules/promotion/promotion.component';
+import { ReservationComponent } from './modules/reservation/reservation.component';
+import { UpdateAboutUsComponent } from './modules/update-about-us/update-about-us.component';
 
 export const routes: Routes = [{
     path: '',
@@ -30,6 +32,7 @@ export const routes: Routes = [{
       {path: 'login', component: LoginComponent},
       {path: 'contact-us', component: ContactUsComponent},
       {path: 'how-to-get-to', component: HowToGetToComponent},
+      {path: 'reservation', component: ReservationComponent},
       
     ]
   },
@@ -42,7 +45,9 @@ export const routes: Routes = [{
       {path: 'today-hotel', component: TodayHotelComponent, canActivate:[authGuard] },
       {path: 'admin-room', component: AdminRoomComponent, canActivate:[authGuard] },
       {path: 'season', component: SeasonComponent, canActivate:[authGuard] },
-      {path: 'promotion', component: PromotionComponent, canActivate:[authGuard] }
+      {path: 'promotion', component: PromotionComponent, canActivate:[authGuard] },
+      {path: 'update-about-us', component: UpdateAboutUsComponent, canActivate:[authGuard] },
+
     ]
   },
   { path: '**', redirectTo: '' } // Redirección en caso de ruta no encontrada];
