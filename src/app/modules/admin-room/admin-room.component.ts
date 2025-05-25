@@ -90,11 +90,10 @@ export class AdminRoomComponent implements OnInit {
   // ...existing code...
 
 async updateRoomType() {
-  console.log("entro");
 
    Swal.fire({
     title: 'Enviando...',
-    text: 'Por favor espera mientras procesamos tu suscripción',
+    text: 'Por favor espera mientras procesamos tu acción',
     allowOutsideClick: false,
     allowEscapeKey: false,
     showConfirmButton: false,
