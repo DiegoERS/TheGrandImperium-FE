@@ -90,7 +90,6 @@ export class AdminRoomComponent implements OnInit {
   // ...existing code...
 
 async updateRoomType() {
-  console.log("entro");
 
    Swal.fire({
     title: 'Enviando...',

@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -26,10 +26,16 @@ export class FacilitiesComponent implements OnInit {
   private pageInformationService=inject(PageInformationService);
   pageInformation: PageInformationDTO | null = null;
     
-    
+      private platformId = inject(PLATFORM_ID);
+
+   private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
     
   ngOnInit(): void {
-    var page=JSON.parse(localStorage.getItem('selectedPage')|| '{}');
+    if (this.isBrowser()) {
+      var page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
+    }
     this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
       console.log(data);
