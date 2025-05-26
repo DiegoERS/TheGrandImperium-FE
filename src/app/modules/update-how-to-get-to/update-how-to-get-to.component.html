@@ -1,0 +1,21 @@
+<div *ngIf="loading" class="spinner-container">
+  <mat-spinner diameter="80" color="primary"></mat-spinner>
+</div>
+
+<div *ngIf="!loading && pageInformation">
+  <h2>Editar información de la página</h2>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Título</mat-label>
+    <input matInput [(ngModel)]="pageInformation.subtitle" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 24px;">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput rows="5" [(ngModel)]="pageInformation.description"></textarea>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="saving">
+    {{ saving ? 'Guardando...' : 'Guardar cambios' }}
+  </button>
+</div>

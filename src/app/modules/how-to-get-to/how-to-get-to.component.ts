@@ -16,12 +16,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./how-to-get-to.component.scss']
 })
 export class HowToGetToComponent implements OnInit {
- 
+
   pageInformation: PageInformationDTO | null = null;
   loading = false;
   private pageInformationService= inject(PageInformationService);
 
- 
+
   lat: number = 10.30017672890319; // Latitud fija para Wyndham Tamarindo
   lng: number = -85.84483380195266; // Longitud fija para Wyndham Tamarindo
   map: any;
@@ -32,9 +32,9 @@ export class HowToGetToComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   private route= inject(ActivatedRoute);
 
- 
 
-  
+
+
   async ngOnInit(): Promise<void> {
   if (isPlatformBrowser(this.platformId)) {
     const page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
@@ -47,7 +47,7 @@ export class HowToGetToComponent implements OnInit {
     const L = await import('leaflet');
     await import('leaflet-routing-machine');
 
-  
+
 
     this.initMap(L);
 
