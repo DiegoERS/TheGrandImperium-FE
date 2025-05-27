@@ -1,24 +1,31 @@
-
 .admin-home {
   font-family: 'Arial', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 95vh;
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0; /* Fondo gris claro */
-  background-image:
-    repeating-linear-gradient(45deg, transparent 0px, transparent 40px, rgba(0, 0, 0, 0.1) 40px, rgba(0, 0, 0, 0.1) 80px),
-    repeating-linear-gradient(-45deg, transparent 0px, transparent 40px, rgba(0, 0, 0, 0.1) 40px, rgba(0, 0, 0, 0.1) 80px),
-    url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/palm-tree.svg');
-  background-repeat: repeat;
-  background-size: 100px 100px;
+  position: relative;
+
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+  background-size: cover;
+}
+
+.admin-home::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5); /* Overlay blanco semitransparente */
+  pointer-events: none;
+  z-index: 1;
 }
 
 .welcome-section {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.85);
   border-radius: 15px;
   padding: 50px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
@@ -29,6 +36,8 @@
   animation: shrinkIn 1s ease-out forwards, fadeIn 2s ease-in-out forwards;
 }
 
+/* El resto igual, no cambia nada */
+
 .greeting h3 {
   font-size: 2.5rem;
   color: #00796b;
@@ -36,7 +45,6 @@
   font-weight: bold;
   animation: colorPulse 3s infinite alternate, slideIn 1.5s ease-out forwards;
 }
-
 
 .greeting p {
   font-size: 1.2rem;
@@ -46,7 +54,6 @@
   opacity: 0;
   animation: fadeInText 1.5s 1s forwards;
 }
-
 
 @keyframes shrinkIn {
   0% {
@@ -63,7 +70,6 @@
   }
 }
 
-
 @keyframes colorPulse {
   0% {
     color: #00796b;
@@ -76,7 +82,6 @@
   }
 }
 
-
 @keyframes slideIn {
   0% {
     transform: translateX(-50px);
@@ -87,7 +92,6 @@
     opacity: 1;
   }
 }
-
 
 @keyframes fadeInText {
   0% {

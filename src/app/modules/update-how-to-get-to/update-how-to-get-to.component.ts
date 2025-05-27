@@ -6,14 +6,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';4
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-update-how-to-get-to',
   templateUrl: './update-how-to-get-to.component.html',
   styleUrls: ['./update-how-to-get-to.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatProgressSpinnerModule]
+  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatProgressSpinnerModule,MatCardModule]
 })
 export class UpdateHowToGetToComponent implements OnInit {
   pageInformation: PageInformationDTO | null = null;

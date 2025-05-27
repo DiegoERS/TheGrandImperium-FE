@@ -1,0 +1,58 @@
+.content-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 16px;
+  background-color: #ffffff; /* Fondo blanco general */
+  border-radius: 12px;
+}
+
+.custom-card {
+  padding: 24px; /* Fondo oscuro elegante para tarjeta interna */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.mat-form-field-label {
+  color: #ffeb3b !important;
+}
+
+.mat-input-element {
+  color: #2c2c2c;
+  background-color: #ffffff !important;
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #ffffff !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #ffeb3b;
+}
+
+button {
+  font-weight: bold;
+
+  background-color: #ffeb3b;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #fdd835;
+}
