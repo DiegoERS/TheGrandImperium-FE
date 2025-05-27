@@ -4,20 +4,20 @@
       <a routerLink="/Home" routerLinkActive="router-link-active" class="button">
         The Grand Imperium Hotel & Resort
       </a>
-     
+
     </a>
   </div>
 
-<!-- Nuevo bloque de bienvenida con animación -->
-<div class="sidebar-welcome" *ngIf="userName">
-  <div class="welcome-container">
-    <div class="welcome-icon">👋</div>
-    <div class="welcome-text">
-      <span>Bienvenido</span>
-      <strong>{{ userName }}</strong>
+  <!-- Nuevo bloque de bienvenida con animación -->
+  <div class="sidebar-welcome" *ngIf="userName">
+    <div class="welcome-container">
+      <div class="welcome-icon">👋</div>
+      <div class="welcome-text">
+        <span>Bienvenido</span>
+        <strong>{{ userName }}</strong>
+      </div>
     </div>
   </div>
-</div>
 
 
 
@@ -25,13 +25,30 @@
     <li [class.active]="activePageName === 'home'">
       <a routerLink="/admin/dashboard" routerLinkActive="router-link-active" class="button">Home</a>
     </li>
-    <li [class.active]="activePageName === 'modificar'">Modificar Páginas</li>
+    <li [class.active]="activePageName === 'modificar'">
+      <div class="button">Modificar Páginas</div>
+      <ul class="submenu">
+        <li>
+          <a routerLink="/admin/update-how-to-get-to/4" routerLinkActive="router-link-active" class="button">
+            Cómo llegar
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <li [class.active]="activePageName === 'reservaciones'">Listado de reservaciones</li>
-     <li [class.active]="activePageName === 'habitaciones'">
+    <li [class.active]="activePageName === 'habitaciones'">
       <a routerLink="/admin/admin-room" routerLinkActive="router-link-active" class="button">
         Administrar habitaciones
       </a>
     </li>
+
+    <li [class.active]="activePageName === 'admin-reservaion'">
+      <a routerLink="/admin/admin-reservation" routerLinkActive="router-link-active" class="button">
+        Administrar reservación
+      </a>
+    </li>
+
     <li [class.active]="activePageName === 'estado-hotel'">
       <a routerLink="/admin/today-hotel" routerLinkActive="router-link-active" class="button">
         Ver estado del hotel hoy
