@@ -3,20 +3,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 95vh;
+  height: 100vh;
   margin: 0;
   padding: 0;
   position: relative;
-
-  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center;
-  background-size: cover;
+  background: url('../../../assets/logo.jpg') no-repeat center center;
+  background-size: 60%;
 }
 
 .admin-home::before {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(255, 255, 255, 0.5); /* Overlay blanco semitransparente */
+  background-color: rgba(245, 244, 244, 0.795); /* Overlay blanco semitransparente */
   pointer-events: none;
   z-index: 1;
 }
@@ -25,7 +24,7 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.27);
   border-radius: 15px;
   padding: 50px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
@@ -54,7 +53,9 @@
   opacity: 0;
   animation: fadeInText 1.5s 1s forwards;
 }
-
+.content-oficial{
+  padding: 0;
+}
 @keyframes shrinkIn {
   0% {
     opacity: 0;
