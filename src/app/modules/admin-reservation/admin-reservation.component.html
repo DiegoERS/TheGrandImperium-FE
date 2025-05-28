@@ -1,85 +1,93 @@
-<div class="admin-reservation-container">
-  <mat-card>
-    <h2>Reservaciones</h2>
+<div class="contenedor-principal">
+  <!-- Formulario de edición -->
+  <div class="formulario" *ngIf="editando">
+ <h2>Editar reserva de {{ reservaActual.customerDTO.name }} {{ reservaActual.customerDTO.lastName }}</h2>
+    <mat-card>
+      <mat-form-field class="full-width">
+        <mat-label>Fecha de Reserva</mat-label>
+        <input matInput [matDatepicker]="picker1" [(ngModel)]="reservaActual.reservationDate" name="reservationDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <mat-form-field class="full-width">
+        <mat-label>Entrada</mat-label>
+        <input matInput [matDatepicker]="picker2" [(ngModel)]="reservaActual.startDate" name="startDate">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
 
-      <!-- Cliente -->
-      <ng-container matColumnDef="cliente">
-        <th mat-header-cell *matHeaderCellDef>Cliente</th>
-        <td mat-cell *matCellDef="let r">{{ r.customerDTO.name }} {{ r.customerDTO.lastName }}</td>
-      </ng-container>
+      <mat-form-field class="full-width">
+        <mat-label>Salida</mat-label>
+        <input matInput [matDatepicker]="picker3" [(ngModel)]="reservaActual.endDate" name="endDate">
+        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+      </mat-form-field>
+   <div class="botones">
+      <button mat-raised-button class="boton-verde"(click)="guardarReserva()">Guardar</button>
+      <button mat-raised-button class="boton-rojo" (click)="cancelarEdicion()">Cancelar</button>
+    </div>
+    </mat-card>
+  </div>
 
-      <!-- Email -->
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let r">{{ r.customerDTO.email }}</td>
-      </ng-container>
+  <!-- Tabla de reservas -->
+    <h2>Listado de Reservas</h2>
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="cliente">
+      <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">
+        {{ reserva.customerDTO.name }} {{ reserva.customerDTO.lastName }}
+      </mat-cell>
+    </ng-container>
 
-      <!-- Número de habitación -->
-      <ng-container matColumnDef="numeroHabitacion">
-        <th mat-header-cell *matHeaderCellDef>Número Hab.</th>
-        <td mat-cell *matCellDef="let r">{{ r.roomDTO.roomNumber }}</td>
-      </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">{{ reserva.customerDTO.email }}</mat-cell>
+    </ng-container>
 
-      <!-- Tipo de habitación -->
-      <ng-container matColumnDef="tipoHabitacion">
-        <th mat-header-cell *matHeaderCellDef>Tipo Hab.</th>
-        <td mat-cell *matCellDef="let r">{{ r.roomDTO.roomTypeDTO.name }}</td>
-      </ng-container>
+    <ng-container matColumnDef="numeroHabitacion">
+      <mat-header-cell *matHeaderCellDef>Número Habitación</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">{{ reserva.roomDTO.roomNumber }}</mat-cell>
+    </ng-container>
 
-      <!-- Precio base -->
-      <ng-container matColumnDef="precioBase">
-        <th mat-header-cell *matHeaderCellDef>Precio Base</th>
-        <td mat-cell *matCellDef="let r">{{ r.roomDTO.roomTypeDTO.basePrice}}</td>
-      </ng-container>
+    <ng-container matColumnDef="tipoHabitacion">
+      <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">{{ reserva.roomDTO.roomTypeDTO.name }}</mat-cell>
+    </ng-container>
 
-      <!-- Fecha de reserva -->
-      <ng-container matColumnDef="fechaReserva">
-        <th mat-header-cell *matHeaderCellDef>Fecha Reserva</th>
-        <td mat-cell *matCellDef="let r">{{ r.reservationDate }}</td>
-      </ng-container>
+    <ng-container matColumnDef="precioBase">
+      <mat-header-cell *matHeaderCellDef>Precio Base</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">{{ reserva.roomDTO.roomTypeDTO.basePrice }}</mat-cell>
+    </ng-container>
 
-      <!-- Entrada -->
-      <ng-container matColumnDef="entrada">
-        <th mat-header-cell *matHeaderCellDef>Entrada</th>
-        <td mat-cell *matCellDef="let r">{{ r.startDate }}</td>
-      </ng-container>
+    <ng-container matColumnDef="fechaReserva">
+      <mat-header-cell *matHeaderCellDef>Fecha Reserva</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">{{ reserva.reservationDate | date: 'dd/MM/yyyy' }}</mat-cell>
+    </ng-container>
 
-      <!-- Salida -->
-      <ng-container matColumnDef="salida">
-        <th mat-header-cell *matHeaderCellDef>Salida</th>
-        <td mat-cell *matCellDef="let r">{{ r.endDate}}</td>
-      </ng-container>
+    <ng-container matColumnDef="entrada">
+      <mat-header-cell *matHeaderCellDef>Entrada</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">{{ reserva.startDate | date: 'dd/MM/yyyy' }}</mat-cell>
+    </ng-container>
 
-      <!-- Activo Habitación -->
-      <ng-container matColumnDef="activoHabitacion">
-        <th mat-header-cell *matHeaderCellDef>Hab. Activa</th>
-        <td mat-cell *matCellDef="let r">
-          <mat-icon color="{{ r.roomDTO.isActive ? 'primary' : 'warn' }}">
-            {{ r.roomDTO.isActive ? 'check_circle' : 'highlight_off' }}
-          </mat-icon>
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="salida">
+      <mat-header-cell *matHeaderCellDef>Salida</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">{{ reserva.endDate | date: 'dd/MM/yyyy' }}</mat-cell>
+    </ng-container>
 
-      <!-- Acciones -->
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let r">
-          <button mat-icon-button color="primary" (click)="editarReserva(r)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="eliminarReserva(r.reservationId)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-icon-button color="accent" (click)="activarReserva(r.reservationId)">
-            <mat-icon>check_circle</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="acciones">
+      <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+      <mat-cell *matCellDef="let reserva">
+        <button mat-icon-button color="primary" (click)="editarReserva(reserva)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminarReserva(reserva.reservationId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </mat-card>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </div>

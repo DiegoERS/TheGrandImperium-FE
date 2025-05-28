@@ -3,20 +3,36 @@ import { ReservationService } from '../../core/services/reservation.service';
 import { ReservationDTO } from '../../core/models/ReservationDTO';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-admin-reservation',
   templateUrl: './admin-reservation.component.html',
   styleUrls: ['./admin-reservation.component.scss'],
+  standalone: true,
   imports: [
     MatTableModule,
     MatIconModule,
+    MatButtonModule,
     MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    CommonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
+
 export class AdminReservationComponent implements OnInit {
   displayedColumns: string[] = [
     'cliente',
@@ -27,7 +43,6 @@ export class AdminReservationComponent implements OnInit {
     'fechaReserva',
     'entrada',
     'salida',
-    'activoHabitacion',
     'acciones',
   ];
   dataSource = new MatTableDataSource<ReservationDTO>();
