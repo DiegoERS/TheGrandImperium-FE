@@ -1,0 +1,45 @@
+<div *ngIf="loading" class="spinner-container">
+  <mat-spinner diameter="80" color="primary"></mat-spinner>
+</div>
+
+<div *ngIf="!loading && pageInformation" class="content-container">
+  <div class="custom-card">
+    <h2>Editar información de la página</h2>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput [(ngModel)]="pageInformation.subtitle" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput rows="5" [(ngModel)]="pageInformation.description"></textarea>
+    </mat-form-field>
+
+    <div class="action-buttons" style="display: flex; align-items: center; gap: 16px;">
+        <div>
+            <label for="image-upload" style="margin-bottom: 0;">Subir nueva imagen:</label>
+            <input id="image-upload" type="file" (change)="onImageUpload($event)" />
+        </div>
+    </div>
+
+    <div class="room-images">
+        <div class="current-image">
+            <label>Imagen actual:</label>
+            <img [src]="pageInformation.pageInformationImageDTOs[0].imageDTO.url" alt="Imagen actual" class="room-img"/>
+        </div>
+        <div class="current-image " *ngIf="imagePreview">
+            <label>Vista previa:</label>
+            <img [src]="imagePreview" alt="Vista previa de la imagen" class="room-img"/>
+        </div>
+    </div>
+
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button class="btn" style="background-color: #e3af4b; color: white;" (click)="save()" [disabled]="saving">
+        <i class="fas fa-save me-2"></i> {{ saving ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
+    </div>
+    
+  </div>
+</div>
