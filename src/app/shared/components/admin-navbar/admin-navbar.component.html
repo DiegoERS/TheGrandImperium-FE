@@ -46,6 +46,10 @@
       <a routerLink="/admin/update-about-us" routerLinkActive="router-link-active" class="button">
         Sobre nosotros
       </a>
+    </li><li>
+      <a routerLink="/admin/update-about-us" routerLinkActive="router-link-active" class="button">
+        Facilidades
+      </a>
     </li>
   </ul>
 </li>
@@ -82,8 +86,11 @@
       <a routerLink="/admin/booking" routerLinkActive="router-link-active" class="button">
         Consultar disponibilidad de habitaciones
       </a>
+    </li><li [class.active]="activePageName === 'publicidad'">
+      <a routerLink="/admin/advertising" routerLinkActive="router-link-active" class="button">
+        Publicidad
+      </a>
     </li>
-    <li [class.active]="activePageName === 'publicidad'">Publicidad</li>
     <li *ngIf="isAuthenticated()" class="logout" (click)="logout()">Log out</li>
   </ul>
 </nav>
