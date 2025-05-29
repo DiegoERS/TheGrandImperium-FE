@@ -25,19 +25,30 @@
     <li [class.active]="activePageName === 'home'">
       <a routerLink="/admin/dashboard" routerLinkActive="router-link-active" class="button">Home</a>
     </li>
-    <li [class.active]="activePageName === 'modificar'">
-      <div class="button">Modificar Páginas</div>
-      <ul class="submenu">
-        <li>
-          <a routerLink="/admin/update-how-to-get-to/4" routerLinkActive="router-link-active" class="button">
-            Cómo llegar
-          </a>
-          <a routerLink="/admin/update-home/1" routerLinkActive="router-link-active" class="button">
-            Home
-          </a>
-        </li>
-      </ul>
+<li [class.active]="activePageName === 'modificar'" class="accordion-item">
+  <div class="button" (click)="toggleModificarSubmenu()">
+    Modificar Páginas
+    <span class="arrow" [class.open]="isModificarOpen">▼</span>
+  </div>
+
+  <ul class="submenu" *ngIf="isModificarOpen">
+    <li>
+      <a routerLink="/admin/update-how-to-get-to/4" routerLinkActive="router-link-active" class="button">
+        Cómo llegar
+      </a>
     </li>
+    <li>
+      <a routerLink="/admin/update-home/1" routerLinkActive="router-link-active" class="button">
+        Home
+      </a>
+    </li>
+    <li>
+      <a routerLink="/admin/update-about-us" routerLinkActive="router-link-active" class="button">
+        Sobre nosotros
+      </a>
+    </li>
+  </ul>
+</li>
 
     <li [class.active]="activePageName === 'reservaciones'">Listado de reservaciones</li>
     <li [class.active]="activePageName === 'habitaciones'">

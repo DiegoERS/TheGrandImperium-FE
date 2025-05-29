@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';4
 import { MatCardModule } from '@angular/material/card';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-update-how-to-get-to',
@@ -50,13 +51,23 @@ save() {
       this.pageInformationService.getByPage(this.pageInformation!.pageDTO.pageId).subscribe(data => {
         this.pageInformation = data;
         this.saving = false;
-        console.log("sww");
-        alert('Información actualizada correctamente');
+  
+        Swal.fire({
+          title: 'Información actualizada',
+          text: 'La información se ha guardado correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        })
       });
     },
     error: () => {
       this.saving = false;
-      alert('Error al guardar la información');
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo actualizar la información. Por favor, inténtelo de nuevo más tarde.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   });
 }
