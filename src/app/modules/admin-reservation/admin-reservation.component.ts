@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-reservation',
@@ -75,17 +76,25 @@ export class AdminReservationComponent implements OnInit {
 
     accion.subscribe({
       next: () => {
-        this.snackBar.open(
-          this.editando ? 'Reservación actualizada' : 'Reservación creada',
-          'Cerrar',
-          { duration: 3000 }
-        );
+       Swal.fire({
+          title: 'Éxito',
+          text: this.editando
+            ? 'Reservación actualizada correctamente'
+            : 'Reservación creada correctamente',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+        });
         this.cargarReservas();
         this.cancelarEdicion();
       },
       error: () =>
-        this.snackBar.open('Error al guardar la reservación', 'Cerrar', {
-          duration: 3000,
+       Swal.fire({
+          title: 'Error',
+          text: this.editando
+            ? 'No se pudo actualizar la reservación'
+            : 'No se pudo crear la reservación',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
         }),
     });
   }
@@ -96,18 +105,36 @@ export class AdminReservationComponent implements OnInit {
   }
 
   eliminarReserva(id: number): void {
-    if (confirm('¿Está seguro de eliminar esta reservación?')) {
-      this.reservaService.delete(id).subscribe({
-        next: () => {
-          this.snackBar.open('Reservación eliminada', 'Cerrar', {
-            duration: 3000,
-          });
-          this.cargarReservas();
-        },
-        error: () =>
-          this.snackBar.open('Error al eliminar', 'Cerrar', { duration: 3000 }),
-      });
-    }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción no se puede deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reservaService.delete(id).subscribe({
+          next: () => {
+            Swal.fire(
+              'Eliminado',
+              'La reservación ha sido eliminada',
+              'success'
+            );
+
+            this.cargarReservas();
+          },
+          error: () =>
+           Swal.fire({
+
+              title: 'Error',
+              text: 'No se pudo eliminar la reservación',
+              icon: 'error',
+              confirmButtonText: 'Aceptar',
+            }),
+        });
+      }
+    });
   }
 
   activarReserva(id: number): void {
