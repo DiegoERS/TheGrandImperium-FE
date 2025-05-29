@@ -1,10 +1,17 @@
+  .content-oficial:has(.admin-home){
+    padding: 0;
+ height: 100vh;
+  }
+
 .content-oficial {
     margin-left: 250px; /* mismo tamaño que el sidebar */
     padding: 20px;
+    height: 100vh;
   }
 
+
   @media (max-width: 768px) {
-  
+
     .content-oficial {
       margin-left: 0; /* En móvil no le dejes margen */
     }

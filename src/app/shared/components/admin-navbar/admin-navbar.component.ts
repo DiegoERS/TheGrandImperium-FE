@@ -39,6 +39,11 @@ export class AdminNavbarComponent implements OnInit {
     this.userName = this.getUserName(); // 👈 Agregado
   }
 
+  isModificarOpen: boolean = false;
+
+toggleModificarSubmenu() {
+  this.isModificarOpen = !this.isModificarOpen;
+}
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
