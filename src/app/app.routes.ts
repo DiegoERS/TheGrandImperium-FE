@@ -20,6 +20,9 @@ import { SeasonComponent } from './modules/season/season.component';
 import { PromotionComponent } from './modules/promotion/promotion.component';
 import { ReservationComponent } from './modules/reservation/reservation.component';
 import { UpdateAboutUsComponent } from './modules/update-about-us/update-about-us.component';
+import { UpdateHowToGetToComponent } from './modules/update-how-to-get-to/update-how-to-get-to.component';
+import { AdminReservationComponent } from './modules/admin-reservation/admin-reservation.component';
+import { UpdateHomeComponent } from './modules/update-home/update-home.component';
 
 export const routes: Routes = [{
     path: '',
@@ -33,7 +36,7 @@ export const routes: Routes = [{
       {path: 'contact-us', component: ContactUsComponent},
       {path: 'how-to-get-to', component: HowToGetToComponent},
       {path: 'reservation', component: ReservationComponent},
-      
+
     ]
   },
   {
@@ -47,6 +50,9 @@ export const routes: Routes = [{
       {path: 'season', component: SeasonComponent, canActivate:[authGuard] },
       {path: 'promotion', component: PromotionComponent, canActivate:[authGuard] },
       {path: 'update-about-us', component: UpdateAboutUsComponent, canActivate:[authGuard] },
+      { path: 'update-how-to-get-to/:id', component: UpdateHowToGetToComponent, canActivate:[authGuard] },
+      { path: 'update-home/:id', component: UpdateHomeComponent, canActivate:[authGuard] },
+      { path: 'admin-reservation', component: AdminReservationComponent, canActivate: [authGuard] }
 
     ]
   },
