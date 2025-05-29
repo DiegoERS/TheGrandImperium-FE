@@ -1,0 +1,104 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.contenedor-principal {
+  width: 100%;
+  max-width: 1900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin: 20px 0;
+}
+
+.formulario {
+  width: 50%;
+  margin-bottom: 30px;
+
+  mat-card {
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     display: flex;
+  align-items: center;
+  }
+
+  .full-width {
+    width: 30%;
+    margin-bottom: 15px;
+
+  }
+
+.botones {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+
+  button {
+    margin: 0 10px;
+  }
+}
+
+.boton-verde {
+  background-color: #4caf50;
+  color: white;
+
+  &:hover {
+    background-color: #43a047;
+  }
+}
+
+.boton-rojo {
+  background-color: #f44336;
+  color: white;
+
+  &:hover {
+    background-color: #e53935;
+  }
+}
+}
+
+// Tabla Angular Material
+mat-table {
+  width: 100%;
+  max-width: 700px;
+  font-size: 14px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #fff;
+
+  mat-header-cell {
+    background-color: #e1b151;
+    color: white;
+    font-weight: bold;
+    padding: 8px 10px;
+  }
+
+  mat-cell {
+    padding: 8px 10px;
+  }
+
+  mat-row:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  mat-row:hover {
+    background-color: #e0f7fa;
+  }
+}
+
+// Íconos de acción
+button[mat-icon-button] {
+  margin-right: 5px;
+
+  mat-icon {
+    font-size: 20px;
+  }
+}

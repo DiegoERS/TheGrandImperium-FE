@@ -62,31 +62,6 @@ export class AdminRoomComponent implements OnInit {
     this.canUploadImage = images.length === 0;
   }
 
-  onSave(image: File) {
-    this.isUploading = true;
-    this.cloudinaryService.uploadImage(image)
-      .then(urls => {
-        console.log('Imagen subida:', urls);
-        this.selectedRoom.roomTypeImageDTO.imageDTO.url = urls;
-        this.uploaderComponent.reset();
-        this.canUploadImage = false; // Oculta el uploader después de guardar
-      })
-      .catch(error => {
-        console.error('Error al subir imágenes:', error);
-      })
-      .finally(() => {
-        this.isUploading = false;
-      });
-  }
-
-  removeUploadedImage(index: number) {
-    this.uploadedUrls.splice(index, 1);
-    // Si ya no hay imágenes guardadas, mostrar el uploader de nuevo
-    if (this.uploadedUrls.length === 0) {
-      this.canUploadImage = true;
-    }
-  }
-
   // ...existing code...
 
 async updateRoomType() {
