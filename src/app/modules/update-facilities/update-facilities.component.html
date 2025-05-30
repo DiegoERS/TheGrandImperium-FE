@@ -1,0 +1,25 @@
+<div *ngIf="loading" class="spinner-container">
+  <mat-spinner diameter="80" color="primary"></mat-spinner>
+</div>
+
+<div *ngIf="!loading && pageInformation" class="content-container">
+  <div class="custom-card">
+    <h2>Editar información de la página</h2>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput [(ngModel)]="pageInformation.subtitle" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput rows="5" [(ngModel)]="pageInformation.description"></textarea>
+    </mat-form-field>
+
+  <div style="text-align: center; margin-top: 20px;">
+  <button class="btn" style="background-color: #e3af4b; color: white;" (click)="save()" [disabled]="saving">
+    <i class="fas fa-save me-2"></i> {{ saving ? 'Guardando...' : 'Guardar cambios' }}
+  </button>
+</div>
+  </div>
+</div>

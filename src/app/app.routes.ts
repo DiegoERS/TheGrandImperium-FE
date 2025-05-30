@@ -24,6 +24,7 @@ import { UpdateHowToGetToComponent } from './modules/update-how-to-get-to/update
 import { AdminReservationComponent } from './modules/admin-reservation/admin-reservation.component';
 import { UpdateHomeComponent } from './modules/update-home/update-home.component';
 import { AdvertisingComponent } from './modules/advertising/advertising.component';
+import { UpdateFacilitiesComponent } from './modules/update-facilities/update-facilities.component';
 
 
 export const routes: Routes = [{
@@ -53,6 +54,7 @@ export const routes: Routes = [{
       {path: 'promotion', component: PromotionComponent, canActivate:[authGuard] },
       {path: 'update-about-us', component: UpdateAboutUsComponent, canActivate:[authGuard] },
       { path: 'update-how-to-get-to/:id', component: UpdateHowToGetToComponent, canActivate:[authGuard] },
+      { path: 'update-facilities/:id', component: UpdateFacilitiesComponent, canActivate:[authGuard] },
       { path: 'update-home/:id', component: UpdateHomeComponent, canActivate:[authGuard] },
       { path: 'admin-reservation', component: AdminReservationComponent, canActivate: [authGuard] },
       { path: 'advertising', component: AdvertisingComponent }
