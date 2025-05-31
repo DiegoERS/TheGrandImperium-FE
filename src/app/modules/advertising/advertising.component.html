@@ -34,32 +34,48 @@
       </div>
     </div>
 
+    <!-- Selector de imagen -->
     <div class="form-group">
-      <label for="imageUrl">URL de la Imagen:</label>
-      <input
-        type="url"
-        id="imageUrl"
-        name="imageUrl"
-        [(ngModel)]="advertising.advertisingImageDTO.imageDTO.url"
-        required
-        #imageUrlInput="ngModel"
-        placeholder="https://ejemplo.com/imagen.jpg"
-      />
-      <div *ngIf="imageUrlInput.invalid && imageUrlInput.touched" class="error-message">
-        La URL de la imagen es requerida
+      <label for="imageInput">Imagen de Publicidad:</label>
+      <div class="file-input-container">
+        <input
+          type="file"
+          id="imageInput"
+          name="imageInput"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          class="file-input"
+        />
+        <label for="imageInput" class="file-input-label">
+          <span class="file-input-text">
+            {{ selectedFile ? selectedFile.name : 'Seleccionar imagen' }}
+          </span>
+          <span class="file-input-button">Buscar</span>
+        </label>
+      </div>
+      <div class="file-input-info">
+        Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 5MB
       </div>
     </div>
 
     <!-- Vista previa de la imagen -->
-    <div class="form-group" *ngIf="advertising.advertisingImageDTO?.imageDTO?.url">
+    <div class="form-group" *ngIf="imagePreviewUrl">
       <label>Vista previa:</label>
       <div class="image-preview">
         <img 
-          [src]="advertising.advertisingImageDTO.imageDTO.url" 
+          [src]="imagePreviewUrl" 
           alt="Vista previa" 
           (error)="onImageError($event)"
           (load)="onImageLoad($event)"
         />
+        <button 
+          type="button" 
+          class="remove-image-button"
+          (click)="removeSelectedImage()"
+          title="Quitar imagen"
+        >
+          ×
+        </button>
       </div>
     </div>
 
