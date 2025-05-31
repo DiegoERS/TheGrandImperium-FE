@@ -2,6 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AdvertisingService } from '../../core/services/advertising.service';
+import { CloudinaryService } from '../../core/services/cloudinary.service';
 import { AdvertisingDTO } from '../../core/models/AdvertisingDTO';
 import Swal from 'sweetalert2';
 
@@ -28,8 +29,11 @@ export class AdvertisingComponent implements OnInit {
   advertisings: AdvertisingDTO[] = [];
   advertising: AdvertisingDTO = this.createEmptyAdvertising();
   loading = true;
+  selectedFile: File | null = null;
+  imagePreviewUrl: string = '';
   
   private advertisingService = inject(AdvertisingService);
+  private cloudinaryService = inject(CloudinaryService);
 
   ngOnInit(): void {
     this.loadAdvertisings();
@@ -58,77 +62,154 @@ export class AdvertisingComponent implements OnInit {
     });
   }
 
-  saveAdvertising() {
-    Swal.fire({
-      title: 'Enviando...',
-      text: 'Por favor espera mientras procesamos tu acción',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      showConfirmButton: false,
-      willOpen: () => {
-        Swal.showLoading();
-      },
-      backdrop: true
-    });
-
-    this.advertisingService.create(this.advertising).subscribe((createdId: number) => {
-      // Actualizamos el advertising con el ID devuelto y lo agregamos a la lista
-      const newAdvertising = { ...this.advertising, advertisingId: createdId };
-      this.advertisings.push(newAdvertising);
-      this.clearForm();
+  async onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
       
-      Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: 'Publicidad guardada correctamente',
-        showConfirmButton: true,
-        timer: 2000
-      });
-    }, (error) => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Error al guardar la publicidad',
-        showConfirmButton: true
-      });
-    });
+      // Validar que sea una imagen
+      if (!file.type.startsWith('image/')) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Por favor selecciona un archivo de imagen válido'
+        });
+        return;
+      }
+
+      // Validar tamaño (por ejemplo, máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La imagen no debe superar los 5MB'
+        });
+        return;
+      }
+
+      this.selectedFile = file;
+      
+      // Crear preview local
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imagePreviewUrl = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
-  updateAdvertising() {
-    Swal.fire({
-      title: 'Enviando...',
-      text: 'Por favor espera mientras procesamos tu acción',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      showConfirmButton: false,
-      willOpen: () => {
-        Swal.showLoading();
-      },
-      backdrop: true
-    });
+  removeSelectedImage() {
+    this.selectedFile = null;
+    this.imagePreviewUrl = '';
+    
+    // Limpiar el input file
+    const fileInput = document.getElementById('imageInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
 
-    this.advertisingService.update(this.advertising).subscribe(() => {
-      const index = this.advertisings.findIndex(ad => ad.advertisingId === this.advertising.advertisingId);
-      if (index !== -1) {
-        this.advertisings[index] = { ...this.advertising };
-      }
-      
+  async saveAdvertising() {
+    try {
       Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: 'Publicidad actualizada correctamente',
-        showConfirmButton: true,
-        timer: 2000
+        title: 'Enviando...',
+        text: 'Por favor espera mientras procesamos tu acción',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        willOpen: () => {
+          Swal.showLoading();
+        },
+        backdrop: true
       });
-      this.clearForm();
-    }, (error) => {
+
+      // Si hay una imagen seleccionada, subirla primero
+      if (this.selectedFile) {
+        const imageUrl = await this.cloudinaryService.uploadImage(this.selectedFile);
+        this.advertising.advertisingImageDTO.imageDTO.url = imageUrl;
+      }
+
+      this.advertisingService.create(this.advertising).subscribe((createdId: number) => {
+        // Actualizamos el advertising con el ID devuelto y lo agregamos a la lista
+        const newAdvertising = { ...this.advertising, advertisingId: createdId };
+        this.advertisings.push(newAdvertising);
+        this.clearForm();
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Publicidad guardada correctamente',
+          showConfirmButton: true,
+          timer: 2000
+        });
+      }, (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al guardar la publicidad',
+          showConfirmButton: true
+        });
+      });
+    } catch (error) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Error al actualizar la publicidad',
+        text: 'Error al subir la imagen',
         showConfirmButton: true
       });
-    });
+    }
+  }
+
+  async updateAdvertising() {
+    try {
+      Swal.fire({
+        title: 'Enviando...',
+        text: 'Por favor espera mientras procesamos tu acción',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        willOpen: () => {
+          Swal.showLoading();
+        },
+        backdrop: true
+      });
+
+      // Si hay una nueva imagen seleccionada, subirla
+      if (this.selectedFile) {
+        const imageUrl = await this.cloudinaryService.uploadImage(this.selectedFile);
+        this.advertising.advertisingImageDTO.imageDTO.url = imageUrl;
+      }
+
+      this.advertisingService.update(this.advertising).subscribe(() => {
+        const index = this.advertisings.findIndex(ad => ad.advertisingId === this.advertising.advertisingId);
+        if (index !== -1) {
+          this.advertisings[index] = { ...this.advertising };
+        }
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Publicidad actualizada correctamente',
+          showConfirmButton: true,
+          timer: 2000
+        });
+        this.clearForm();
+      }, (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al actualizar la publicidad',
+          showConfirmButton: true
+        });
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error al subir la imagen',
+        showConfirmButton: true
+      });
+    }
   }
 
   deleteAdvertising(ad: AdvertisingDTO) {
@@ -175,11 +256,24 @@ export class AdvertisingComponent implements OnInit {
       }
     };
     this.isEditing = true;
+    
+    // Si tiene imagen, mostrarla como preview
+    if (this.advertising.advertisingImageDTO?.imageDTO?.url) {
+      this.imagePreviewUrl = this.advertising.advertisingImageDTO.imageDTO.url;
+    }
   }
 
   clearForm() {
     this.advertising = this.createEmptyAdvertising();
     this.isEditing = false;
+    this.selectedFile = null;
+    this.imagePreviewUrl = '';
+    
+    // Limpiar el input file
+    const fileInput = document.getElementById('imageInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
     
     // Resetear el estado del formulario para quitar los mensajes de validación
     if (this.advertisingForm) {
