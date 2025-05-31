@@ -4,20 +4,20 @@
       <a routerLink="/Home" routerLinkActive="router-link-active" class="button">
         The Grand Imperium Hotel & Resort
       </a>
-     
+
     </a>
   </div>
 
-<!-- Nuevo bloque de bienvenida con animación -->
-<div class="sidebar-welcome" *ngIf="userName">
-  <div class="welcome-container">
-    <div class="welcome-icon">👋</div>
-    <div class="welcome-text">
-      <span>Bienvenido</span>
-      <strong>{{ userName }}</strong>
+  <!-- Nuevo bloque de bienvenida con animación -->
+  <div class="sidebar-welcome" *ngIf="userName">
+    <div class="welcome-container">
+      <div class="welcome-icon">👋</div>
+      <div class="welcome-text">
+        <span>Bienvenido</span>
+        <strong>{{ userName }}</strong>
+      </div>
     </div>
   </div>
-</div>
 
 
 
@@ -25,13 +25,48 @@
     <li [class.active]="activePageName === 'home'">
       <a routerLink="/admin/dashboard" routerLinkActive="router-link-active" class="button">Home</a>
     </li>
-    <li [class.active]="activePageName === 'modificar'">Modificar Páginas</li>
-    <li [class.active]="activePageName === 'reservaciones'">Listado de reservaciones</li>
-     <li [class.active]="activePageName === 'habitaciones'">
+<li [class.active]="activePageName === 'modificar'" class="accordion-item">
+  <div class="button" (click)="toggleModificarSubmenu()">
+    Modificar Páginas
+    <span class="arrow" [class.open]="isModificarOpen">▼</span>
+  </div>
+
+  <ul class="submenu" *ngIf="isModificarOpen">
+    <li>
+      <a routerLink="/admin/update-how-to-get-to/4" routerLinkActive="router-link-active" class="button">
+        Cómo llegar
+      </a>
+    </li>
+    <li>
+      <a routerLink="/admin/update-home/1" routerLinkActive="router-link-active" class="button">
+        Home
+      </a>
+    </li>
+    <li>
+      <a routerLink="/admin/update-about-us" routerLinkActive="router-link-active" class="button">
+        Sobre nosotros
+      </a>
+    </li>
+    <li>
+      <a routerLink="/admin/update-facilities/5" routerLinkActive="router-link-active" class="button">
+        Facilidades
+      </a>
+    </li>
+  </ul>
+</li>
+
+    <li [class.active]="activePageName === 'habitaciones'">
       <a routerLink="/admin/admin-room" routerLinkActive="router-link-active" class="button">
         Administrar habitaciones
       </a>
     </li>
+
+    <li [class.active]="activePageName === 'admin-reservaion'">
+      <a routerLink="/admin/admin-reservation" routerLinkActive="router-link-active" class="button">
+        Administrar reservación
+      </a>
+    </li>
+
     <li [class.active]="activePageName === 'estado-hotel'">
       <a routerLink="/admin/today-hotel" routerLinkActive="router-link-active" class="button">
         Ver estado del hotel hoy
@@ -51,8 +86,11 @@
       <a routerLink="/admin/booking" routerLinkActive="router-link-active" class="button">
         Consultar disponibilidad de habitaciones
       </a>
+    </li><li [class.active]="activePageName === 'publicidad'">
+      <a routerLink="/admin/advertising" routerLinkActive="router-link-active" class="button">
+        Publicidad
+      </a>
     </li>
-    <li [class.active]="activePageName === 'publicidad'">Publicidad</li>
     <li *ngIf="isAuthenticated()" class="logout" (click)="logout()">Log out</li>
   </ul>
 </nav>

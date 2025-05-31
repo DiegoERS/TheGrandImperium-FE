@@ -47,7 +47,7 @@ export class FacilitiesComponent implements OnInit {
         id: 1,
         name: 'Piscina Infinity',
         description: 'Disfrute de nuestra espectacular piscina con vista al océano. Perfecta para relajarse y disfrutar del sol tropical.',
-        imageUrl: 'https://www.fluidra.com/wp-content/uploads/2022/04/iStock-641448082_iStock-641448082-1.webp',
+        imageUrl: 'https://res.cloudinary.com/dxrph5la4/image/upload/v1748659642/bgq0ntnaotgj1il8lohn.webp',
         features: [
           'Servicio de toallas',
           'Bar acuático',

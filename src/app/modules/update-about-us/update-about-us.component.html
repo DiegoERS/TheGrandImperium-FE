@@ -1,1 +1,36 @@
-<p>update-about-us works!</p>
+<div *ngIf="loading" class="spinner-container">
+  <mat-spinner diameter="60" color="accent"></mat-spinner>
+</div>
+
+<div *ngIf="!loading" class="edit-about-us-container">
+  <form (ngSubmit)="saveChanges()" #aboutUsForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput [(ngModel)]="pageInformation.pageDTO.title" name="title" required disabled="true"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput [(ngModel)]="pageInformation.description" name="description" rows="4"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Subtítulo</mat-label>
+      <input matInput [(ngModel)]="pageInformation.subtitle" name="subtitle" />
+    </mat-form-field>
+
+    <!-- Mostrar imágenes actuales -->
+    <div class="image-list">
+      <div *ngFor="let img of images; let i = index">
+        <img [src]="img" alt="Imagen {{ i }}" />
+        <button type="button" (click)="removeImage(i)">Eliminar</button>
+      </div>
+    </div>
+
+    <!-- Agregar nuevas imágenes -->
+    <input type="file" (change)="onImageSelected($event)" multiple />
+
+    <button mat-raised-button color="primary" type="submit">Guardar Cambios</button>
+  </form>
+</div>
+
