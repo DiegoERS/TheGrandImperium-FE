@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
-  imports: [ImageUploaderComponent,CommonModule,ReactiveFormsModule,MatProgressSpinnerModule],
+  imports: [CommonModule,ReactiveFormsModule,MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -60,14 +60,6 @@ export class LoginComponent implements OnInit {
       refreshToken:"",
       token:"",
     };
-    Swal.fire({
-      title: 'Cargando...',
-      text: 'Por favor, espera un momento.',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
 
     this.authService.login(user).subscribe({
       next: (userData: UserDTO | undefined) => {
@@ -83,13 +75,6 @@ export class LoginComponent implements OnInit {
           return;
         }
     
-        Swal.close(); // Cierra el modal de carga
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Inicio de sesión exitoso.',
-          confirmButtonText: 'Aceptar'
-        });
         if (this.isBrowser()) {
         localStorage.setItem('token', userData.token);
         localStorage.setItem('refreshToken', userData.refreshToken);

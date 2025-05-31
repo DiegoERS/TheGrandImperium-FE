@@ -1,15 +1,14 @@
 <div *ngIf="loading" class="spinner-container">
   <mat-spinner diameter="80" color="primary"></mat-spinner>
 </div>
+<div *ngIf="!loading" class="facilities-container">
+  <h1 class="titulo-facilidades">{{pageInformation?.pageDTO?.title}} </h1>
 
-<div *ngIf="!loading"  class="facilities-container">
-    <h1>Facilidades</h1>
-    
-    <p class="facilities-intro">
-      Disfrute de nuestras excelentes instalaciones diseñadas para hacer su estadía más placentera en The Grand Imperium Hotel & Resort.
-    </p>
-  
-    <div class="facilities-grid">
+  <p class="facilities-intro">
+    {{pageInformation?.description}}
+  </p>
+
+  <div class="facilities-grid">
       <div *ngFor="let facility of facilities" class="facility-card">
         <div class="facility-image">
           <img [src]="facility.imageUrl" [alt]="facility.name">
