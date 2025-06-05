@@ -1,0 +1,76 @@
+<div class="container mat-elevation-z2 p-4">
+  <h2>Gestión de Features</h2>
+  <form [formGroup]="featureForm" (ngSubmit)="saveFeature()">
+    <mat-form-field class="w-100">
+      <mat-label>Nombre del Feature</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <div class="mb-3">
+      <button mat-flat-button color="primary" type="submit">
+        {{ featureForm.value.featureId ? 'Actualizar' : 'Agregar' }}
+      </button>
+      <button mat-button type="button" (click)="resetForm()">Limpiar</button>
+    </div>
+  </form>
+
+  <mat-table [dataSource]="features" class="mat-elevation-z1">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-icon-button color="accent" (click)="editFeature(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteFeature(element.featureId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
+
+<hr class="my-4">
+
+<div class="container mat-elevation-z2 p-4">
+  <h2>Vincular Features a RoomType</h2>
+
+  <mat-form-field class="w-100">
+    <mat-label>Seleccionar RoomType</mat-label>
+    <mat-select [(value)]="selectedRoomTypeId" (selectionChange)="loadRoomTypeFeatures()">
+      <mat-option *ngFor="let rt of roomTypes" [value]="rt.roomTypeId">
+        {{ rt.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div *ngIf="selectedRoomTypeId">
+    <h3>Features Vinculados</h3>
+    <div class="chip-container">
+    <div class="chip" *ngFor="let f of linkedFeatures">
+        {{ f.name }}
+        <button mat-icon-button (click)="unlink(f)" class="chip-remove-btn">
+        <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+    </div>
+
+    <h3>Vincular Nuevos Features</h3>
+    <mat-form-field class="w-100">
+      <mat-label>Seleccionar Feature</mat-label>
+      <mat-select [(value)]="selectedFeatureToLink">
+        <mat-option *ngFor="let f of unlinkedFeatures" [value]="f">
+          {{ f.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="link()">Vincular</button>
+  </div>
+</div>
