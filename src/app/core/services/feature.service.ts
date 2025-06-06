@@ -50,4 +50,19 @@ export class FeatureService {
   unlinkFeatureFromRoomType(featureId: number, roomTypeId: number): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/unlink/${featureId}/${roomTypeId}`, {});
   }
+
+  // GET /api/Feature/facility/{facilityId}
+  getFeaturesByFacility(facilityId: number): Observable<FeatureDTO[]> {
+    return this.http.get<FeatureDTO[]>(`${this.apiUrl}/facility/${facilityId}`);
+  }
+
+   // POST /api/Feature/facility/link/{featureId}/{facilityId}
+  linkFeatureToFacility(featureId: number, facilityId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/facility/link/${featureId}/${facilityId}`, {});
+  }
+  // POST /api/Feature/facility/unlink/{featureId}/{facilityId}
+  unlinkFeatureFromFacility(featureId: number, facilityId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/facility/unlink/${featureId}/${facilityId}`, {});
+  }
+
 }
