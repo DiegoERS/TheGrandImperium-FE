@@ -3,29 +3,52 @@
     <form (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="season-name">Nombre de la temporada:</label>
-            <input id="season-name" type="text" [(ngModel)]="season.name" name="seasonName" />
+            <input id="season-name" type="text" [(ngModel)]="season.name" name="seasonName" [disabled]="!isEditing"/>
         </div>
 
         <div class="form-group">
             <label for="season-percentage">Cambio porcentual (%):</label>
             <input id="season-percentage" type="number" [(ngModel)]="season.percentageChange" name="seasonPercentage"
-                min="-100" max="100" />
+                min="-100" max="100" [disabled]="!isEditing"/>
         </div>
 
         <div class="form-group">
             <label for="season-active">¿Activa?</label>
-            <input id="season-active" type="checkbox" [(ngModel)]="season.isActive" name="seasonActive" />
+            <input id="season-active" type="checkbox" [(ngModel)]="season.isActive" name="seasonActive" [disabled]="!isEditing"/>
+        </div>
+
+        <div class="form-group">
+        <label for="season-start-date">Fecha de inicio:</label>
+        <input
+            id="season-start-date"
+            type="date"
+            [(ngModel)]="season.startDate"
+            name="seasonStartDate"
+            [disabled]="!isEditing"
+            (change)="onStartDateChange()"
+            [min]="today"
+            class="date-input"
+        />
+        </div>
+
+        <div class="form-group">
+        <label for="season-end-date">Fecha de fin:</label>
+        <input
+            id="season-end-date"
+            type="date"
+            [(ngModel)]="season.endDate"
+            name="seasonEndDate"
+            [disabled]="!isEditing"
+            [min]="season.startDate || today"
+            class="date-input"
+        />
         </div>
 
         <div class="action-buttons">
-            <button *ngIf="!isEditing" type="button" class="accept-button" (click)="saveSeason()">
-                Guardar
-            </button>
             <button *ngIf="isEditing" type="button" class="accept-button" (click)="updateSeason()">
                 Actualizar
             </button>
-            <button type="button" class="cancel-button" (click)="clearForm()">Cancelar</button>
-            <button type="button" class="clear-button" (click)="clearForm()">Limpiar</button>
+            <button type="button" class="cancel-button" (click)="clearForm()" [disabled]="!isEditing">Cancelar</button>
         </div>
     </form>
 
@@ -35,6 +58,8 @@
             <tr>
                 <th>Nombre</th>
                 <th>Cambio (%)</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de fin</th>
                 <th>Activa</th>
                 <th>Acciones</th>
             </tr>
@@ -43,10 +68,11 @@
             <tr *ngFor="let s of seasons">
                 <td>{{ s.name }}</td>
                 <td>{{ s.percentageChange }}</td>
+                <td>{{ s.startDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ s.endDate | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ s.isActive ? 'Sí' : 'No' }}</td>
                 <td>
                     <button type="button" (click)="editSeason(s)">Editar</button>
-                    <button type="button" (click)="deleteSeason(s)">Eliminar</button>
                 </td>
             </tr>
         </tbody>

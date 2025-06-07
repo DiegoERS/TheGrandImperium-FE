@@ -17,9 +17,7 @@ export class SeasonComponent implements OnInit {
 onSubmit() {
   if (this.isEditing) {
     this.updateSeason();
-  } else {
-    this.saveSeason();
-  }
+  } 
 }
   isEditing = false;
 
@@ -28,6 +26,8 @@ onSubmit() {
   season: SeasonDTO = {} as SeasonDTO;
 
   loading = true;
+  today: string = new Date().toISOString().split('T')[0];
+
   private seasonService = inject(SeasonService);
 
   ngOnInit(): void {
@@ -37,37 +37,20 @@ onSubmit() {
   loadSeasons() {
     this.loading = true;
     this.seasonService.getAll().subscribe((data: SeasonDTO[]) => {
-      this.seasons = data;
-      this.loading = false;
+      this.seasons = data.map(s => ({
+      ...s,
+      startDate: s.startDate?.split('T')[0],
+      endDate: s.endDate?.split('T')[0]
+    }));
+    this.loading = false;
     });
   }
 
-saveSeason() {
-     Swal.fire({
-    title: 'Enviando...',
-    text: 'Por favor espera mientras procesamos tu acción',
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    showConfirmButton: false,
-    willOpen: () => {
-      Swal.showLoading();
-    },
-    backdrop: true
-  });
-  this.seasonService.create(this.season).subscribe((createdId: number) => {
-    this.seasonService.getById(createdId).subscribe((createdSeason: SeasonDTO) => {
-      this.seasons.push(createdSeason);
-      this.clearForm();
-      Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: 'Temporada guardada correctamente',
-        showConfirmButton: true,
-        timer: 2000
-      });
-    });
-
-  });
+  onStartDateChange() {
+  // Si la fecha de fin es menor a la de inicio, la limpiamos
+  if (this.season.endDate && this.season.endDate < this.season.startDate) {
+    this.season.endDate = '';
+  }
 }
 
   updateSeason() {
@@ -87,6 +70,7 @@ saveSeason() {
       if (index !== -1) {
         this.seasons[index] = { ...this.season };
       }
+      this.loadSeasons();
       Swal.fire({
         icon: 'success',
         title: 'Éxito',
@@ -126,7 +110,11 @@ saveSeason() {
   }
 
   editSeason(s: SeasonDTO) {
-    this.season = { ...s };
+     this.season = {
+    ...s,
+    startDate: s.startDate?.split('T')[0],
+    endDate: s.endDate?.split('T')[0]
+  };
     this.isEditing = true;
   }
 
