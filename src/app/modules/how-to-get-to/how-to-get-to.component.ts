@@ -1,127 +1,114 @@
-import { Component, OnInit, Inject,inject, PLATFORM_ID } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  AfterViewInit,
+  Inject,
+  inject,
+  PLATFORM_ID,
+} from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-
-
 @Component({
+  standalone: true,
   selector: 'app-how-to-get-to',
-  imports : [CommonModule, RouterModule, MatProgressSpinnerModule],
   templateUrl: './how-to-get-to.component.html',
-  styleUrls: ['./how-to-get-to.component.scss']
+  styleUrls: ['./how-to-get-to.component.scss'],
+  imports: [CommonModule, MatProgressSpinnerModule, RouterModule],
 })
-export class HowToGetToComponent implements OnInit {
+export class HowToGetToComponent implements AfterViewInit {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   pageInformation: PageInformationDTO | null = null;
-  loading = false;
-  private pageInformationService= inject(PageInformationService);
+  private pageInformationService = inject(PageInformationService);
+  loading = true;
 
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
-  lat: number = 10.30017672890319; // Latitud fija para Wyndham Tamarindo
-  lng: number = -85.84483380195266; // Longitud fija para Wyndham Tamarindo
-  map: any;
-  marker: any;
+  async ngAfterViewInit(): Promise<void> {
+    if (isPlatformBrowser(this.platformId)) {
+      const page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
+      this.pageInformationService
+        .getByPage(page.pageId)
+        .subscribe((data: PageInformationDTO) => {
+          this.pageInformation = data;
+          console.log(data);
+          this.loading = false;
+        });
 
+      const L = await import('leaflet');
+      await import('leaflet-routing-machine');
 
-  private router= inject(Router);
-  private platformId = inject(PLATFORM_ID);
-  private route= inject(ActivatedRoute);
+      // Asegura que L.Routing esté disponible
+      if (!L.Routing && (window as any).L && (window as any).L.Routing) {
+        L.Routing = (window as any).L.Routing;
+      }
 
+      const destinationLat = 10.296854045618298;
+      const destinationLng = -85.83878938212567;
 
+      // Verifica si el navegador soporta geolocalización
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
 
+            const map = L.map('map').setView([userLat, userLng], 14);
 
-  async ngOnInit(): Promise<void> {
-  if (isPlatformBrowser(this.platformId)) {
-    const page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; OpenStreetMap contributors',
+            }).addTo(map);
 
-    this.pageInformationService.getByPage(4).subscribe((data: PageInformationDTO) => {
-      this.pageInformation = data;
-    });
+            // Marcador en tu ubicación
+            const userMarker = L.circleMarker([userLat, userLng], {
+              radius: 8,
+              color: 'blue',
+              fillColor: '#2196f3',
+              fillOpacity: 0.8,
+            }).addTo(map);
 
-    // Importar leaflet y routing machine
-    const L = await import('leaflet');
-    await import('leaflet-routing-machine');
-
-
-
-    this.initMap(L);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          this.map.setView([userLat, userLng], 13);
-
-          const userMarker = L.marker([userLat, userLng]).addTo(this.map);
-
-          const control = L.Routing.control({
-            waypoints: [L.latLng(userLat, userLng), L.latLng(this.lat, this.lng)],
-            routeWhileDragging: true,
-            lineOptions: {
-              styles: [{ color: 'black', weight: 4 }],
-              extendToWaypoints: false,
-              missingRouteTolerance: 0
-            },
-            show: true
-          }).addTo(this.map);
-
-          control.on('routesfound', (e: any) => {
-            const routes = e.routes;
-            const summary = routes[0].summary;
-            console.log(`Distancia: ${summary.totalDistance} m`);
-            console.log(`Duración: ${summary.totalTime} s`);
-          });
-        },
-        (error) => {
-          console.error('Error al obtener la ubicación del usuario', error);
-        }
-      );
-    } else {
-      console.error('Geolocalización no está soportada por este navegador.');
+            // Marcador en el destino (como punto/círculo)
+            const destinationMarker = L.circleMarker(
+              [destinationLat, destinationLng],
+              {
+                radius: 8,
+                color: 'red',
+                fillColor: '#f44336',
+                fillOpacity: 0.8,
+              }
+            ).addTo(map);
+            // Ruta desde tu ubicación al destino
+            L.Routing.control({
+              waypoints: [
+                L.latLng(userLat, userLng),
+                L.latLng(destinationLat, destinationLng),
+              ],
+              routeWhileDragging: true,
+              lineOptions: {
+                styles: [{ color: 'black', weight: 6 }],
+                extendToWaypoints: false,
+                missingRouteTolerance: 0,
+              },
+              show: true,
+              createMarker: () => null, // 👈 eliminar marcadores por defecto
+            } as any).addTo(map);
+            this.loading = false;
+          },
+          (error) => {
+            console.error('Error obteniendo tu ubicación:', error);
+            alert(
+              'No se pudo obtener tu ubicación. Asegúrate de permitir el acceso.'
+            );
+            this.loading = false;
+          }
+        );
+      } else {
+        alert('Tu navegador no soporta geolocalización.');
+        this.loading = false;
+      }
     }
-  }
-}
-
-  initMap(L: any) {
-    const lat = this.lat ?? 9.9387;
-    const lng = this.lng ?? -84.1072;
-
-    this.map = new L.Map('mapReport', {
-      zoomControl: true,
-      maxZoom: 20,
-      minZoom: 2,
-      center: L.LatLng(lat, lng),
-      zoom: 15,
-    });
-
-    this.map.zoomControl.setPosition('bottomright');
-
-    L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&hl=tr&x={x}&y={y}&z={z}', {
-      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-      maxNativeZoom: 20,
-      zIndex: 0,
-      maxZoom: 20,
-    }).addTo(this.map);
-
-    this.marker = L.marker([this.lat, this.lng], { draggable: false }).addTo(this.map);
-
-    setTimeout(() => {
-      this.map.invalidateSize();
-    }, 300);
-  }
-
-  renderMarker(L: any) {
-    this.marker.setLatLng(L.LatLng(this.lat, this.lng));
-    this.map.panTo( L.LatLng(this.lat, this.lng));
-    this.router.navigate([], {
-      queryParams: { lat: this.lat, lng: this.lng },
-      relativeTo: this.route,
-    });
   }
 }

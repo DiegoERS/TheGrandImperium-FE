@@ -61,6 +61,12 @@
       </a>
     </li>
 
+    <li [class.active]="activePageName === 'caracteristicas'">
+      <a routerLink="/admin/update-features" routerLinkActive="router-link-active" class="button">
+        Administrar caracteristicas
+      </a>
+    </li>
+
     <li [class.active]="activePageName === 'admin-reservaion'">
       <a routerLink="/admin/admin-reservation" routerLinkActive="router-link-active" class="button">
         Administrar reservación
