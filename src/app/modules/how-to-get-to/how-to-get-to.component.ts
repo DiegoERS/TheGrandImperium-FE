@@ -34,6 +34,11 @@ export class HowToGetToComponent implements AfterViewInit {
       const L = await import('leaflet');
       await import('leaflet-routing-machine');
 
+      // Asegura que L.Routing esté disponible
+      if (!L.Routing && (window as any).L && (window as any).L.Routing) {
+        L.Routing = (window as any).L.Routing;
+    }
+
       const destinationLat = 10.296854045618298;
       const destinationLng = -85.83878938212567;
 
