@@ -1,16 +1,17 @@
-<div *ngIf="loading" class="spinner-container">
-  <mat-spinner diameter="80" color="primary"></mat-spinner>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>
+
+<div *ngIf="true; else loading" class="how-to-get-to-container">
+  <h1 class="titulo-como-llegar">
+    {{ pageInformation?.subtitle }}
+  </h1>
+  <p class="description">
+    {{ pageInformation?.description }}
+  </p>
+  <div id="map" style="height: 400px;"></div>
 </div>
 
-
-<div *ngIf="!loading" class="how-to-get-to-container">
-    <div class="info">
-      <h2 class="titulo-como-llegar">{{pageInformation?.subtitle}} </h2>
-      <p>
-        {{pageInformation?.description}}
-      </p>
-    </div>
-
-    <div id="mapReport" style="height: 500px;"></div>
-  </div>
-
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

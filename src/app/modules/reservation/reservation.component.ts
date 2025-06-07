@@ -137,8 +137,20 @@ export class ReservationComponent implements OnInit {
 
     if (promo) descuento += promo.discount;
 
-    const temporada = this.temporadas.find((t) => t.isActive);
-    if (temporada) descuento += temporada.percentageChange;
+    // 🔽 MODIFICADO: validar si cae dentro del rango de una temporada activa
+  const temporada = this.temporadas.find((t) => {
+    if (!t.isActive || !this.fechaEntrada || !this.fechaSalida) return false;
+
+    const start = new Date(t.startDate);
+    const end = new Date(t.endDate);
+
+    const entradaDentro = this.fechaEntrada >= start && this.fechaEntrada <= end;
+    const salidaDentro = this.fechaSalida >= start && this.fechaSalida <= end;
+
+    return entradaDentro || salidaDentro;
+  });
+
+  if (temporada) descuento += temporada.percentageChange; // ✅ aplica si se encuentra en el rango
 
     return precio * (1 - descuento / 100);
   }
