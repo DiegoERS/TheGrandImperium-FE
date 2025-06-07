@@ -19,7 +19,7 @@
           <div class="facility-features">
             <h4>Características:</h4>
             <ul>
-              <li *ngFor="let feature of facility.features">{{ feature }}</li>
+              <li *ngFor="let feature of facility.features">{{ feature.name }}</li>
             </ul>
           </div>
           <p *ngIf="facility.schedule" class="facility-schedule">

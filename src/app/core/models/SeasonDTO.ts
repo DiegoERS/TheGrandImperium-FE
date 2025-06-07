@@ -3,4 +3,6 @@ export interface SeasonDTO {
     name: string;
     percentageChange: number;
     isActive: boolean;
+    startDate: string;
+    endDate: string;
 }
