@@ -25,6 +25,7 @@ import { AdminReservationComponent } from './modules/admin-reservation/admin-res
 import { UpdateHomeComponent } from './modules/update-home/update-home.component';
 import { AdvertisingComponent } from './modules/advertising/advertising.component';
 import { UpdateFacilitiesComponent } from './modules/update-facilities/update-facilities.component';
+import { UpdateFeaturesComponent } from './modules/update-features/update-features.component';
 
 
 export const routes: Routes = [{
@@ -57,7 +58,8 @@ export const routes: Routes = [{
       { path: 'update-facilities/:id', component: UpdateFacilitiesComponent, canActivate:[authGuard] },
       { path: 'update-home/:id', component: UpdateHomeComponent, canActivate:[authGuard] },
       { path: 'admin-reservation', component: AdminReservationComponent, canActivate: [authGuard] },
-      { path: 'advertising', component: AdvertisingComponent }
+      { path: 'advertising', component: AdvertisingComponent, canActivate: [authGuard] },
+      {path: 'update-features', component: UpdateFeaturesComponent, canActivate:[authGuard] }, // Aquí puedes agregar la lógica de autenticación si es necesario
 
     ]
   },
