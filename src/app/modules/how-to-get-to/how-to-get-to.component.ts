@@ -51,6 +51,11 @@ export class HowToGetToComponent implements AfterViewInit {
             const userLat = position.coords.latitude;
             const userLng = position.coords.longitude;
 
+            const mapContainer = document.getElementById('map');
+            if (mapContainer && (mapContainer as any)._leaflet_id) {
+              (mapContainer as any)._leaflet_id = null;
+            }
+
             const map = L.map('map').setView([userLat, userLng], 14);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
