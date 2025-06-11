@@ -1,4 +1,4 @@
-import { Component, OnInit,inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RoomService } from '../../core/services/room.service';
 import { RoomsDTO } from '../../core/models/RoomsDTO';
 import { roomTypeDTO } from '../../core/models/RoomType.DTO';
@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RoomTypeService } from '../../core/services/roomType.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-hotelrooms',
@@ -62,7 +63,7 @@ export class AdminHotelRoomsComponent implements OnInit {
   constructor(private roomService: RoomService) {}
 
   ngOnInit(): void {
-   this.roomTypeService.getAll().subscribe({
+    this.roomTypeService.getAll().subscribe({
       next: (data: roomTypeDTO[]) => {
         this.roomTypes = data;
         if (this.roomTypes.length > 0) {
@@ -70,8 +71,8 @@ export class AdminHotelRoomsComponent implements OnInit {
           this.onRoomChange();
         }
       }
-    })
-  this.loadRooms();
+    });
+    this.loadRooms();
   }
 
   loadRooms(): void {
@@ -81,21 +82,41 @@ export class AdminHotelRoomsComponent implements OnInit {
     });
   }
 
-
-
   createRoom(): void {
-    console.log('Datos enviados:', this.newRoom);
+    const roomNumber = this.newRoom.roomNumber;
+    const duplicate = this.rooms.find(room => room.roomNumber === roomNumber);
+
+    if (duplicate) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Ya existe una habitación con ese número.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
+    }
 
     this.newRoom.roomTypeDTO = this.selectedRoomType;
+
     this.roomService.create(this.newRoom).subscribe({
       next: (id) => {
-        console.log('Habitación creada con ID:', id);
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Habitación creada correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
         this.loadRooms();
         this.resetNewRoom();
       },
       error: err => {
         console.error('Error al crear habitación:', err);
-        alert('Error al crear habitación. Revisa la consola.');
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo crear la habitación.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
       }
     });
   }
@@ -106,28 +127,74 @@ export class AdminHotelRoomsComponent implements OnInit {
 
   updateRoom(): void {
     if (!this.selectedRoom) return;
-    const roomNumber = this.selectedRoom.roomNumber;
-    const duplicate = this.rooms.find(room => room.roomNumber === roomNumber) as RoomsDTO;
-if(duplicate){
 
-  console.error('Error al actualizar habitación numero de habitacion existente');
-  return;
-}
+    const roomNumber = this.selectedRoom.roomNumber;
+    const duplicate = this.rooms.find(room => room.roomNumber === roomNumber);
+
+    if (duplicate) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Ya existe una habitación con ese número.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
+    }
+
     this.roomService.update(this.selectedRoom).subscribe({
       next: () => {
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Habitación actualizada correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
         this.loadRooms();
         this.selectedRoom = null;
       },
-      error: err => console.error('Error al actualizar habitación', err)
+      error: err => {
+        console.error('Error al actualizar habitación', err);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo actualizar la habitación.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }
     });
   }
 
   deleteRoom(id: number): void {
-    if (!confirm('¿Desea eliminar esta habitación?')) return;
-
-    this.roomService.delete(id).subscribe({
-      next: () => this.loadRooms(),
-      error: err => console.error('Error al eliminar habitación', err)
+    Swal.fire({
+      title: '¿Está seguro?',
+      text: 'Esta acción eliminará la habitación de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.roomService.delete(id).subscribe({
+          next: () => {
+            Swal.fire({
+              title: 'Eliminado',
+              text: 'Habitación eliminada correctamente.',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
+            this.loadRooms();
+          },
+          error: err => {
+            console.error('Error al eliminar habitación', err);
+            Swal.fire({
+              title: 'Error',
+              text: 'No se pudo eliminar la habitación.',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+        });
+      }
     });
   }
 
@@ -156,9 +223,9 @@ if(duplicate){
   cancelarEdicion(): void {
     this.selectedRoom = null;
   }
-    onRoomChange() {
+
+  onRoomChange(): void {
     const id = Number(this.selectedRoomTypeId);
     this.selectedRoomType = this.roomTypes.find(room => room.roomTypeId === id) as roomTypeDTO;
   }
-
 }
