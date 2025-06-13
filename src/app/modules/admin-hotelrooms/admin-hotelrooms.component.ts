@@ -34,12 +34,17 @@ import Swal from 'sweetalert2';
   ],
 })
 export class AdminHotelRoomsComponent implements OnInit {
+
   rooms: RoomsDTO[] = [];
   selectedRoom: RoomsDTO | null = null;
   selectedRoomTypeId: number | null = null;
+  selectedRoomTypeIdEdit: number | null = null;
   selectedRoomType: roomTypeDTO = {} as roomTypeDTO;
+  selectedRoomTypeEdit: roomTypeDTO = {} as roomTypeDTO;
   private roomTypeService = inject(RoomTypeService);
   roomTypes: roomTypeDTO[] = [];
+  mostrarFormularioNueva: boolean = false;
+    mostrarFormularioEdicion: boolean = false;
   newRoom: RoomsDTO = {
     roomId: 0,
     roomNumber: '',
@@ -63,6 +68,7 @@ export class AdminHotelRoomsComponent implements OnInit {
   constructor(private roomService: RoomService) {}
 
   ngOnInit(): void {
+
     this.roomTypeService.getAll().subscribe({
       next: (data: roomTypeDTO[]) => {
         this.roomTypes = data;
@@ -99,7 +105,7 @@ export class AdminHotelRoomsComponent implements OnInit {
     this.newRoom.roomTypeDTO = this.selectedRoomType;
 
     this.roomService.create(this.newRoom).subscribe({
-      next: (id) => {
+      next: () => {
         Swal.fire({
           title: 'Éxito',
           text: 'Habitación creada correctamente.',
@@ -123,46 +129,52 @@ export class AdminHotelRoomsComponent implements OnInit {
 
   selectRoomForEdit(room: RoomsDTO): void {
     this.selectedRoom = JSON.parse(JSON.stringify(room));
+    this.selectedRoomTypeId = this.selectedRoom?.roomTypeDTO.roomTypeId ?? null;
   }
 
   updateRoom(): void {
-    if (!this.selectedRoom) return;
+  if (!this.selectedRoom) return;
 
-    const roomNumber = this.selectedRoom.roomNumber;
-    const duplicate = this.rooms.find(room => room.roomNumber === roomNumber);
+  const roomNumber = this.selectedRoom.roomNumber;
+  const duplicate = this.rooms.find(
+  room => room.roomNumber === roomNumber && room.roomId !== this.selectedRoom?.roomId
 
-    if (duplicate) {
+  );
+
+  if (duplicate) {
+    Swal.fire({
+      title: 'Error',
+      text: 'Ya existe una habitación con ese número.',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+    return;
+  }
+  console.log('Enviando datos para actualización:', this.selectedRoom);
+  this.selectedRoom.roomTypeDTO = this.selectedRoomTypeEdit;
+  this.roomService.update(this.selectedRoom).subscribe({
+    next: () => {
+      Swal.fire({
+        title: 'Éxito',
+        text: 'Habitación actualizada correctamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+      this.loadRooms();
+      this.selectedRoom = null;
+    },
+    error: err => {
+      console.error('Error al actualizar habitación', err);
       Swal.fire({
         title: 'Error',
-        text: 'Ya existe una habitación con ese número.',
+        text: 'No se pudo actualizar la habitación.',
         icon: 'error',
         confirmButtonText: 'Aceptar'
       });
-      return;
     }
+  });
+}
 
-    this.roomService.update(this.selectedRoom).subscribe({
-      next: () => {
-        Swal.fire({
-          title: 'Éxito',
-          text: 'Habitación actualizada correctamente.',
-          icon: 'success',
-          confirmButtonText: 'Aceptar'
-        });
-        this.loadRooms();
-        this.selectedRoom = null;
-      },
-      error: err => {
-        console.error('Error al actualizar habitación', err);
-        Swal.fire({
-          title: 'Error',
-          text: 'No se pudo actualizar la habitación.',
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
-      }
-    });
-  }
 
   deleteRoom(id: number): void {
     Swal.fire({
@@ -220,12 +232,18 @@ export class AdminHotelRoomsComponent implements OnInit {
     };
   }
 
-  cancelarEdicion(): void {
-    this.selectedRoom = null;
-  }
+cancelarEdicion() {
+  this.mostrarFormularioEdicion = false;
+  this.selectedRoom = null;
+}
 
   onRoomChange(): void {
     const id = Number(this.selectedRoomTypeId);
     this.selectedRoomType = this.roomTypes.find(room => room.roomTypeId === id) as roomTypeDTO;
   }
+    onRoomChangeEdit(): void {
+    const id = Number(this.selectedRoomTypeIdEdit);
+    this.selectedRoomTypeEdit = this.roomTypes.find(room => room.roomTypeId === id) as roomTypeDTO;
+  }
+
 }
