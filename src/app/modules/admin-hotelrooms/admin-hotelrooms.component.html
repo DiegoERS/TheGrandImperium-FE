@@ -1,9 +1,10 @@
 <div class="container">
   <h2>Administración de Habitaciones</h2>
 
+  <!-- Formulario para AGREGAR habitación -->
+  <div *ngIf="mostrarFormularioNueva" class="form-group mb-4">
+    <h3>Nueva Habitación</h3>
 
-  <div class="form-group">
-      <h3>Nueva Habitación</h3>
     <label for="roomNumber">Número de habitación</label>
     <input
       id="roomNumber"
@@ -11,21 +12,80 @@
       placeholder="Ej: 101"
       class="form-control"
     />
+
     <div class="form-check my-2">
-      <input id="isActive" type="checkbox" [(ngModel)]="newRoom.isActive" class="form-check-input" />
+      <input
+        id="isActive"
+        type="checkbox"
+        [(ngModel)]="newRoom.isActive"
+        class="form-check-input"
+      />
       <label for="isActive" class="form-check-label">Activa</label>
     </div>
-  <div>
-    <label for="roomTypeName">Nombre del tipo</label>
-    <select id="room-select" [(ngModel)]="selectedRoomTypeId" (change)="onRoomChange()" name="roomSelect">
-    <option *ngFor="let roomType of roomTypes" [value]="roomType.roomTypeId">{{ roomType.name }}</option>
-    </select>
+
+    <div>
+      <label for="roomTypeName">Nombre del tipo</label>
+      <select
+        id="roomTypeName"
+        [(ngModel)]="selectedRoomTypeId"
+        (change)="onRoomChange()"
+        class="form-control"
+      >
+        <option *ngFor="let roomType of roomTypes" [value]="roomType.roomTypeId">
+          {{ roomType.name }}
+        </option>
+      </select>
+    </div>
+
+    <button (click)="createRoom(); mostrarFormularioNueva = false;" class="btn btn-primary mt-2">
+      Agregar habitación
+    </button>
+    <button (click)="mostrarFormularioNueva = false" class="btn btn-secondary mt-2 ml-2">
+      Cancelar
+    </button>
   </div>
 
-    <button (click)="createRoom()" class="btn btn-success mt-2">Agregar habitación</button>
+  <!-- Formulario de EDICIÓN -->
+  <div *ngIf="mostrarFormularioEdicion && selectedRoom" class="edit-form mb-4">
+    <h3>Editar Habitación</h3>
+
+    <label for="editRoomNumber">Número de habitación</label>
+    <input
+      id="editRoomNumber"
+      [(ngModel)]="selectedRoom.roomNumber"
+      placeholder="Ej: 101"
+      class="form-control"
+    />
+
+    <div class="form-check my-2">
+      <input
+        id="editIsActive"
+        type="checkbox"
+        [(ngModel)]="selectedRoom.isActive"
+        class="form-check-input"
+      />
+      <label for="editIsActive" class="form-check-label">Activa</label>
+    </div>
+
+    <div>
+      <label for="editRoomTypeName">Nombre del tipo</label>
+      <select
+        id="editRoomTypeName"
+        [(ngModel)]="selectedRoomTypeIdEdit"
+        (change)="onRoomChangeEdit()"
+        class="form-control"
+      >
+        <option *ngFor="let roomType of roomTypes" [value]="roomType.roomTypeId">
+          {{ roomType.name }}
+        </option>
+      </select>
+    </div>
+
+    <button class="btn btn-success mt-2" (click)="updateRoom()">Guardar</button>
+    <button class="btn btn-secondary mt-2" (click)="cancelarEdicion()">Cancelar</button>
   </div>
 
-
+  <!-- Tabla de habitaciones -->
   <h3>Lista de Habitaciones</h3>
   <table class="table table-bordered">
     <thead>
@@ -44,38 +104,18 @@
         <td>{{ room.isActive ? 'Sí' : 'No' }}</td>
         <td>{{ room.roomTypeDTO.name }}</td>
         <td>
-          <button class="btn btn-primary" (click)="selectRoomForEdit(room)">Editar</button>
-          <button class="btn btn-danger" (click)="deleteRoom(room.roomId)">Eliminar</button>
+          <button
+            class="btn btn-primary btn-sm"
+            (click)="selectRoomForEdit(room); mostrarFormularioEdicion = true"
+          >
+            Editar
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="deleteRoom(room.roomId)">Eliminar</button>
+          <button class="btn btn-success btn-sm ml-1" (click)="mostrarFormularioNueva = true">
+            Agregar
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
-
-
-  <div *ngIf="selectedRoom" class="edit-form mt-4">
-    <h3>Editar Habitación</h3>
-
-    <label for="editRoomNumber">Número de habitación</label>
-    <input
-      id="editRoomNumber"
-      [(ngModel)]="selectedRoom.roomNumber"
-      placeholder="Ej: 101"
-      class="form-control"
-    />
-
-    <div class="form-check my-2">
-      <input id="editIsActive" type="checkbox" [(ngModel)]="selectedRoom.isActive" class="form-check-input" />
-      <label for="editIsActive" class="form-check-label">Activa</label>
-    </div>
-
-
-    <div>
-    <label for="editRoomTypeName">Nombre del tipo</label>
-    <select id="room-select" [(ngModel)]="selectedRoomTypeId" (change)="onRoomChange()" name="roomSelect">
-    <option *ngFor="let roomType of roomTypes" [value]="roomType.roomTypeId">{{ roomType.name }}</option>
-    </select>
-    </div>
-    <button class="btn btn-success mt-2" (click)="updateRoom()">Guardar</button>
-    <button class="btn btn-secondary mt-2" (click)="cancelarEdicion()">Cancelar</button>
-  </div>
 </div>
