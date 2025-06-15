@@ -1,132 +1,363 @@
-/* Contenedor principal */
-.modify-room-container {
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins Simplificados
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
 }
 
-/* Título */
-.modificar-habitacion {
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 24px;
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
 }
 
-/* Selector de habitación */
-.room-selector {
-  margin-bottom: 16px;
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.room-selector label {
-  font-weight: bold;
-  margin-right: 8px;
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.room-selector select {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Información de la habitación */
-.room-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.room-info label {
-  font-weight: bold;
-  margin-right: 8px;
-}
-
-.room-info span,
-.room-info input {
-  font-size: 16px;
-}
-
-.room-info input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 200px;
-}
-
-/* Descripción */
-.room-description {
-  margin-bottom: 16px;
-}
-
-.room-description label {
-  font-weight: bold;
+// Main Styles
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  padding: 20px;
   display: block;
-  margin-bottom: 8px;
 }
 
-.room-description textarea {
-  width: 100%;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: none;
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
 }
 
-/* Imágenes */
-.room-images {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
+// Header
+.header {
+  @include gradient($primary);
+  padding: 30px;
+  text-align: center;
+  color: $white;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 300;
+    i { margin-right: 15px; }
+  }
+
+  p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+  }
 }
 
-.current-image,
-.upload-image {
-  width: 48%;
+.content {
+  padding: 40px;
 }
 
-.current-image img {
-  width: 100%;
-  height: auto;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.upload-image input {
-  width: 100%;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* Botones de acción */
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.action-buttons button {
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
+// Buttons
+.btn {
+  padding: 12px 30px;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px $shadow;
+  @include hover-lift;
+
+  &.btn-primary {
+    @include gradient($primary);
+    color: $white;
+  }
+
+  &.btn-success {
+    @include gradient($success);
+    color: $white;
+  }
+
+  &.btn-danger {
+    @include gradient($danger);
+    color: $white;
+  }
+
+  &.btn-secondary {
+    @include gradient($secondary);
+    color: $white;
+  }
 }
 
-.accept-button {
-  background-color: #28a745;
-  color: white;
+// Form Sections
+.form-section,
+.image-section,
+.uploaded-urls {
+  @include card;
+  margin-bottom: 30px;
 }
 
-.cancel-button {
-  background-color: #dc3545;
-  color: white;
+.action-section {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+// Form Layout
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+// Labels & Inputs
+label {
+  font-weight: 600;
+  color: $dark;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  i {
+    color: $primary;
+    width: 16px;
+  }
+}
+
+input, select, textarea {
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: $white;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+// Images
+.image-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.image-container {
+  text-align: center;
+}
+
+.image-preview {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px $shadow;
+  border: 3px solid $light;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+// File Upload
+.file-upload {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  border: 2px dashed $primary;
+  border-radius: 10px;
+  background: rgba($primary, 0.05);
+  color: $primary;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  
+
+&:hover {
+  background: rgba($primary, 0.1); // esto sí está bien
+  border-color: color.adjust($primary, $lightness: -10%);
+}
+}
+
+// Loading Spinner
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: $primary;
+  font-weight: 600;
+  padding: 15px 25px;
+  background: rgba($primary, 0.1);
+  border-radius: 50px;
+  margin: 20px 0;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba($primary, 0.3);
+  border-top: 2px solid $primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+// Section Titles
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $dark;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  i {
+    color: $primary;
+  }
+}
+
+// Action Buttons
+.buttons-section {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+// Uploaded URLs
+.uploaded-urls {
+  h4 {
+    color: $success;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 8px;
+      
+      a {
+        color: $primary;
+        text-decoration: none;
+        word-break: break-all;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .content { padding: 20px; }
+  .form-row, .image-grid { grid-template-columns: 1fr; gap: 20px; }
+  
+  .buttons-section {
+    flex-direction: column;
+    align-items: center;
+    
+    .btn {
+      width: 100%;
+      max-width: 300px;
+      justify-content: center;
+    }
+  }
+
+  .header {
+    padding: 20px;
+    h1 { font-size: 2rem; }
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 { font-size: 1.8rem; }
+  .section-title { font-size: 1.1rem; }
+  .form-section, .image-section { padding: 20px; }
 }
