@@ -1,322 +1,504 @@
-.advertising-container {
-  max-width: 800px;
-  margin: 32px auto;
-  padding: 24px;
-  border: 1px solid #bbb;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-  font-family: Arial, sans-serif;
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+$shadow: rgba(0, 0, 0, 0.1);
+$error: #dc3545;
+
+// Mixins
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
 }
 
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Main Container
+.advertising-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
+}
+
+// Title Header
 .advertising-title {
-  text-align: left;
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 24px;
-  color: #333;
+  @include gradient($primary);
+  color: $white;
+  font-size: 2.5rem;
+  font-weight: 300;
+  text-align: center;
+  padding: 30px;
+  margin: 0;
+  position: relative;
+
+  &::before {
+    content: '\f1fc';  // Font Awesome ad icon
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-right: 15px;
+  }
+}
+
+// Form Styles
+form {
+  @include card;
+  margin: 40px;
+  margin-bottom: 30px;
 }
 
 .form-group {
-  margin-bottom: 18px;
- 
+  margin-bottom: 25px;
+
   label {
+    font-weight: 600;
+    color: $dark;
+    margin-bottom: 8px;
     display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
-    color: #555;
+    font-size: 0.95rem;
   }
- 
+
   input[type="text"],
   input[type="url"] {
     width: 100%;
-    padding: 8px;
-    font-size: 15px;
-    border: 1px solid #bbb;
-    border-radius: 4px;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: $white;
+    font-family: inherit;
     box-sizing: border-box;
-   
+
     &:focus {
-      border-color: #007bff;
       outline: none;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      transform: translateY(-1px);
     }
-   
-    &.invalid {
-      border-color: #dc3545;
+
+    &:invalid {
+      border-color: $error;
     }
   }
 }
 
+// Error Messages
 .error-message {
-  color: #dc3545;
-  font-size: 14px;
-  margin-top: 4px;
+  color: $error;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &::before {
+    content: '\f071';  // Font Awesome warning icon
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
 }
 
-// Estilos para el input de archivo personalizado
+// File Input Styling
 .file-input-container {
   position: relative;
-  display: inline-block;
-  width: 100%;
+  display: block;
 }
 
 .file-input {
   position: absolute;
-  left: -9999px;
   opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 
 .file-input-label {
   display: flex;
   align-items: center;
-  padding: 8px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  background: #fff;
+  justify-content: space-between;
+  padding: 15px;
+  border: 2px dashed $primary;
+  border-radius: 10px;
+  background: rgba($primary, 0.05);
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  
+  transition: all 0.3s ease;
+
   &:hover {
-    border-color: #007bff;
-  }
-  
-  &:focus-within {
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-  }
+  background: rgba($primary, 0.1); // esto sí está bien
+  border-color: color.adjust($primary, $lightness: -10%);
+}
 }
 
 .file-input-text {
-  flex: 1;
-  font-size: 15px;
-  color: #555;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: $dark;
+  font-weight: 500;
 }
 
 .file-input-button {
-  background: #007bff;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 3px;
-  font-size: 14px;
-  margin-left: 8px;
-  flex-shrink: 0;
+  background: $primary;
+  color: $white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .file-input-info {
-  font-size: 12px;
-  color: #6c757d;
-  margin-top: 4px;
+  font-size: 0.8rem;
+  color: $secondary;
+  margin-top: 5px;
+  font-style: italic;
 }
 
+// Image Preview
 .image-preview {
-  margin-top: 8px;
   position: relative;
   display: inline-block;
- 
+  max-width: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px $shadow;
+
   img {
-    max-width: 200px;
-    max-height: 150px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
     display: block;
   }
-  
+
   .remove-image-button {
     position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #dc3545;
-    color: white;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba($danger, 0.9);
+    color: $white;
     border: none;
-    cursor: pointer;
-    font-size: 16px;
+    border-radius: 50%;
+    font-size: 18px;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    
+    cursor: pointer;
+    transition: all 0.3s ease;
+
     &:hover {
-      background: #c82333;
+      background: $danger;
+      transform: scale(1.1);
     }
   }
 }
 
+// Action Buttons
 .action-buttons {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-bottom: 24px;
- 
-  button {
-    padding: 8px 20px;
-    font-size: 15px;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-   
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-  }
- 
-  .accept-button {
-    background: #28a745;
-    color: #fff;
-   
-    &:hover:not(:disabled) {
-      background: #218838;
-    }
-  }
- 
-  .cancel-button {
-    background: #6c757d;
-    color: #fff;
-   
-    &:hover {
-      background: #5a6268;
-    }
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.cancel-button,
+.accept-button,
+.edit-button,
+.delete-button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px $shadow;
+  @include hover-lift;
+  transition: all 0.3s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 0 2px 8px $shadow;
   }
 }
 
+.cancel-button {
+  @include gradient($secondary);
+  color: $white;
+
+  &::before {
+    content: '\f00d';  // Font Awesome times icon
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
+}
+
+.accept-button {
+  @include gradient($success);
+  color: $white;
+
+  &::before {
+    content: '\f0c7';  // Font Awesome save icon
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
+}
+
+.edit-button {
+  @include gradient($primary);
+  color: $white;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+
+  &::before {
+    content: '\f044';  // Font Awesome edit icon
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
+}
+
+.delete-button {
+  @include gradient($danger);
+  color: $white;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+
+  &::before {
+    content: '\f2ed';  // Font Awesome trash icon
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
+}
+
+// Loading Indicator
 .loading-indicator {
-  text-align: center;
-  padding: 20px;
-  font-size: 16px;
-  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: $primary;
+  font-weight: 600;
+  padding: 15px 25px;
+  background: rgba($primary, 0.1);
+  border-radius: 50px;
+  margin: 20px 40px;
+
+  &::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba($primary, 0.3);
+    border-top: 2px solid $primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
 }
 
+// Table Styles
 .advertising-table {
   width: 100%;
+  margin: 0 40px;
+  margin-bottom: 40px;
   border-collapse: collapse;
-  margin-top: 24px;
- 
-  th, td {
-    border: 1px solid #bbb;
-    padding: 8px 12px;
-    text-align: left;
-    vertical-align: top;
-  }
- 
-  th {
-    background: #f2f2f2;
-    font-weight: bold;
-    color: #333;
-  }
- 
-  tbody tr:nth-child(even) {
-    background: #f9f9f9;
-  }
- 
-  tbody tr:hover {
-    background: #f0f8ff;
-  }
- 
-  button {
-    margin-right: 6px;
-    padding: 4px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s;
-  }
- 
-  .edit-button {
-    background: #007bff;
-    color: white;
-   
-    &:hover {
-      background: #0056b3;
+  @include card;
+  overflow: hidden;
+
+  thead {
+    @include gradient($primary);
+
+    th {
+      color: $white;
+      font-weight: 600;
+      padding: 20px 15px;
+      text-align: left;
+      font-size: 1rem;
     }
   }
- 
-  .delete-button {
-    background: #dc3545;
-    color: white;
-   
-    &:hover {
-      background: #c82333;
+
+  tbody {
+    tr {
+      transition: background-color 0.3s ease;
+
+      &:nth-child(even) {
+        background-color: rgba($light, 0.5);
+      }
+
+      &:hover {
+        background-color: rgba($primary, 0.05);
+      }
+
+      td {
+        padding: 15px;
+        border-bottom: 1px solid rgba($secondary, 0.2);
+        vertical-align: middle;
+      }
     }
   }
 }
 
+// Table Image
+.table-image {
+  img {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px $shadow;
+  }
+}
+
+.no-image {
+  color: $secondary;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+// Link Preview
 .link-preview {
-  color: #007bff;
+  color: $primary;
   text-decoration: none;
- 
+  font-weight: 500;
+
   &:hover {
     text-decoration: underline;
   }
 }
 
-.table-image {
-  img {
-    max-width: 80px;
-    max-height: 60px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-  }
-}
-
-.no-image {
-  color: #6c757d;
-  font-style: italic;
-  font-size: 14px;
-}
-
+// No Data Message
 .no-data {
   text-align: center;
+  color: $secondary;
+  font-size: 1.2rem;
+  margin: 60px 40px;
   padding: 40px;
-  color: #6c757d;
-  font-size: 16px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  margin-top: 24px;
+  border: 2px dashed rgba($secondary, 0.3);
+  border-radius: 15px;
+  background: rgba($light, 0.3);
+
+  &::before {
+    content: '\f05a';  // Font Awesome info icon
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: $primary;
+  }
 }
 
-// Responsive design
+// Responsive Design
 @media (max-width: 768px) {
   .advertising-container {
-    margin: 16px;
-    padding: 16px;
+    margin: 10px;
+    border-radius: 15px;
   }
- 
-  .advertising-table {
-    font-size: 14px;
-   
-    th, td {
-      padding: 6px 8px;
-    }
+
+  .advertising-title {
+    font-size: 2rem;
+    padding: 20px;
   }
- 
+
+  form {
+    margin: 20px;
+    padding: 20px;
+  }
+
   .action-buttons {
     flex-direction: column;
-   
-    button {
+    align-items: center;
+
+    .cancel-button,
+    .accept-button {
       width: 100%;
-      margin-bottom: 8px;
+      max-width: 300px;
+      justify-content: center;
     }
   }
-  
-  .file-input-label {
-    flex-direction: column;
-    align-items: stretch;
+
+  .advertising-table {
+    margin: 20px;
+    font-size: 0.9rem;
+
+    th, td {
+      padding: 10px 8px;
+    }
+
+    .edit-button,
+    .delete-button {
+      padding: 6px 15px;
+      font-size: 0.8rem;
+    }
   }
-  
-  .file-input-button {
-    margin-left: 0;
-    margin-top: 8px;
-    text-align: center;
+
+  .no-data {
+    margin: 20px;
+    padding: 20px;
+    font-size: 1rem;
   }
+}
+
+@media (max-width: 480px) {
+  .advertising-title {
+    font-size: 1.8rem;
+  }
+
+  .advertising-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+// Host Styles
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
 }

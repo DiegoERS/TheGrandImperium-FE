@@ -10,15 +10,31 @@ import e from 'express';
 })
 
 export class RoomTypeService {
-    private readonly apiUrl = `${environment.apiUrl}/RoomType`;
+  private readonly apiUrl = `${environment.apiUrl}/RoomType`;
   private http = inject(HttpClient);
 
-getAll(): Observable<roomTypeDTO[]> {
+  getAll(): Observable<roomTypeDTO[]> {
     return this.http.get<roomTypeDTO[]>(this.apiUrl);
   }
 
-update(RoomType: roomTypeDTO): Observable<number> {
-    return this.http.put<number>(`${this.apiUrl}`, RoomType);
-  } 
+
+  getById(roomTypeId: number): Observable<roomTypeDTO> {
+    return this.http.get<roomTypeDTO>(`${this.apiUrl}/${roomTypeId}`);
+  }
+
+  // POST - Crear un nuevo room type
+  create(roomType: roomTypeDTO): Observable<roomTypeDTO> {
+    return this.http.post<roomTypeDTO>(this.apiUrl, roomType);
+  }
+
+  // PUT - Actualizar un room type existente
+  update(roomType: roomTypeDTO): Observable<number> {
+    return this.http.put<number>(this.apiUrl, roomType);
+  }
+
+  // DELETE - Eliminar un room type por ID
+  delete(roomTypeId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${roomTypeId}`);
+  }
 
 }
