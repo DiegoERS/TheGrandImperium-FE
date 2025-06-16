@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild, EventEmitter, Output, Input  } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -11,35 +11,40 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-room',
-  imports: [CommonModule, MatProgressSpinnerModule, FormsModule],
   standalone: true,
+  imports: [CommonModule, MatProgressSpinnerModule, FormsModule],
   templateUrl: './admin-room.component.html',
   styleUrl: './admin-room.component.scss'
 })
 export class AdminRoomComponent implements OnInit {
- 
   @Input() isUploading: boolean = false;
-  loading = true;
+
   private roomService = inject(RoomService);
   private roomTypeService = inject(RoomTypeService);
   private cloudinaryService = inject(CloudinaryService);
 
+  loading = true;
   rooms: roomTypeDTO[] = [];
   selectedRoomId: number | null = null;
   selectedRoom: roomTypeDTO = {} as roomTypeDTO;
   imagePreview: string | ArrayBuffer | null = null;
   selectedImageFile: File = {} as File;
   uploadImage: boolean = false;
+  isCreating: boolean = false;
 
   @ViewChild('uploader') uploaderComponent!: ImageUploaderComponent;
   uploadedUrls: string[] = [];
-  canUploadImage: boolean = true; // Controla la visibilidad del uploader
+  canUploadImage: boolean = true;
 
   ngOnInit(): void {
+    this.loadRooms();
+  }
+
+  loadRooms() {
     this.roomTypeService.getAll().subscribe({
       next: (data: roomTypeDTO[]) => {
         this.rooms = data;
-        if (this.rooms.length > 0) {
+        if (this.rooms.length > 0 && !this.isCreating) {
           this.selectedRoomId = this.rooms[0].roomTypeId;
           this.onRoomChange();
         }
@@ -48,81 +53,120 @@ export class AdminRoomComponent implements OnInit {
     });
   }
 
+startCreating() {
+  this.isCreating = true;
+  this.selectedRoom = {
+    roomTypeId: 0,
+    name: '',
+    basePrice: 0,
+    description: '',
+    features: [
+      {
+        featureId: 0,
+        name: ''
+      }
+    ],
+    roomTypeImageDTO: {
+      roomTypeImageId: 0,
+      imageDTO: {
+        imageId: 0,
+        url: ''
+      }
+    }
+  };
+  this.imagePreview = null;
+  this.uploadedUrls = [];
+  this.selectedImageFile = {} as File;
+  this.uploadImage = false;
+}
+
+
+
+  cancelEdit() {
+    this.isCreating = false;
+    this.selectedRoomId = this.rooms[0]?.roomTypeId || null;
+    this.onRoomChange();
+  }
+
   onRoomChange() {
     const id = Number(this.selectedRoomId);
     this.selectedRoom = this.rooms.find(room => room.roomTypeId === id) as roomTypeDTO;
-    // Cuando cambias de habitación, puedes permitir subir imagen de nuevo
     this.canUploadImage = true;
     this.uploadedUrls = [];
-    this.imagePreview = null; // Reinicia la vista previa de la imagen
+    this.imagePreview = null;
   }
-
-  onImagesChanged(images: File[]) {
-    // Si hay una imagen seleccionada, ocultar el uploader
-    this.canUploadImage = images.length === 0;
-  }
-
-  // ...existing code...
-
-async updateRoomType() {
-
-   Swal.fire({
-    title: 'Enviando...',
-    text: 'Por favor espera mientras procesamos tu acción',
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    showConfirmButton: false,
-    willOpen: () => {
-      Swal.showLoading();
-    },
-    backdrop: true
-  });
-  // Si hay una nueva imagen seleccionada, súbela primero
-  if (this.uploadImage) {
-    
-    this.isUploading = true;
-    try {
-      const url = await this.cloudinaryService.uploadImage(this.selectedImageFile);
-      this.selectedRoom.roomTypeImageDTO.imageDTO.url = url;
-    } catch (error) {
-      console.error('Error al subir la imagen:', error);
-      this.isUploading = false;
-      return;
-    }
-    this.isUploading = false;
-    this.uploadImage = false; // Reinicia el estado de la imagen seleccionada
-  }
-  // Ahora actualiza la habitación en el backend
-  this.roomTypeService.update(this.selectedRoom).subscribe(() => {
-    const index = this.rooms.findIndex(r => r.roomTypeId === this.selectedRoom.roomTypeId);
-    if (index !== -1) {
-      this.rooms[index] = { ...this.selectedRoom };
-      this.imagePreview = null;
-    }
-  });
-  Swal.fire({
-    title: 'Éxito',
-    text: 'La habitación se ha actualizado correctamente',
-    icon: 'success',
-    confirmButtonText: 'Aceptar'
-  });
-}
-
-// ...existing code...
 
   onImageUpload(event: Event): void {
-  this.uploadImage = true; // Marca que se ha seleccionado una nueva imagen
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-    this.selectedImageFile = file; // Guarda el File aquí
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-    };
-    reader.readAsDataURL(file);
+    this.uploadImage = true;
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.selectedImageFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
-}
 
+  async uploadIfNeeded() {
+    if (this.uploadImage) {
+      this.isUploading = true;
+      try {
+        const url = await this.cloudinaryService.uploadImage(this.selectedImageFile);
+        this.selectedRoom.roomTypeImageDTO.imageDTO.url = url;
+      } catch (error) {
+        console.error('Error al subir imagen:', error);
+        Swal.fire('Error', 'No se pudo subir la imagen', 'error');
+        throw error;
+      } finally {
+        this.isUploading = false;
+        this.uploadImage = false;
+      }
+    }
+  }
 
+  async updateRoomType() {
+    Swal.fire({ title: 'Actualizando...', allowOutsideClick: false, showConfirmButton: false, willOpen: () => Swal.showLoading() });
+    try {
+      await this.uploadIfNeeded();
+      this.roomTypeService.update(this.selectedRoom).subscribe(() => {
+        const index = this.rooms.findIndex(r => r.roomTypeId === this.selectedRoom.roomTypeId);
+        if (index !== -1) this.rooms[index] = { ...this.selectedRoom };
+        Swal.fire('Éxito', 'Habitación actualizada correctamente', 'success');
+        this.imagePreview = null;
+      });
+    } catch {}
+  }
+
+  async createRoomType() {
+    Swal.fire({ title: 'Creando...', allowOutsideClick: false, showConfirmButton: false, willOpen: () => Swal.showLoading() });
+    try {
+      await this.uploadIfNeeded();
+      this.roomTypeService.create(this.selectedRoom).subscribe(() => {
+        this.isCreating = false;
+        this.loadRooms();
+        Swal.fire('Éxito', 'Habitación creada correctamente', 'success');
+      });
+    } catch {}
+  }
+
+  deleteRoomType() {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará la habitación.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.roomTypeService.delete(this.selectedRoom.roomTypeId).subscribe(() => {
+          Swal.fire('Eliminado', 'La habitación ha sido eliminada.', 'success');
+          this.loadRooms();
+        });
+      }
+    });
+  }
 }

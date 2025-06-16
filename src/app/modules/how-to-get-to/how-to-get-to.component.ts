@@ -1,15 +1,10 @@
-import {
-  Component,
-  AfterViewInit,
-  Inject,
-  inject,
-  PLATFORM_ID,
-} from '@angular/core';
+import {  Component,  AfterViewInit,  Inject,  inject,  PLATFORM_ID,} from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { PageInformationService } from '../../core/services/page-information.service';
 import { PageInformationDTO } from '../../core/models/PageInformationDTO';
+
 @Component({
   standalone: true,
   selector: 'app-how-to-get-to',
@@ -55,6 +50,11 @@ export class HowToGetToComponent implements AfterViewInit {
           (position) => {
             const userLat = position.coords.latitude;
             const userLng = position.coords.longitude;
+
+            const mapContainer = document.getElementById('map');
+            if (mapContainer && (mapContainer as any)._leaflet_id) {
+              (mapContainer as any)._leaflet_id = null;
+            }
 
             const map = L.map('map').setView([userLat, userLng], 14);
 

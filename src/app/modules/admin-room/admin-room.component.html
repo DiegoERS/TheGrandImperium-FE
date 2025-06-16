@@ -1,57 +1,130 @@
-<div class="modify-room-container">
-  <h2>Modificar Habitación</h2>
-  <!-- Selección de tipo de habitación -->
-  <div class="room-selector">
-    <label for="room-select">Seleccionar Habitación:</label>
-    <select id="room-select" [(ngModel)]="selectedRoomId" (change)="onRoomChange()" name="roomSelect">
-      <option *ngFor="let room of rooms" [value]="room.roomTypeId">{{ room.name }}</option>
-    </select>
+<div class="admin-container">
+  <!-- Header -->
+  <div class="header">
+    <h1><i class="fas fa-bed"></i> Administración de Habitaciones</h1>
+    <p>Gestiona y personaliza los tipos de habitación de tu hotel</p>
   </div>
 
-  <!-- Información de la habitación -->
-  <div class="room-info">
-    <label for="room-name">Nombre:</label>
-    <input id="room-name" type="text" [(ngModel)]="selectedRoom.name" name="roomName" />
+  <div class="content">
+    <!-- Spinner de carga inicial -->
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      Cargando habitaciones...
+    </div>
 
-    <label for="room-price">Tarifa Diaria:</label>
-    <input id="room-price" type="text" [(ngModel)]="selectedRoom.basePrice" name="roomPrice" />
+    <div *ngIf="!loading">
+      <!-- Botón crear nueva habitación -->
+      <div class="action-section">
+        <button class="btn btn-primary" (click)="startCreating()">
+          <i class="fas fa-plus"></i>
+          Crear Nueva Habitación
+        </button>
+      </div>
+
+      <!-- Selector de habitación (visible solo cuando no está creando) -->
+      <div class="form-section" *ngIf="!isCreating && rooms.length > 0">
+        <h3 class="section-title">
+          <i class="fas fa-list"></i>
+          Seleccionar Habitación
+        </h3>
+        <div class="form-group">
+          <label for="room-select">
+            <i class="fas fa-door-open"></i>
+            Habitación:
+          </label>
+          <select id="room-select" [(ngModel)]="selectedRoomId" (change)="onRoomChange()" name="roomSelect">
+            <option *ngFor="let room of rooms" [value]="room.roomTypeId">{{ room.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Información de la habitación -->
+      <div class="form-section" *ngIf="selectedRoom">
+        <h3 class="section-title">
+          <i class="fas fa-info-circle"></i>
+          Información General
+        </h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="room-name">
+              <i class="fas fa-tag"></i>
+              Nombre:
+            </label>
+            <input type="text" id="room-name" [(ngModel)]="selectedRoom.name" name="roomName" placeholder="Nombre de la habitación">
+          </div>
+          <div class="form-group">
+            <label for="room-price">
+              <i class="fas fa-dollar-sign"></i>
+              Tarifa Diaria:
+            </label>
+            <input type="number" id="room-price" [(ngModel)]="selectedRoom.basePrice" name="roomPrice" placeholder="0.00">
+          </div>
+        </div>
+        <div class="form-group full-width">
+          <label for="room-description">
+            <i class="fas fa-align-left"></i>
+            Descripción:
+          </label>
+          <textarea id="room-description" [(ngModel)]="selectedRoom.description" name="roomDescription" placeholder="Describe las características y comodidades de la habitación..."></textarea>
+        </div>
+      </div>
+
+      <!-- Sección de imágenes -->
+      <div class="image-section" *ngIf="selectedRoom">
+        <h3 class="section-title">
+          <i class="fas fa-images"></i>
+          Gestión de Imágenes
+        </h3>
+        <div class="image-grid">
+          <div class="image-container" *ngIf="selectedRoom.roomTypeImageDTO?.imageDTO?.url">
+            <label><i class="fas fa-camera"></i> Imagen Actual:</label>
+            <img [src]="selectedRoom.roomTypeImageDTO.imageDTO.url" alt="Imagen actual" class="image-preview">
+          </div>
+          <div class="image-container" *ngIf="imagePreview">
+            <label><i class="fas fa-eye"></i> Vista Previa:</label>
+            <img [src]="imagePreview" alt="Vista previa" class="image-preview">
+          </div>
+        </div>
+        <div class="file-upload">
+          <input type="file" id="image-upload" accept="image/*" (change)="onImageUpload($event)">
+          <label for="image-upload" class="file-upload-label">
+            <i class="fas fa-cloud-upload-alt"></i>
+            Seleccionar Nueva Imagen
+          </label>
+        </div>
+      </div>
+
+      <!-- Mensaje de carga -->
+      <div *ngIf="isUploading" class="loading-spinner">
+        <div class="spinner"></div>
+        Subiendo imagen...
+      </div>
+
+      <!-- URLs de imágenes subidas -->
+      <div *ngIf="uploadedUrls.length" class="uploaded-urls">
+        <h4><i class="fas fa-check-circle"></i> Imágenes guardadas:</h4>
+        <ul>
+          <li *ngFor="let url of uploadedUrls">
+            <a [href]="url" target="_blank">{{ url }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="buttons-section" *ngIf="selectedRoom">
+        <button class="btn btn-success" (click)="isCreating ? createRoomType() : updateRoomType()">
+          <i class="fas fa-save"></i>
+          {{ isCreating ? 'Crear' : 'Actualizar' }}
+        </button>
+        <button class="btn btn-secondary" (click)="cancelEdit()">
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
+        <button class="btn btn-danger" *ngIf="!isCreating" (click)="deleteRoomType()">
+          <i class="fas fa-trash"></i>
+          Eliminar
+        </button>
+      </div>
+    </div>
   </div>
-
-  <!-- Descripción de la habitación -->
-  <div class="room-description">
-    <label for="description-editor">Descripción:</label>
-    <textarea id="description-editor" rows="5" [(ngModel)]="selectedRoom.description" name="roomDescription"></textarea>
-  </div>
-
-<!-- Imágenes de la habitación -->
-<div class="room-images">
-  <div class="current-image">
-    <label>Imagen actual:</label>
-    <img [src]="selectedRoom.roomTypeImageDTO.imageDTO.url" alt="Imagen actual" class="room-img"/>
-  </div>
-  <div class="current-image " *ngIf="imagePreview">
-    <label>Vista previa:</label>
-    <img [src]="imagePreview" alt="Vista previa de la imagen" class="room-img"/>
-  </div>
-</div>
-
-<!-- Botones de acción y subir imagen -->
-<div class="action-buttons" style="display: flex; align-items: center; gap: 16px;">
-  <button type="button" class="accept-button" (click)="updateRoomType()">Actualizar</button>
-  <div>
-    <label for="image-upload" style="margin-bottom: 0;">Subir nueva imagen:</label>
-    <input id="image-upload" type="file" (change)="onImageUpload($event)" />
-  </div>
-  <button class="cancel-button">Cancelar</button>
-</div>
-
-<div *ngIf="isUploading">Subiendo imagen...</div>
-
-<div *ngIf="uploadedUrls.length">
-  <h4>Imágenes guardadas:</h4>
-  <ul>
-    <li *ngFor="let url of uploadedUrls">
-      <a [href]="url" target="_blank">{{ url }}</a>
-    </li>
-  </ul>
 </div>
