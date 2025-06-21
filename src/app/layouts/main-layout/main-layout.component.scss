@@ -1,0 +1,40 @@
+/* ===== ESTRUCTURA PRINCIPAL ===== */
+#app-hotel {
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.content-oficial {
+  flex: 1;
+  padding-top: 80px; /* Espacio para el navbar fijo */
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 80px);
+}
+
+.content-oficial > * {
+  flex-shrink: 0;
+}
+
+/* Hacer que el contenido principal crezca */
+router-outlet,
+app-advertising {
+  display: block;
+}
+
+/* Footer siempre al final pero fuera del contenido principal */
+app-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
