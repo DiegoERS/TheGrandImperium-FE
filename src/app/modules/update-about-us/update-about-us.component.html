@@ -28,9 +28,19 @@
     </div>
 
     <!-- Agregar nuevas imágenes -->
-    <input type="file" (change)="onImageSelected($event)" multiple />
 
-    <button mat-raised-button color="primary" type="submit">Guardar Cambios</button>
+    <div class="file-upload">
+  <input type="file" id="image-upload" accept="image/*" (change)="onImageSelected($event)" style="display: none;">
+  <label for="image-upload" class="file-upload-label">
+    <i class="fas fa-cloud-upload-alt"></i>
+    Seleccionar Nueva Imagen
+  </label>
+</div>
+
+ <div class="save-button-container">
+  <button mat-raised-button color="primary" type="submit">Guardar Cambios</button>
+</div>
   </form>
 </div>
+
 

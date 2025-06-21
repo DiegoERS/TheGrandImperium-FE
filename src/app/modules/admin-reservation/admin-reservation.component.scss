@@ -1,104 +1,575 @@
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card-shadow {
+  box-shadow: 0 8px 32px rgba($primary, 0.15), 0 4px 16px $shadow;
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Host Component
 :host {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  background-attachment: fixed;
 }
 
+// Main Container
 .contenedor-principal {
   width: 100%;
-  max-width: 1900px;
+  max-width: 1400px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  @include card-shadow;
+  animation: slideUp 0.6s ease-out;
 }
 
+// Main Title
 h2 {
   text-align: center;
-  color: #2c3e50;
-  margin: 20px 0;
+  color: $primary;
+  margin: 20px 0 40px 0;
+  font-size: 2.5rem;
+  font-weight: 300;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  &::before {
+    content: '\f236';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    @include gradient($primary);
+    border-radius: 2px;
+  }
 }
 
+// Form Section
 .formulario {
-  width: 50%;
-  margin-bottom: 30px;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 40px;
+  animation: fadeIn 0.8s ease-out;
 
   mat-card {
     padding: 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-     display: flex;
-  align-items: center;
+    @include card-shadow;
+    border-radius: 20px !important;
+    border: 1px solid rgba($primary, 0.1);
+    background: $white;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    overflow: hidden;
+
+    // Decorative element
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      @include gradient($primary);
+    }
+
+    // Form field styling
+    .mat-mdc-form-field {
+      width: 100%;
+      margin-bottom: 20px;
+
+      .mat-mdc-text-field-wrapper {
+        border-radius: 10px;
+        
+        .mat-mdc-form-field-flex {
+          border-radius: 10px;
+        }
+      }
+
+      // Focus styling
+      &.mat-focused {
+        .mat-mdc-text-field-wrapper {
+          box-shadow: 0 0 0 2px rgba($primary, 0.2);
+        }
+      }
+
+      // Label styling
+      .mat-mdc-form-field-label {
+        color: $dark;
+        font-weight: 500;
+      }
+
+      // Input styling
+      .mat-mdc-input-element {
+        color: $dark;
+        font-size: 1rem;
+      }
+    }
   }
 
   .full-width {
-    width: 30%;
-    margin-bottom: 15px;
-
+    width: 100%;
+    margin-bottom: 20px;
   }
 
-.botones {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
+  // Buttons Section
+  .botones {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
 
-  button {
-    margin: 0 10px;
+    button {
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      @include hover-lift;
+      min-width: 140px;
+      justify-content: center;
+
+      // Icons for buttons
+      &::before {
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+      }
+    }
+  }
+
+  .boton-verde {
+    @include gradient($success);
+    color: $white;
+    @include card-shadow;
+
+    &::before {
+      content: '\f00c'; // check icon
+    }
+
+    &:hover {
+      @include gradient($success, color.adjust($success, $lightness: -10%));
+      transform: translateY(-3px);
+    }
+  }
+
+  .boton-rojo {
+    @include gradient($danger);
+    color: $white;
+    @include card-shadow;
+
+    &::before {
+      content: '\f00d'; // times icon
+    }
+
+    &:hover {
+      @include gradient($danger, color.adjust($danger, $lightness: -10%));
+      transform: translateY(-3px);
+    }
   }
 }
 
-.boton-verde {
-  background-color: #4caf50;
-  color: white;
-
-  &:hover {
-    background-color: #43a047;
-  }
-}
-
-.boton-rojo {
-  background-color: #f44336;
-  color: white;
-
-  &:hover {
-    background-color: #e53935;
-  }
-}
-}
-
-// Tabla Angular Material
+// Angular Material Table Styling
 mat-table {
   width: 100%;
-  max-width: 700px;
+  max-width: 1000px;
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: 15px !important;
   overflow: hidden;
-  background-color: #fff;
+  background-color: $white;
+  @include card-shadow;
+  border: 1px solid rgba($primary, 0.1);
+  animation: slideUp 0.8s ease-out;
 
+  // Header Styling
   mat-header-cell {
-    background-color: #e1b151;
-    color: white;
-    font-weight: bold;
-    padding: 8px 10px;
+    @include gradient($primary);
+    color: $white;
+    font-weight: 700;
+    padding: 20px 16px;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    position: relative;
+
+    // Add icons to headers
+    &:nth-child(1)::before { content: '\f292 '; } // ID
+    &:nth-child(2)::before { content: '\f52b '; } // Número
+    &:nth-child(3)::before { content: '\f205 '; } // Estado
+    &:nth-child(4)::before { content: '\f02c '; } // Tipo
+    &:nth-child(5)::before { content: '\f085 '; } // Acciones
+
+    &::before {
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
   }
 
+  // Cell Styling
   mat-cell {
-    padding: 8px 10px;
+    padding: 16px;
+    color: $dark;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba($primary, 0.1);
+    vertical-align: middle;
+
+    // Status cell special styling
+    &:nth-child(3) {
+      font-weight: 600;
+      
+      // You can add status badges here if needed
+      &[data-status="active"] {
+        color: $success;
+        
+        &::before {
+          content: '\f00c ';
+          font-family: 'Font Awesome 6 Free';
+          font-weight: 900;
+        }
+      }
+      
+      &[data-status="inactive"] {
+        color: $danger;
+        
+        &::before {
+          content: '\f00d ';
+          font-family: 'Font Awesome 6 Free';
+          font-weight: 900;
+        }
+      }
+    }
   }
 
-  mat-row:nth-child(even) {
-    background-color: #f9f9f9;
+  // Row Styling
+  mat-row {
+    transition: all 0.3s ease;
+    
+    &:nth-child(even) {
+      background-color: rgba($primary, 0.02);
+    }
+
+    &:hover {
+      background-color: rgba($primary, 0.08);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($primary, 0.15);
+    }
+
+    &:last-child {
+      mat-cell {
+        border-bottom: none;
+      }
+    }
   }
 
-  mat-row:hover {
-    background-color: #e0f7fa;
+  // Header Row
+  mat-header-row {
+    min-height: 60px;
+  }
+
+  // Data Row
+  mat-row {
+    min-height: 56px;
   }
 }
 
-// Íconos de acción
+// Action Buttons in Table
 button[mat-icon-button] {
-  margin-right: 5px;
+  margin-right: 8px;
+  border-radius: 50%;
+  @include hover-lift;
+  transition: all 0.3s ease;
+
+  &.edit-button {
+    color: $primary;
+    background: rgba($primary, 0.1);
+    
+    &:hover {
+      background: rgba($primary, 0.2);
+      transform: translateY(-2px) scale(1.1);
+    }
+  }
+
+  &.delete-button {
+    color: $danger;
+    background: rgba($danger, 0.1);
+    
+    &:hover {
+      background: rgba($danger, 0.2);
+      transform: translateY(-2px) scale(1.1);
+    }
+  }
+
+  &.add-button {
+    color: $success;
+    background: rgba($success, 0.1);
+    
+    &:hover {
+      background: rgba($success, 0.2);
+      transform: translateY(-2px) scale(1.1);
+    }
+  }
 
   mat-icon {
     font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Add/New Record Button (if you have one outside table)
+.add-record-button {
+  @include gradient($primary);
+  color: $white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  @include hover-lift;
+  @include card-shadow;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: '\f067';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
+}
+
+// Status Badge Component (if you want to use instead of text)
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.active {
+    background: rgba($success, 0.15);
+    color: $success;
+    border: 1px solid rgba($success, 0.3);
+
+    &::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.inactive {
+    background: rgba($danger, 0.15);
+    color: $danger;
+    border: 1px solid rgba($danger, 0.3);
+
+    &::before {
+      content: '\f00d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .contenedor-principal {
+    max-width: 95%;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding: 10px;
+  }
+
+  .contenedor-principal {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 2rem;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .formulario {
+    width: 100%;
+
+    mat-card {
+      padding: 25px;
+    }
+
+    .botones {
+      flex-direction: column;
+      align-items: center;
+      
+      button {
+        width: 100%;
+        max-width: 200px;
+        margin: 5px 0;
+      }
+    }
+  }
+
+  mat-table {
+    font-size: 12px;
+    
+    mat-header-cell,
+    mat-cell {
+      padding: 12px 8px;
+    }
+
+    mat-header-cell {
+      font-size: 0.8rem;
+    }
+  }
+
+  button[mat-icon-button] {
+    margin-right: 4px;
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .formulario mat-card {
+    padding: 20px;
+  }
+
+  mat-table {
+    mat-header-cell,
+    mat-cell {
+      padding: 8px 6px;
+      font-size: 11px;
+    }
+  }
+
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+}
+
+// Loading State (if needed)
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .loading-spinner {
+    background: $white;
+    padding: 30px;
+    border-radius: 15px;
+    @include card-shadow;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba($primary, 0.3);
+      border-top: 4px solid $primary;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    p {
+      color: $dark;
+      font-weight: 600;
+      margin: 0;
+    }
   }
 }

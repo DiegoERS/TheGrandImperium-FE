@@ -1,76 +1,611 @@
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+$hover-bg: rgba(212, 175, 55, 0.1); // Hover dorado suave
+
+// Mixins
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card-shadow {
+  box-shadow: 0 8px 32px rgba($primary, 0.15), 0 4px 16px $shadow;
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Promotion Container
 .promotion-container {
   max-width: 500px;
   margin: 32px auto;
   padding: 24px;
-  border: 1px solid #bbb;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-  font-family: Arial, sans-serif;
+  border: 1px solid rgba($primary, 0.2);
+  border-radius: 15px;
+  background: $white;
+  @include card-shadow;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  animation: slideUp 0.8s ease-out;
+  position: relative;
+
+  // Decorative top border
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    @include gradient($primary);
+    border-radius: 15px 15px 0 0;
+  }
+
+  // Add subtle pattern overlay
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 20%, rgba($primary, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    border-radius: 15px;
+  }
 }
 
-.promotion-title {
+// Promotion Title (h1)
+h1.promotion-title {
   text-align: left;
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 24px;
+  color: $dark;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideUp 0.8s ease-out 0.2s both;
+
+  &::before {
+    content: '\f0d6';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    font-size: 1.2rem;
+  }
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    @include gradient($primary);
+    border-radius: 2px;
+    margin-left: 10px;
+  }
 }
 
+// Form Group
 .form-group {
   margin-bottom: 18px;
+  animation: slideUp 0.8s ease-out 0.3s both;
+
   label {
     display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: $dark;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+
+    // Add icons based on specific form fields from HTML
+    &[for="promotion-name"]::before {
+      content: '\f02b ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $primary;
+      margin-right: 6px;
+    }
+
+    &[for="promotion-discount"]::before {
+      content: '\f295 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $primary;
+      margin-right: 6px;
+    }
+
+    &[for="promotion-start"]::before,
+    &[for="promotion-end"]::before {
+      content: '\f073 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $primary;
+      margin-right: 6px;
+    }
+
+    &[for="room-type"]::before {
+      content: '\f236 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $primary;
+      margin-right: 6px;
+    }
   }
+
   input, select {
     width: 100%;
-    padding: 8px;
+    padding: 12px 16px;
     font-size: 15px;
-    border: 1px solid #bbb;
-    border-radius: 4px;
+    border: 2px solid rgba($primary, 0.2);
+    border-radius: 8px;
+    background: $white;
+    color: $dark;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      transform: translateY(-1px);
+    }
+
+    &:hover {
+      border-color: rgba($primary, 0.4);
+    }
+
+    &::placeholder {
+      color: $secondary;
+      font-style: italic;
+    }
+  }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23D4AF37' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+    appearance: none;
+
+    &:hover {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23B8941F' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    }
   }
 }
 
+// Action Buttons
 .action-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+  margin-top: 32px;
+  animation: slideUp 0.8s ease-out 0.4s both;
+
   button {
-    padding: 8px 20px;
+    padding: 12px 24px;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 600;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    min-width: 120px;
+
+    // Ripple effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: width 0.6s, height 0.6s;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+
+    &:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    span {
+      position: relative;
+      z-index: 1;
+    }
+
+    @include hover-lift;
   }
+
   .accept-button {
-    background: #28a745;
-    color: #fff;
+    @include gradient($success);
+    color: $white;
+    box-shadow: 0 4px 15px rgba($success, 0.3);
+
+    &::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-left: 8px;
+    }
+
+    &:hover {
+      box-shadow: 0 8px 25px rgba($success, 0.4);
+      transform: translateY(-3px);
+    }
   }
+
   .cancel-button {
-    background: #dc3545;
-    color: #fff;
+    @include gradient($danger);
+    color: $white;
+    box-shadow: 0 4px 15px rgba($danger, 0.3);
+
+    &::after {
+      content: '\f00d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-left: 8px;
+    }
+
+    &:hover {
+      box-shadow: 0 8px 25px rgba($danger, 0.4);
+      transform: translateY(-3px);
+    }
+  }
+
+  .clear-button {
+    @include gradient($secondary);
+    color: $white;
+    box-shadow: 0 4px 15px rgba($secondary, 0.3);
+
+    &::after {
+      content: '\f12d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-left: 8px;
+    }
+
+    &:hover {
+      box-shadow: 0 8px 25px rgba($secondary, 0.4);
+      transform: translateY(-3px);
+    }
   }
 }
 
+// Promotion Table
 .promotion-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 32px;
+  border-radius: 12px;
+  overflow: hidden;
+  @include card-shadow;
+  animation: slideUp 0.8s ease-out 0.5s both;
+  position: relative;
+
+  // Decorative top border
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    @include gradient($primary);
+    z-index: 1;
+  }
+
   th, td {
-    border: 1px solid #bbb;
-    padding: 8px 12px;
+    border: 1px solid rgba($primary, 0.1);
+    padding: 12px 16px;
     text-align: left;
+    transition: all 0.3s ease;
   }
+
   th {
-    background: #f2f2f2;
+    @include gradient($primary);
+    color: $white;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    position: relative;
+
+    // Add icons to headers based on actual table columns
+    &:nth-child(1)::before {
+      content: '\f02b ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    &:nth-child(2)::before {
+      content: '\f295 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    &:nth-child(3)::before {
+      content: '\f073 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    &:nth-child(4)::before {
+      content: '\f073 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    &:nth-child(5)::before {
+      content: '\f236 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    &:nth-child(6)::before {
+      content: '\f085 ';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
   }
+
+  td {
+    color: $dark;
+    font-size: 14px;
+    background: $white;
+  }
+
+  tr {
+    transition: all 0.3s ease;
+
+    &:nth-child(even) {
+      td {
+        background-color: rgba($primary, 0.03);
+      }
+    }
+
+    &:hover {
+      td {
+        background-color: $hover-bg;
+        transform: translateY(-1px);
+        color: $dark;
+        font-weight: 500;
+      }
+      
+      box-shadow: 0 4px 12px rgba($primary, 0.15);
+    }
+  }
+
   button {
     margin-right: 6px;
-    padding: 4px 12px;
+    padding: 6px 12px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &.edit-button {
+      background: rgba($primary, 0.1);
+      color: $primary;
+      border: 1px solid rgba($primary, 0.3);
+
+      &::before {
+        content: '\f044';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-right: 4px;
+      }
+
+      &:hover {
+        background: rgba($primary, 0.2);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 4px 12px rgba($primary, 0.3);
+      }
+    }
+
+    &.delete-button {
+      background: rgba($danger, 0.1);
+      color: $danger;
+      border: 1px solid rgba($danger, 0.3);
+
+      &::before {
+        content: '\f2ed';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-right: 4px;
+      }
+
+      &:hover {
+        background: rgba($danger, 0.2);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 4px 12px rgba($danger, 0.3);
+      }
+    }
+
+    &.view-button {
+      background: rgba($secondary, 0.1);
+      color: $secondary;
+      border: 1px solid rgba($secondary, 0.3);
+
+      &::before {
+        content: '\f06e';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-right: 4px;
+      }
+
+      &:hover {
+        background: rgba($secondary, 0.2);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 4px 12px rgba($secondary, 0.3);
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .promotion-container {
+    margin: 16px auto;
+    padding: 16px;
+    max-width: 90%;
+  }
+
+  .promotion-title {
+    font-size: 18px;
+    flex-direction: column;
+    gap: 8px;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+
+    label {
+      font-size: 13px;
+
+      &::before {
+        display: none; // Hide icons on mobile for space
+      }
+    }
+
+    input, select {
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+
+    button {
+      width: 100%;
+      min-width: auto;
+    }
+  }
+
+  .promotion-table {
+    font-size: 12px;
+
+    th, td {
+      padding: 8px 10px;
+    }
+
+    th {
+      font-size: 11px;
+
+      &::before {
+        display: none; // Hide icons on mobile
+      }
+    }
+
+    button {
+      padding: 4px 8px;
+      font-size: 10px;
+      margin-right: 4px;
+
+      &::before {
+        display: none; // Hide button icons on mobile
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .promotion-container {
+    margin: 12px auto;
+    padding: 12px;
+    max-width: 95%;
+  }
+
+  .promotion-title {
+    font-size: 16px;
+  }
+
+  .promotion-table {
+    font-size: 11px;
+
+    th, td {
+      padding: 6px 8px;
+    }
+  }
+}
+
+// Loading state
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: $primary;
+  font-size: 16px;
+  font-weight: 500;
+
+  &::before {
+    content: '\f1ce';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-right: 10px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 }

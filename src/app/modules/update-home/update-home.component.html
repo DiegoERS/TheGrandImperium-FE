@@ -16,30 +16,36 @@
       <textarea matInput rows="5" [(ngModel)]="pageInformation.description"></textarea>
     </mat-form-field>
 
-    <div class="action-buttons" style="display: flex; align-items: center; gap: 16px;">
-        <div>
-            <label for="image-upload" style="margin-bottom: 0;">Subir nueva imagen:</label>
-            <input id="image-upload" type="file" (change)="onImageUpload($event)" />
+    <!-- Sección de imágenes -->
+    <div class="image-section">
+      <h3 class="section-title">
+        <i class="fas fa-images"></i>
+        Gestión de Imágenes
+      </h3>
+      <div class="image-grid">
+        <div class="image-container" *ngIf="pageInformation.pageInformationImageDTOs[0]?.imageDTO?.url">
+          <label><i class="fas fa-camera"></i> Imagen Actual:</label>
+          <img [src]="pageInformation.pageInformationImageDTOs[0].imageDTO.url" alt="Imagen actual" class="image-preview">
         </div>
+        <div class="image-container" *ngIf="imagePreview">
+          <label><i class="fas fa-eye"></i> Vista Previa:</label>
+          <img [src]="imagePreview" alt="Vista previa" class="image-preview">
+        </div>
+      </div>
+      <div class="file-upload">
+        <input type="file" id="image-upload" accept="image/*" (change)="onImageUpload($event)">
+        <label for="image-upload" class="file-upload-label">
+          <i class="fas fa-cloud-upload-alt"></i>
+          Seleccionar Nueva Imagen
+        </label>
+      </div>
     </div>
 
-    <div class="room-images">
-        <div class="current-image">
-            <label>Imagen actual:</label>
-            <img [src]="pageInformation.pageInformationImageDTOs[0].imageDTO.url" alt="Imagen actual" class="room-img"/>
-        </div>
-        <div class="current-image " *ngIf="imagePreview">
-            <label>Vista previa:</label>
-            <img [src]="imagePreview" alt="Vista previa de la imagen" class="room-img"/>
-        </div>
-    </div>
-
-
+    <!-- Botón de guardar -->
     <div style="text-align: center; margin-top: 20px;">
       <button class="btn" style="background-color: #e3af4b; color: white;" (click)="save()" [disabled]="saving">
         <i class="fas fa-save me-2"></i> {{ saving ? 'Guardando...' : 'Guardar cambios' }}
       </button>
     </div>
-    
   </div>
 </div>

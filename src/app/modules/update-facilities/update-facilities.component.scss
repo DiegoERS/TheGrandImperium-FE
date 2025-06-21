@@ -1,58 +1,84 @@
+// Font Awesome Import
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Variables de color
+$primary: #D4AF37;     // Dorado
+$primary-light: #fdd835;
+$dark: #2c2c2c;
+$white: #ffffff;
+$shadow: rgba(0, 0, 0, 0.3);
+
+// Mixins
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba($primary, 0.3);
+  }
+}
+
+// Contenedor principal
 .content-container {
   max-width: 1000px;
   margin: 40px auto;
   padding: 0 16px;
-  background-color: #ffffff; /* Fondo blanco general */
+  background-color: $white;
   border-radius: 12px;
+  box-shadow: 0 4px 12px $shadow;
 }
 
+// Tarjeta personalizada
 .custom-card {
-  padding: 24px; /* Fondo oscuro elegante para tarjeta interna */
+  padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background-color: $white;
+  box-shadow: 0 4px 12px $shadow;
 }
 
+// Título principal
 h2 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
+  color: $dark;
 }
 
+// Campos de formulario de Angular Material
 mat-form-field {
   width: 100%;
   margin-bottom: 20px;
+
+  .mat-form-field-label {
+    color: $primary !important;
+    font-weight: 500;
+  }
+
+  .mat-input-element {
+    color: $dark;
+    background-color: $white !important;
+    border-radius: 4px;
+    padding: 6px 8px;
+  }
+
+  &.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: $white !important;
+  }
+
+  &.mat-focused .mat-form-field-ripple {
+    background-color: $primary;
+  }
 }
 
-.mat-form-field-label {
-  color: #ffeb3b !important;
-}
-
-.mat-input-element {
-  color: #2c2c2c;
-  background-color: #ffffff !important;
-  border-radius: 4px;
-  padding: 6px 8px;
-}
-
-.mat-form-field-appearance-fill .mat-form-field-flex {
-  background-color: #ffffff !important;
-}
-
-.mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: #ffeb3b;
-}
-
+// Botones
 button {
   font-weight: bold;
-
-  background-color: #ffeb3b;
+  background-color: $primary;
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
-}
+  color: $dark;
+  @include hover-lift;
 
-button:hover {
-  background-color: #fdd835;
 }
