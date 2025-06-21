@@ -1,64 +1,541 @@
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins Simplificados
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Main Styles
 .content {
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
   padding: 20px;
-  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
 }
 
 .text-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  @include card;
+  margin: 0;
+  padding: 40px;
 }
 
 h2 {
+  font-size: 2rem;
+  font-weight: 300;
+  color: $dark;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  &::before {
+    content: '\f15c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    font-size: 1.5rem;
+  }
 }
 
 .formulario {
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se ajusten si es necesario */
-  gap: 20px; /* Espacio entre los elementos */
+  flex-wrap: wrap;
+  gap: 25px;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .form-group {
-  flex: 1 1 calc(33% - 20px); /* Cada campo ocupa un tercio del espacio menos el gap */
-  min-width: 200px;
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+
+  &.full-width {
+    flex: 1 1 100%;
+  }
 }
 
 .formulario label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #333;
+  font-weight: 600;
+  color: $dark;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+
+  i {
+    color: $primary;
+    width: 16px;
+  }
+
+  // Iconos específicos para diferentes tipos de campos
+  &[for*="nombre"]::before,
+  &[for*="name"]::before {
+    content: '\f007';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for*="email"]::before,
+  &[for*="correo"]::before {
+    content: '\f0e0';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for*="telefono"]::before,
+  &[for*="phone"]::before {
+    content: '\f095';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for*="fecha"]::before,
+  &[for*="date"]::before {
+    content: '\f073';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for*="categoria"]::before,
+  &[for*="category"]::before,
+  &[for*="tipo"]::before {
+    content: '\f02b';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for*="direccion"]::before,
+  &[for*="address"]::before {
+    content: '\f3c5';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for*="empresa"]::before,
+  &[for*="company"]::before {
+    content: '\f1ad';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for*="documento"]::before,
+  &[for*="cedula"]::before,
+  &[for*="id"]::before {
+    content: '\f2bb';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
 }
 
-.formulario input, .formulario select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  font-size: 14px;
+.formulario input, 
+.formulario select {
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: $white;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  margin-bottom: 0;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &:hover {
+    border-color: color.adjust($primary, $lightness: 10%);
+  }
 }
 
 .formulario button {
-  width: 100%;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
+  padding: 15px 40px;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px $shadow;
+  @include gradient($primary);
+  color: $white;
+  @include hover-lift;
+  transition: all 0.3s ease;
+  margin: 20px auto 0;
+
+  &::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
+
+  &:hover {
+    @include gradient(color.adjust($primary, $lightness: 5%));
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba($primary, 0.4);
+  }
 }
 
-.formulario button:hover {
-  background-color: #45a049;
+// Table Styling
+h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $dark;
+  margin: 30px 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: '\f03a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+  }
+}
+
+.table-container {
+  @include card;
+  padding: 0;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  background: $white;
+  border-radius: 0;
+  box-shadow: none;
+
+  thead {
+    th {
+      @include gradient($primary);
+      color: $white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      border: none;
+      position: relative;
+
+      &::before {
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-right: 8px;
+      }
+
+      &:nth-child(1)::before { content: '\f292'; } // ID
+      &:nth-child(2)::before { content: '\f007'; } // Nombre
+      &:nth-child(3)::before { content: '\f0e0'; } // Email
+      &:nth-child(4)::before { content: '\f095'; } // Teléfono
+      &:nth-child(5)::before { content: '\f073'; } // Fecha
+      &:nth-child(6)::before { content: '\f02b'; } // Categoría
+      &:nth-child(7)::before { content: '\f3c5'; } // Dirección
+      &:nth-child(8)::before { content: '\f085'; } // Acciones
+    }
+  }
+
+  tbody {
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: middle;
+      
+      // Si hay estado activo/inactivo
+      &.status-cell {
+        font-weight: 600;
+        
+        &.status-active {
+          color: $success;
+          
+          &::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 5px;
+          }
+        }
+        
+        &.status-inactive {
+          color: $danger;
+          
+          &::before {
+            content: '\f00d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    tr {
+      &:hover {
+        background-color: rgba($primary, 0.05);
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// Action Buttons in Table
+.btn-table {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 2px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &.btn-edit {
+    @include gradient($primary);
+    color: $white;
+
+    &::before {
+      content: '\f044';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.btn-delete {
+    @include gradient($danger);
+    color: $white;
+
+    &::before {
+      content: '\f2ed';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.btn-view {
+    @include gradient($secondary);
+    color: $white;
+
+    &::before {
+      content: '\f06e';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+}
+
+// Actions cell
+td:last-child {
+  white-space: nowrap;
+}
+
+// Status Badge (alternativa para estados)
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  &.status-active {
+    background: rgba($success, 0.1);
+    color: $success;
+
+    &::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.status-inactive {
+    background: rgba($danger, 0.1);
+    color: $danger;
+
+    &::before {
+      content: '\f00d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .content {
+    padding: 15px;
+  }
+
+  .content-container {
+    margin: 0;
+  }
+
+  .text-content {
+    padding: 25px;
+  }
+
+  .formulario {
+    gap: 20px;
+  }
+
+  .form-group {
+    flex: 1 1 calc(50% - 15px);
+    min-width: 150px;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+  }
+
+  .table-container {
+    padding: 0;
+  }
+
+  .table-bordered {
+    font-size: 0.9rem;
+    
+    th, td {
+      padding: 10px 8px;
+    }
+  }
+
+  // Stack buttons vertically on mobile
+  td:last-child {
+    .btn-table {
+      display: block;
+      width: 100%;
+      margin: 2px 0;
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .text-content {
+    padding: 20px;
+  }
+
+  .formulario {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .form-group {
+    flex: 1 1 100%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .formulario button {
+    width: 100%;
+    padding: 18px;
+  }
+
+  .table-bordered {
+    font-size: 0.8rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    flex-direction: column;
+    gap: 5px;
+  }
 }
