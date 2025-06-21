@@ -29,10 +29,8 @@ export class RoomsComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    if (this.isBrowser()) {
-      var page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
-    }
-    this.pageInformationService.getByPage(page.pageId).subscribe((data: PageInformationDTO) => {
+
+    this.pageInformationService.getByPage(2).subscribe((data: PageInformationDTO) => {
       this.pageInformation = data;
       this.loading = false;
     });
