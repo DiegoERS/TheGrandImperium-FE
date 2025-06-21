@@ -1,84 +1,138 @@
+// Font Awesome Import
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Variables de color
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris claro
+$white: #ffffff;
+$shadow: rgba(0, 0, 0, 0.1);
+$hover-bg: rgba(212, 175, 55, 0.1);
+
+// Mixins
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card-shadow {
+  box-shadow: 0 8px 32px rgba($primary, 0.15), 0 4px 16px $shadow;
+}
+
+// Contenedor Principal
 .content-container {
   max-width: 1000px;
   margin: 40px auto;
   padding: 0 16px;
-  background-color: #ffffff; /* Fondo blanco general */
+  background-color: $white;
   border-radius: 12px;
+  @include card-shadow;
+  animation: slideUp 0.8s ease-out;
 }
 
+// Tarjeta interna
 .custom-card {
-  padding: 24px; /* Fondo oscuro elegante para tarjeta interna */
+  padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background-color: $light;
+  @include card-shadow;
 }
 
+// Título
 h2 {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 20px;
   text-align: center;
+  color: $dark;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  &::before {
+    content: '\f015'; // ícono decorativo
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    font-size: 1.2rem;
+  }
 }
 
+// Campos del formulario
 mat-form-field {
   width: 100%;
   margin-bottom: 20px;
+
+  .mat-form-field-label {
+    color: $primary !important;
+    font-weight: 500;
+  }
+
+  .mat-input-element {
+    color: $dark;
+    background-color: $white !important;
+    border-radius: 4px;
+    padding: 6px 8px;
+  }
+
+  &.mat-focused .mat-form-field-ripple {
+    background-color: $primary;
+  }
+
+  &.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: $white !important;
+  }
 }
 
-.mat-form-field-label {
-  color: #ffeb3b !important;
-}
-
-.mat-input-element {
-  color: #2c2c2c;
-  background-color: #ffffff !important;
-  border-radius: 4px;
-  padding: 6px 8px;
-}
-
-.mat-form-field-appearance-fill .mat-form-field-flex {
-  background-color: #ffffff !important;
-}
-
-.mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: #ffeb3b;
-}
-
+// Botones
 button {
   font-weight: bold;
-
-  background-color: #ffeb3b;
+  background-color: $primary;
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  color: $dark;
+  @include hover-lift;
+
+
 }
 
-button:hover {
-  background-color: #fdd835;
-}
-
+// Sección de imágenes
 .room-images {
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
+
+  .current-image,
+  .upload-image {
+    width: 48%;
+  }
+
+  .current-image img {
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba($dark, 0.2);
+    border-radius: 4px;
+  }
+
+  .upload-image input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid rgba($dark, 0.2);
+    border-radius: 4px;
+  }
 }
 
-.current-image,
-.upload-image {
-  width: 48%;
-}
-
-.current-image img {
-  width: 100%;
-  height: auto;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.upload-image input {
-  width: 100%;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+// Animación
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }

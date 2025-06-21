@@ -1,12 +1,39 @@
+// Font Awesome Import
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Variables de color
+$primary: #D4AF37;     // Dorado
+$danger: #f44336;
+$danger-dark: #d32f2f;
+$dark: #333;
+$white: #ffffff;
+$light-gray: #f9f9f9;
+$border-color: #ddd;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba($primary, 0.3);
+  }
+}
+
+@mixin card-shadow {
+  box-shadow: 0 4px 20px $shadow;
+}
+
+// Contenedor principal de edición "Acerca de"
 .edit-about-us-container {
   max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: $white;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  @include card-shadow;
   font-family: 'Segoe UI', sans-serif;
-  color: #333;
+  color: $dark;
 
   form {
     display: flex;
@@ -18,13 +45,17 @@
 
       mat-label {
         font-weight: 600;
+        color: $primary;
       }
 
       input, textarea {
         font-size: 16px;
+        color: $dark;
+        background-color: $white;
       }
     }
 
+    // Lista de imágenes
     .image-list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -33,8 +64,8 @@
 
       div {
         position: relative;
-        background: #f9f9f9;
-        border: 1px solid #ddd;
+        background: $light-gray;
+        border: 1px solid $border-color;
         border-radius: 8px;
         padding: 0.5rem;
         display: flex;
@@ -51,8 +82,8 @@
         }
 
         button {
-          background-color: #f44336;
-          color: white;
+          background-color: $danger;
+          color: $white;
           border: none;
           border-radius: 4px;
           padding: 0.25rem 0.5rem;
@@ -61,7 +92,7 @@
           transition: background-color 0.2s ease-in-out;
 
           &:hover {
-            background-color: #d32f2f;
+            background-color: $danger-dark;
           }
         }
       }
@@ -76,10 +107,17 @@
       align-self: flex-start;
       padding: 0.75rem 1.5rem;
       font-size: 1rem;
+      background-color: $primary;
+      color: $dark;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      @include hover-lift;
     }
   }
 }
 
+// Spinner centralizado
 .spinner-container {
   display: flex;
   justify-content: center;

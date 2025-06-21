@@ -1,83 +1,463 @@
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Main Container
 .container {
-  max-width: 800px;
-  margin: auto;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
+
+  h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: $primary;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    &::before {
+      content: '\f236';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
 }
 
-
-h2, h3 {
-  margin-top: 20px;
-  margin-bottom: 15px;
-  color: #2c3e50;
-}
-
-
+// Form Sections
 .form-group {
-  background-color: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  @include card;
+  margin-bottom: 30px;
+  animation: slideUp 0.6s ease-out;
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: $dark;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &::before {
+      color: $primary;
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  // Nueva habitación
+  &:has(h3:contains("Nueva")) h3::before {
+    content: '\f055'; // plus-circle
+  }
+
+  // Editar habitación  
+  &:has(h3:contains("Editar")) h3::before {
+    content: '\f044'; // edit
+  }
+}
+
+.edit-form {
+  @extend .form-group;
+}
+
+// Form Elements
+label {
+  font-weight: 600;
+  color: $dark;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &[for="roomNumber"]::before,
+  &[for="editRoomNumber"]::before {
+    content: '\f52b';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
+
+  &[for="roomTypeName"]::before,
+  &[for="editRoomTypeName"]::before {
+    content: '\f02c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+    width: 16px;
+  }
 }
 
 .form-control {
-  margin-bottom: 10px;
-  border-radius: 8px;
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: $white;
+  font-family: inherit;
+  margin-bottom: 15px;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
 }
 
+// Checkbox Styling
 .form-check {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin: 15px 0;
+
+  .form-check-input {
+    width: auto;
+    margin: 0;
+    transform: scale(1.2);
+    accent-color: $primary;
+  }
+
+  .form-check-label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '\f205';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $primary;
+      width: 16px;
+    }
+  }
 }
 
-button.btn {
-  margin-top: 10px;
-  margin-right: 10px;
-  border-radius: 8px;
+// Buttons
+.btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px $shadow;
+  margin: 5px;
+  @include hover-lift;
+
+  &.btn-primary {
+    @include gradient($primary);
+    color: $white;
+
+    &::before {
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.btn-success {
+    @include gradient($success);
+    color: $white;
+
+    &::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.btn-danger {
+    @include gradient($danger);
+    color: $white;
+
+    &::before {
+      content: '\f2ed';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.btn-secondary {
+    @include gradient($secondary);
+    color: $white;
+
+    &::before {
+      content: '\f00d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.btn-sm {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
+
+  // Specific button content
+  &:contains("Agregar") {
+    &::before {
+      content: '\f0c7'; // save
+    }
+  }
+
+  &:contains("Editar") {
+    &::before {
+      content: '\f044'; // edit
+    }
+  }
+
+  &:contains("Eliminar") {
+    &::before {
+      content: '\f2ed'; // trash
+    }
+  }
 }
 
+// Spacing utilities
+.mt-2 { margin-top: 0.5rem; }
+.ml-2 { margin-left: 0.5rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.my-2 { 
+  margin-top: 0.5rem; 
+  margin-bottom: 0.5rem; 
+}
+.ml-1 { margin-left: 0.25rem; }
 
-table {
-  background-color: #ffffff;
-  border-radius: 8px;
+// Table Styling
+h3:contains("Lista") {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $dark;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: '\f03a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: $primary;
+  }
+}
+
+.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: $white;
+  border-radius: 15px;
   overflow: hidden;
+  box-shadow: 0 5px 20px $shadow;
+
+  thead {
+    th {
+      @include gradient($primary);
+      color: $white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      border: none;
+      position: relative;
+
+      &::before {
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-right: 8px;
+      }
+
+      &:nth-child(1)::before { content: '\f292'; } // ID
+      &:nth-child(2)::before { content: '\f52b'; } // Número
+      &:nth-child(3)::before { content: '\f205'; } // Estado
+      &:nth-child(4)::before { content: '\f02c'; } // Tipo
+      &:nth-child(5)::before { content: '\f085'; } // Acciones
+    }
+  }
+
+  tbody {
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: middle;
+
+      // Status styling
+      &:nth-child(3) {
+        font-weight: 600;
+        
+        &:contains("Sí") {
+          color: $success;
+          
+          &::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 5px;
+          }
+        }
+        
+        &:contains("No") {
+          color: $danger;
+          
+          &::before {
+            content: '\f00d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    tr {
+      &:hover {
+        background-color: rgba($primary, 0.05);
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
 }
 
-th {
-  background-color: #e1b151;
-  color: white;
-  text-align: center;
+// Status Badge Alternative (if you want to use badges instead)
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  &.status-active {
+    background: rgba($success, 0.1);
+    color: $success;
+
+    &::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
+
+  &.status-inactive {
+    background: rgba($danger, 0.1);
+    color: $danger;
+
+    &::before {
+      content: '\f00d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
 }
 
-td {
-  text-align: center;
-  vertical-align: middle;
+// Actions cell
+td:last-child {
+  white-space: nowrap;
 }
 
-
-.edit-form {
-  background-color: #f8f9fa;
-  border: 1px solid #a5a49f;
-  padding: 15px;
-  border-radius: 10px;
-}
-select{
-  margin-left: 6px;
-}
-
+// Responsive Design
 @media (max-width: 768px) {
   .container {
-    padding: 10px;
+    padding: 15px;
+    
+    h2 {
+      font-size: 2rem;
+      flex-direction: column;
+      gap: 10px;
+    }
   }
 
   .form-group, .edit-form {
-    padding: 10px;
+    padding: 20px;
   }
 
-  h2, h3 {
-    font-size: 1.2rem;
+  .btn {
+    width: 100%;
+    justify-content: center;
+    margin: 5px 0;
+  }
+
+  .table-bordered {
+    font-size: 0.9rem;
+    
+    th, td {
+      padding: 10px 8px;
+    }
+  }
+
+  // Stack buttons vertically on mobile
+  td:last-child {
+    .btn {
+      display: block;
+      width: 100%;
+      margin: 2px 0;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .container h2 { 
+    font-size: 1.8rem; 
+  }
+  
+  .form-group, .edit-form { 
+    padding: 15px; 
+  }
+  
+  .table-bordered {
+    font-size: 0.8rem;
   }
 }
