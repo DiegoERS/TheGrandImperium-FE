@@ -124,3 +124,34 @@ $shadow: rgba(0, 0, 0, 0.1);
   align-items: center;
   padding: 3rem;
 }
+
+.file-upload {
+  margin-top: 16px;
+  text-align: center;
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .file-upload-label {
+    display: inline-block;
+    padding: 10px 24px;
+    background-color: #e3af4b;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+
+    i {
+      margin-right: 8px;
+    }
+
+    &:hover {
+      background-color: #c99a3a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+  }
+}
