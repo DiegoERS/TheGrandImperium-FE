@@ -1,64 +1,472 @@
-.content {
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins Simplificados
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Main Container
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
   padding: 20px;
-  background-color: #f4f4f4;
+  display: block;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
 }
 
 .content-container {
-  max-width: 800px;
-  margin: 0 auto;
+  padding: 40px;
 }
 
+// Text Content Section
 .text-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  
+  h2 {
+    @include gradient($primary);
+    color: $white;
+    text-align: center;
+    padding: 30px;
+    margin: -40px -40px 40px -40px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    border-radius: 20px 20px 0 0;
+    
+    &::before {
+      content: '\f019'; // search icon
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 15px;
+    }
+  }
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
+// Form Styles
 .formulario {
-  display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se ajusten si es necesario */
-  gap: 20px; /* Espacio entre los elementos */
-  justify-content: space-between;
+  @include card;
+  margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  align-items: end;
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    
+    label {
+      font-weight: 600;
+      color: $dark;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      
+      &[for="llegada"]::before {
+        content: '\f073'; // calendar icon
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: $primary;
+      }
+      
+      &[for="salida"]::before {
+        content: '\f073'; // calendar icon
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: $primary;
+      }
+      
+      &[for="habitacion"]::before {
+        content: '\f236'; // bed icon
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: $primary;
+      }
+    }
+    
+    input, select {
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: $white;
+      font-family: inherit;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba($primary, 0.1);
+        transform: translateY(-1px);
+      }
+      
+      &:disabled {
+        background: $light;
+        color: $secondary;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      
+      &[type="date"] {
+        &::-webkit-calendar-picker-indicator {
+          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>') no-repeat;
+          background-size: 16px;
+          cursor: pointer;
+        }
+      }
+    }
+    
+    select {
+      cursor: pointer;
+      
+      option {
+        padding: 10px;
+        
+        &:disabled {
+          color: $secondary;
+          font-style: italic;
+        }
+      }
+    }
+  }
+  
+  button[type="submit"] {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    @include gradient($primary);
+    color: $white;
+    box-shadow: 0 4px 15px $shadow;
+    @include hover-lift;
+    align-self: end;
+    
+    &::before {
+      content: '\f002'; // search icon
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 8px;
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      @include gradient($secondary);
+      
+      &:hover {
+        transform: none;
+        box-shadow: 0 4px 15px $shadow;
+      }
+    }
+  }
 }
 
-.form-group {
-  flex: 1 1 calc(33% - 20px); /* Cada campo ocupa un tercio del espacio menos el gap */
-  min-width: 200px;
+// Material Table Overrides
+.mat-elevation-z8 {
+  @include card;
+  margin-bottom: 20px;
+  border-radius: 15px !important;
+  overflow: hidden;
+  box-shadow: 0 5px 20px $shadow !important;
+  
+  .mat-table {
+    background: transparent !important;
+    
+    .mat-header-row {
+      @include gradient($primary);
+      
+      .mat-header-cell {
+        color: $white !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none !important;
+        padding: 20px 24px !important;
+        
+        &:first-child {
+          &::before {
+            content: '\f015'; // home icon for room number
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 8px;
+          }
+        }
+        
+        &:last-child {
+          &::before {
+            content: '\f236'; // bed icon for room type
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+    
+    .mat-row {
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+      
+      &:hover {
+        background: rgba($primary, 0.05) !important;
+        transform: translateX(5px);
+      }
+      
+      &:last-child {
+        border-bottom: none !important;
+      }
+      
+      .mat-cell {
+        color: $dark !important;
+        font-size: 0.95rem !important;
+        padding: 18px 24px !important;
+        border: none !important;
+        font-weight: 500;
+      }
+    }
+  }
 }
 
-.formulario label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #333;
+// Material Paginator Overrides
+mat-paginator {
+  @include card;
+  border-radius: 15px !important;
+  margin-top: 20px;
+  
+  .mat-paginator-container {
+    background: transparent !important;
+    padding: 20px !important;
+    
+    .mat-paginator-page-size,
+    .mat-paginator-range-label {
+      color: $dark !important;
+      font-weight: 500 !important;
+    }
+    
+    .mat-paginator-navigation-previous,
+    .mat-paginator-navigation-next,
+    .mat-paginator-navigation-first,
+    .mat-paginator-navigation-last {
+      color: $primary !important;
+      
+      &:hover {
+        background: rgba($primary, 0.1) !important;
+      }
+      
+      &[disabled] {
+        color: $secondary !important;
+        opacity: 0.5;
+      }
+    }
+    
+    .mat-select {
+      .mat-select-trigger {
+        color: $dark !important;
+        
+        .mat-select-value {
+          color: $dark !important;
+        }
+        
+        .mat-select-arrow {
+          color: $primary !important;
+        }
+      }
+      
+      &:focus .mat-select-trigger {
+        color: $primary !important;
+      }
+    }
+  }
 }
 
-.formulario input, .formulario select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  font-size: 14px;
+// Material Select Panel Override (for page size selector)
+.mat-select-panel {
+  background: $white !important;
+  border-radius: 10px !important;
+  box-shadow: 0 5px 20px $shadow !important;
+  
+  .mat-option {
+    color: $dark !important;
+    font-family: 'Segoe UI', system-ui, sans-serif !important;
+    
+    &:hover {
+      background: rgba($primary, 0.1) !important;
+    }
+    
+    &.mat-selected {
+      background: rgba($primary, 0.2) !important;
+      color: $primary !important;
+    }
+  }
 }
 
-.formulario button {
-  width: 100%;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+// Empty State
+.mat-table .mat-no-data-row {
+  td {
+    text-align: center !important;
+    color: $secondary !important;
+    font-style: italic;
+    padding: 40px !important;
+    
+    &::before {
+      content: '\f119'; // no data icon
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 10px;
+      color: $primary;
+    }
+  }
 }
 
-.formulario button:hover {
-  background-color: #45a049;
+// Responsive Design
+@media (max-width: 768px) {
+  .content-container {
+    padding: 20px;
+  }
+  
+  .text-content h2 {
+    font-size: 2rem;
+    margin: -20px -20px 30px -20px;
+    padding: 20px;
+  }
+  
+  .formulario {
+    padding: 20px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    
+    button[type="submit"] {
+      width: 100%;
+      justify-self: stretch;
+    }
+  }
+  
+  .mat-elevation-z8 {
+    .mat-table {
+      .mat-header-cell,
+      .mat-cell {
+        padding: 12px 16px !important;
+        font-size: 0.9rem !important;
+      }
+    }
+  }
+  
+  mat-paginator {
+    .mat-paginator-container {
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .text-content h2 {
+    font-size: 1.8rem;
+    padding: 15px;
+  }
+  
+  .content-container {
+    padding: 15px;
+  }
+  
+  .formulario {
+    padding: 15px;
+  }
+  
+  // Stack table columns on very small screens
+  .mat-elevation-z8 {
+    .mat-table {
+      .mat-header-row {
+        display: none;
+      }
+      
+      .mat-row {
+        display: block;
+        border: 2px solid $light;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        padding: 15px;
+        background: $white;
+        transform: none !important;
+        
+        &:hover {
+          background: rgba($primary, 0.05) !important;
+          transform: none !important;
+        }
+        
+        .mat-cell {
+          display: block !important;
+          border: none !important;
+          padding: 8px 0 !important;
+          position: relative;
+          padding-left: 40% !important;
+          
+          &::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            width: 35%;
+            font-weight: 600;
+            color: $primary;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+          }
+          
+          &:nth-child(1)::before { content: "Habitación:"; }
+          &:nth-child(2)::before { content: "Tipo:"; }
+        }
+      }
+    }
+  }
 }

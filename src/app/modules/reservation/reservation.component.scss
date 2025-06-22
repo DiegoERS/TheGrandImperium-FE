@@ -1,58 +1,832 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 .reserva-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+  color: #ffffff;
+  padding: 40px 20px;
+  position: relative;
+  overflow-x: hidden;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 30% 30%, rgba(201, 176, 55, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 }
 
+// Cards styling
 .filtros-card,
 .tabla-card,
 .cliente-card {
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(145deg, #1a1a1a, #0a0a0a) !important;
+  border: 1px solid rgba(201, 176, 55, 0.2) !important;
+  border-radius: 20px !important;
+  margin-bottom: 30px;
+  padding: 30px !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  position: relative;
+  overflow: hidden;
+  animation: cardSlideIn 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201, 176, 55, 0.1), transparent);
+    transition: left 0.8s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+
+  h2 {
+    color: #ffffff !important;
+    font-weight: 300;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, #ffffff 0%, #c9b037 50%, #ffd700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(201, 176, 55, 0.3);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, #c9b037, #ffd700);
+      animation: underlineExpand 1s ease-out 0.5s both;
+    }
+  }
 }
 
-.filtros-card h2,
-.tabla-card h2,
-.cliente-card h2 {
-  text-align: center;
-  margin-bottom: 1rem;
-  color: #3f51b5;
+.filtros-card {
+  animation-delay: 0.2s;
 }
 
+.tabla-card {
+  animation-delay: 0.4s;
+}
+
+.cliente-card {
+  animation-delay: 0.6s;
+}
+
+// Form styling
 .filtros-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  align-items: end;
 
-mat-form-field {
-  min-width: 230px;
-  flex: 1;
-}
-
-.custom-table {
-  width: 100%;
-  margin-top: 1rem;
+  button {
+    height: fit-content;
+  }
 }
 
 .cliente-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
+// Material form fields styling
+::ng-deep {
+  .mat-form-field {
+    .mat-form-field-outline {
+      color: rgba(201, 176, 55, 0.3) !important;
+    }
+
+    .mat-form-field-outline-thick {
+      color: #c9b037 !important;
+    }
+
+    .mat-form-field-label {
+      color: #cccccc !important;
+    }
+
+    .mat-form-field-label.mat-focused {
+      color: #c9b037 !important;
+    }
+
+    .mat-input-element {
+      color: #ffffff !important;
+      background: transparent !important;
+      
+      // Asegurar que cualquier contenido ingresado sea blanco
+      &::selection {
+        background: rgba(201, 176, 55, 0.3) !important;
+        color: #ffffff !important;
+      }
+    }
+
+    .mat-input-element::placeholder {
+      color: #666666 !important;
+    }
+
+    .mat-form-field-prefix,
+    .mat-form-field-suffix {
+      color: #c9b037 !important;
+    }
+
+    .mat-datepicker-toggle {
+      color: #c9b037 !important;
+    }
+
+    .mat-error {
+      color: #ff6b6b !important;
+    }
+
+    // Asegurar que todos los tipos de input tengan texto blanco
+    input,
+    textarea {
+      color: #ffffff !important;
+      
+      &::selection {
+        background: rgba(201, 176, 55, 0.3) !important;
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  // Estilos específicos para diferentes tipos de input
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="time"],
+  textarea {
+    color: #ffffff !important;
+    
+    &::selection {
+      background: rgba(201, 176, 55, 0.3) !important;
+      color: #ffffff !important;
+    }
+    
+    &:focus {
+      color: #ffffff !important;
+    }
+    
+    &:valid {
+      color: #ffffff !important;
+    }
+    
+    &:invalid {
+      color: #ffffff !important;
+    }
+  }
+
+  // ===== AQUÍ VA EL CÓDIGO ADICIONAL PARA ARREGLAR EL SELECT =====
+  .mat-select {
+    color: #ffffff !important;
+    
+    // Texto del valor seleccionado
+    .mat-select-value {
+      color: #ffffff !important;
+    }
+
+    .mat-select-value-text {
+      color: #ffffff !important;
+    }
+
+    // Flecha del select
+    .mat-select-arrow {
+      color: #c9b037 !important;
+    }
+
+    // Trigger del select
+    .mat-select-trigger {
+      color: #ffffff !important;
+    }
+
+    // Placeholder
+    .mat-select-placeholder {
+      color: #ffffff !important;
+    }
+
+    // Asegurar que TODO el contenido sea blanco
+    * {
+      color: #ffffff !important;
+    }
+  }
+
+  // Estilos para las opciones del dropdown
+  .mat-option {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+
+    &:hover {
+      background: rgba(201, 176, 55, 0.1) !important;
+      color: #ffffff !important;
+    }
+
+    &.mat-selected {
+      background: rgba(201, 176, 55, 0.2) !important;
+      color: #ffffff !important;
+    }
+
+    &.mat-active {
+      background: rgba(201, 176, 55, 0.1) !important;
+      color: #ffffff !important;
+    }
+
+    // Texto de la opción
+    .mat-option-text {
+      color: #ffffff !important;
+    }
+
+    // Asegurar que cualquier contenido dentro de las opciones sea blanco
+    * {
+      color: #ffffff !important;
+    }
+  }
+
+  // Panel del select (dropdown)
+  .mat-select-panel {
+    background: #1a1a1a !important;
+    border: 1px solid rgba(201, 176, 55, 0.3);
+    border-radius: 10px;
+
+    // Asegurar que todo el contenido del panel sea blanco
+    * {
+      color: #ffffff !important;
+    }
+  }
+
+  // Estilos específicos para el form field que contiene el select
+  .mat-form-field {
+    // Cuando el select está dentro de un form field
+    .mat-select {
+      color: #ffffff !important;
+      
+      .mat-select-value {
+        color: #ffffff !important;
+      }
+      
+      .mat-select-value-text {
+        color: #ffffff !important;
+      }
+      
+      .mat-select-trigger {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  // Estilos adicionales para casos específicos
+  mat-select {
+    color: #ffffff !important;
+    
+    .mat-select-value {
+      color: #ffffff !important;
+    }
+    
+    .mat-select-value-text {
+      color: #ffffff !important;
+    }
+  }
+
+  // Para elementos específicos que podrían tener color diferente
+  .mat-form-field-type-mat-select {
+    .mat-form-field-infix {
+      color: #ffffff !important;
+    }
+    
+    .mat-select {
+      color: #ffffff !important;
+    }
+  }
+
+  // Asegurar que el texto ingresado o seleccionado sea siempre blanco
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      .mat-form-field-infix {
+        .mat-select {
+          color: #ffffff !important;
+          
+          .mat-select-value {
+            color: #ffffff !important;
+            
+            .mat-select-value-text {
+              color: #ffffff !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Para elementos que podrían heredar colores no deseados
+  .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: #ffffff !important;
+  }
+
+  .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
+    color: #ffffff !important;
+  }
+
+  // Forzar color blanco en todos los estados posibles del select
+  .mat-select-value,
+  .mat-select-value-text,
+  .mat-select-placeholder,
+  .mat-select-trigger,
+  .mat-option-text {
+    color: #ffffff !important;
+  }
+
+  // Para casos específicos donde Angular Material aplica sus propios estilos
+  .mat-form-field-appearance-outline {
+    .mat-select {
+      color: #ffffff !important;
+      
+      .mat-select-value {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  // Override final para asegurar que nada sobrescriba el color blanco
+  [class*="mat-select"] {
+    color: #ffffff !important;
+    
+    * {
+      color: #c9b037 !important;
+    }
+  }
+  // ===== FIN DEL CÓDIGO ADICIONAL PARA EL SELECT =====
+
+  .mat-datepicker-content {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(201, 176, 55, 0.3);
+    border-radius: 15px;
+
+    .mat-calendar-header {
+      background: #0a0a0a !important;
+      color: #c9b037 !important;
+    }
+
+    .mat-calendar-body-cell-content {
+      color: #ffffff !important;
+    }
+
+    .mat-calendar-body-selected {
+      background: #c9b037 !important;
+      color: #000000 !important;
+    }
+
+    .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+      border-color: #c9b037 !important;
+    }
+  }
+
+  // Estilos adicionales para asegurar texto blanco en todos los campos
+  .mat-form-field-wrapper {
+    color: #ffffff !important;
+  }
+
+  .mat-form-field-flex {
+    color: #ffffff !important;
+  }
+
+  .mat-form-field-infix {
+    color: #ffffff !important;
+  }
+}
+
+// Button styling
+button[mat-raised-button] {
+  background: linear-gradient(135deg, #c9b037 0%, #d4af37 100%) !important;
+  color: #000000 !important;
+  border: none !important;
+  border-radius: 50px !important;
+  padding: 15px 35px !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease !important;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(201, 176, 55, 0.3) !important;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 
+      0 15px 30px rgba(201, 176, 55, 0.4),
+      0 0 40px rgba(201, 176, 55, 0.2) !important;
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) !important;
+  }
+
+  &[color="accent"] {
+    background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%) !important;
+    animation: buttonPulse 2s ease-in-out infinite;
+  }
+}
+
+// Table styling
+.custom-table {
+  background: transparent !important;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 176, 55, 0.2);
+
+  .mat-header-cell {
+    background: linear-gradient(135deg, #c9b037 0%, #d4af37 100%) !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    padding: 20px 16px !important;
+  }
+
+  .mat-cell {
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(201, 176, 55, 0.1) !important;
+    padding: 16px !important;
+    font-weight: 400;
+    background: rgba(26, 26, 26, 0.5);
+    transition: all 0.3s ease;
+
+    // Asegurar que cualquier texto dentro de las celdas sea blanco
+    * {
+      color: #ffffff !important;
+    }
+
+    // Estilos específicos para diferentes tipos de contenido
+    span, div, p, a, strong, em, i, b {
+      color: #ffffff !important;
+    }
+
+    // Para inputs dentro de celdas
+    input, select, textarea {
+      color: #ffffff !important;
+      background: transparent !important;
+      
+      &::placeholder {
+        color: #666666 !important;
+      }
+    }
+
+    // Para elementos de formulario dentro de celdas
+    .mat-form-field {
+      .mat-input-element {
+        color: #ffffff !important;
+      }
+    }
+
+    // Para checkboxes y otros elementos
+    .mat-checkbox-label {
+      color: #ffffff !important;
+    }
+  }
+
+  .mat-row {
+    color: #ffffff !important;
+
+    &:hover {
+      background: rgba(201, 176, 55, 0.1) !important;
+      transform: scale(1.01);
+      box-shadow: 0 5px 15px rgba(201, 176, 55, 0.2);
+
+      .mat-cell {
+        color: #ffffff !important;
+        
+        * {
+          color: #ffffff !important;
+        }
+      }
+    }
+
+    &:nth-child(even) .mat-cell {
+      background: rgba(16, 16, 16, 0.5);
+      color: #ffffff !important;
+
+      * {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  // Asegurar que todos los elementos de la tabla tengan texto blanco
+  .mat-table {
+    color: #ffffff !important;
+  }
+
+  .mat-cell,
+  .mat-footer-cell {
+    color: #ffffff !important;
+  }
+
+  // Estilos para datos específicos en las celdas
+  .mat-cell-data,
+  .cell-content,
+  .table-data {
+    color: #ffffff !important;
+  }
+
+  // Para botones dentro de las celdas
+  .mat-cell button {
+    color: inherit;
+  }
+
+  // Para iconos dentro de las celdas
+  .mat-cell .mat-icon {
+    color: #c9b037 !important;
+  }
+
+  // Para texto seleccionado en las celdas
+  .mat-cell ::selection {
+    background: rgba(201, 176, 55, 0.3) !important;
+    color: #ffffff !important;
+  }
+}
+
+// Estilos globales adicionales para asegurar texto blanco en todos los campos
+::ng-deep {
+  // Estilos para todos los inputs, selects y textareas globalmente
+  input,
+  select,
+  textarea,
+  .mat-input-element,
+  .mat-select-value,
+  .mat-select-trigger {
+    color: #ffffff !important;
+    
+    &::selection {
+      background: rgba(201, 176, 55, 0.3) !important;
+      color: #ffffff !important;
+    }
+  }
+
+  // Asegurar texto blanco en todas las celdas de cualquier tabla
+  table,
+  .mat-table {
+    td,
+    th,
+    .mat-cell,
+    .mat-header-cell:not(.mat-header-cell) + .mat-cell {
+      color: #ffffff !important;
+      
+      // Todo el contenido dentro de las celdas
+      * {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  // Estilos para datos ingresados por el usuario
+  .user-input,
+  .form-data,
+  .table-data,
+  .input-value {
+    color: #ffffff !important;
+  }
+
+  // Asegurar que el texto de autocompletado sea blanco
+  .mat-autocomplete-panel {
+    background: #1a1a1a !important;
+    
+    .mat-option {
+      color: #ffffff !important;
+    }
+  }
+
+  // Para campos de fecha y hora
+  .mat-datepicker-input {
+    color: #ffffff !important;
+  }
+
+  // Para chips y tags
+  .mat-chip {
+    background: rgba(201, 176, 55, 0.2) !important;
+    color: #ffffff !important;
+  }
+
+  // Para tooltips
+  .mat-tooltip {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+  }
+
+  // Para menús desplegables
+  .mat-menu-panel {
+    background: #1a1a1a !important;
+    
+    .mat-menu-item {
+      color: #ffffff !important;
+      
+      &:hover {
+        background: rgba(201, 176, 55, 0.1) !important;
+        color: #ffffff !important;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .mat-checkbox {
+    .mat-checkbox-frame {
+      border-color: #c9b037 !important;
+      border-width: 2px !important;
+    }
+
+    .mat-checkbox-checkmark-path {
+      stroke: #000000 !important;
+    }
+
+    .mat-checkbox-checked {
+      .mat-checkbox-background {
+        background: #c9b037 !important;
+      }
+    }
+
+    .mat-checkbox-indeterminate {
+      .mat-checkbox-background {
+        background: #c9b037 !important;
+      }
+    }
+
+    &:hover {
+      .mat-checkbox-frame {
+        border-color: #ffd700 !important;
+      }
+    }
+  }
+}
+
+// Special styling for reserve button container
 .boton-reserva {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(201, 176, 55, 0.2);
+
+  button {
+    min-width: 200px;
+    font-size: 1rem !important;
+    padding: 18px 50px !important;
+  }
 }
 
-button {
-  min-width: 150px;
+// Animations
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes underlineExpand {
+  from {
+    width: 0;
+  }
+  to {
+    width: 60px;
+  }
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 0 8px 20px rgba(201, 176, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.5);
+  }
+}
+
+// Responsive design
+@media (max-width: 1200px) {
+  .filtros-form {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .cliente-form {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .reserva-container {
+    padding: 20px 15px;
+  }
+
+  .filtros-card,
+  .tabla-card,
+  .cliente-card {
+    padding: 20px !important;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .filtros-form,
+  .cliente-form {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .custom-table {
+    .mat-header-cell,
+    .mat-cell {
+      padding: 12px 8px !important;
+      font-size: 0.8rem !important;
+    }
+  }
+
+  button[mat-raised-button] {
+    padding: 12px 25px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .boton-reserva button {
+    min-width: 160px;
+    padding: 15px 30px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .reserva-container {
+    padding: 15px 10px;
+  }
+
+  .filtros-card,
+  .tabla-card,
+  .cliente-card {
+    padding: 15px !important;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+  // Make table horizontally scrollable on very small screens
+  .tabla-card {
+    overflow-x: auto;
+  }
+
+  .custom-table {
+    min-width: 600px;
+  }
 }

@@ -1,83 +1,368 @@
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins Simplificados
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Main Styles
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
+}
 
 .container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
+  padding: 40px;
+
+  h2 {
+    @include gradient($primary);
+    color: $white;
+    text-align: center;
+    padding: 30px;
+    margin: -40px -40px 40px -40px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    border-radius: 20px 20px 0 0;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: $dark;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    i {
+      color: $primary;
+    }
+  }
 }
 
-
-h2, h3 {
-  margin-top: 20px;
-  margin-bottom: 15px;
-  color: #2c3e50;
+// Form Sections
+.form-group,
+.edit-form {
+  @include card;
+  margin-bottom: 30px;
 }
 
+// Labels & Inputs
+label {
+  font-weight: 600;
+  color: $dark;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-.form-group {
-  background-color: #f8f9fa;
+  i {
+    color: $primary;
+    width: 16px;
+  }
+}
+
+input, select, textarea {
   padding: 15px;
+  border: 2px solid #e0e0e0;
   border-radius: 10px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: $white;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
 }
 
 .form-control {
-  margin-bottom: 10px;
-  border-radius: 8px;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: $white;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
 }
 
+// Checkbox Styles
 .form-check {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin: 20px 0;
+
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+    border: 2px solid $primary;
+    border-radius: 5px;
+    background: $white;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+
+    &:checked {
+      background: $primary;
+      border-color: $primary;
+
+      &::after {
+        content: '✓';
+        color: $white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .form-check-label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: $dark;
+  }
 }
 
-button.btn {
-  margin-top: 10px;
-  margin-right: 10px;
-  border-radius: 8px;
+// Buttons
+.btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px $shadow;
+  @include hover-lift;
+
+  &.btn-primary {
+    @include gradient($primary);
+    color: $white;
+  }
+
+  &.btn-success {
+    @include gradient($success);
+    color: $white;
+  }
+
+  &.btn-danger {
+    @include gradient($danger);
+    color: $white;
+  }
+
+  &.btn-secondary {
+    @include gradient($secondary);
+    color: $white;
+  }
+
+  &.btn-sm {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
 }
 
-
-table {
-  background-color: #ffffff;
-  border-radius: 8px;
+// Table Styles
+.table {
+  width: 100%;
+  background: $white;
+  border-radius: 15px;
   overflow: hidden;
+  box-shadow: 0 5px 20px $shadow;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+
+  &.table-bordered {
+    border: none;
+  }
+
+  thead {
+    @include gradient($primary);
+
+    tr th {
+      padding: 20px 15px;
+      color: $white;
+      font-weight: 600;
+      text-align: left;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  tbody {
+    tr {
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+      &:hover {
+        background: rgba($primary, 0.05);
+        transform: translateY(-1px);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        padding: 15px;
+        border: none;
+        vertical-align: middle;
+        color: $dark;
+        background: transparent;
+
+        &:first-child {
+          font-weight: 600;
+          color: $primary;
+        }
+      }
+    }
+  }
 }
 
-th {
-  background-color: #e1b151;
-  color: white;
-  text-align: center;
+// Utility Classes
+.mb-4 {
+  margin-bottom: 2rem !important;
 }
 
-td {
-  text-align: center;
-  vertical-align: middle;
+.mt-2 {
+  margin-top: 0.5rem !important;
 }
 
-
-.edit-form {
-  background-color: #f8f9fa;
-  border: 1px solid #a5a49f;
-  padding: 15px;
-  border-radius: 10px;
-}
-select{
-  margin-left: 6px;
+.ml-1 {
+  margin-left: 0.25rem !important;
 }
 
+.ml-2 {
+  margin-left: 0.5rem !important;
+}
+
+.my-2 {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+// Responsive Design
 @media (max-width: 768px) {
-  .container {
-    padding: 10px;
+  .container { 
+    padding: 20px; 
+  }
+  
+  .buttons-section {
+    flex-direction: column;
+    align-items: center;
+    
+    .btn {
+      width: 100%;
+      max-width: 300px;
+      justify-content: center;
+    }
   }
 
-  .form-group, .edit-form {
-    padding: 10px;
+  .header {
+    padding: 20px;
+    h2 { 
+      font-size: 2rem; 
+    }
   }
 
-  h2, h3 {
-    font-size: 1.2rem;
+  .form-group,
+  .edit-form { 
+    padding: 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .header h2 { 
+    font-size: 1.8rem; 
+  }
+  
+  .section-title { 
+    font-size: 1.1rem; 
+  }
+  
+  .form-group,
+  .edit-form { 
+    padding: 20px; 
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    margin: 5px 0;
   }
 }
