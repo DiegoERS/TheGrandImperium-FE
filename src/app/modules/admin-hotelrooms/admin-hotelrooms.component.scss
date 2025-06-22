@@ -12,7 +12,7 @@ $success: #28a745;
 $danger: #dc3545;
 $shadow: rgba(0, 0, 0, 0.1);
 
-// Mixins
+// Mixins Simplificados
 @mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
   background: linear-gradient(135deg, $color1 0%, $color2 100%);
 }
@@ -39,37 +39,42 @@ $shadow: rgba(0, 0, 0, 0.1);
   to { opacity: 1; transform: translateY(0); }
 }
 
-// Main Container
-.container {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-
-  h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 300;
-    color: $primary;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-
-    &::before {
-      content: '\f236';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-// Form Sections
-.form-group {
-  @include card;
-  margin-bottom: 30px;
+// Main Styles
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
   animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
+  padding: 40px;
+
+  h2 {
+    @include gradient($primary);
+    color: $white;
+    text-align: center;
+    padding: 30px;
+    margin: -40px -40px 40px -40px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    border-radius: 20px 20px 0 0;
+  }
 
   h3 {
     font-size: 1.3rem;
@@ -80,29 +85,20 @@ $shadow: rgba(0, 0, 0, 0.1);
     align-items: center;
     gap: 10px;
 
-    &::before {
+    i {
       color: $primary;
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
     }
   }
-
-  // Nueva habitación
-  &:has(h3:contains("Nueva")) h3::before {
-    content: '\f055'; // plus-circle
-  }
-
-  // Editar habitación  
-  &:has(h3:contains("Editar")) h3::before {
-    content: '\f044'; // edit
-  }
 }
 
+// Form Sections
+.form-group,
 .edit-form {
-  @extend .form-group;
+  @include card;
+  margin-bottom: 30px;
 }
 
-// Form Elements
+// Labels & Inputs
 label {
   font-weight: 600;
   color: $dark;
@@ -111,27 +107,13 @@ label {
   align-items: center;
   gap: 8px;
 
-  &[for="roomNumber"]::before,
-  &[for="editRoomNumber"]::before {
-    content: '\f52b';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for="roomTypeName"]::before,
-  &[for="editRoomTypeName"]::before {
-    content: '\f02c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
+  i {
     color: $primary;
     width: 16px;
   }
 }
 
-.form-control {
-  width: 100%;
+input, select, textarea {
   padding: 15px;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
@@ -139,7 +121,6 @@ label {
   transition: all 0.3s ease;
   background: $white;
   font-family: inherit;
-  margin-bottom: 15px;
 
   &:focus {
     outline: none;
@@ -149,33 +130,62 @@ label {
   }
 }
 
-// Checkbox Styling
+.form-control {
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: $white;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+// Checkbox Styles
 .form-check {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 15px 0;
+  margin: 20px 0;
 
   .form-check-input {
-    width: auto;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $primary;
+    border-radius: 5px;
+    background: $white;
+    cursor: pointer;
+    position: relative;
     margin: 0;
-    transform: scale(1.2);
-    accent-color: $primary;
+
+    &:checked {
+      background: $primary;
+      border-color: $primary;
+
+      &::after {
+        content: '✓';
+        color: $white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
   }
 
   .form-check-label {
     margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    &::before {
-      content: '\f205';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      color: $primary;
-      width: 16px;
-    }
+    cursor: pointer;
+    font-weight: 600;
+    color: $dark;
   }
 }
 
@@ -192,272 +202,167 @@ label {
   align-items: center;
   gap: 8px;
   box-shadow: 0 4px 15px $shadow;
-  margin: 5px;
   @include hover-lift;
 
   &.btn-primary {
     @include gradient($primary);
     color: $white;
-
-    &::before {
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
   }
 
   &.btn-success {
     @include gradient($success);
     color: $white;
-
-    &::before {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
   }
 
   &.btn-danger {
     @include gradient($danger);
     color: $white;
-
-    &::before {
-      content: '\f2ed';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
   }
 
   &.btn-secondary {
     @include gradient($secondary);
     color: $white;
-
-    &::before {
-      content: '\f00d';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
   }
 
   &.btn-sm {
     padding: 8px 20px;
     font-size: 0.9rem;
   }
-
-  // Specific button content
-  &:contains("Agregar") {
-    &::before {
-      content: '\f0c7'; // save
-    }
-  }
-
-  &:contains("Editar") {
-    &::before {
-      content: '\f044'; // edit
-    }
-  }
-
-  &:contains("Eliminar") {
-    &::before {
-      content: '\f2ed'; // trash
-    }
-  }
 }
 
-// Spacing utilities
-.mt-2 { margin-top: 0.5rem; }
-.ml-2 { margin-left: 0.5rem; }
-.mb-4 { margin-bottom: 1.5rem; }
-.my-2 { 
-  margin-top: 0.5rem; 
-  margin-bottom: 0.5rem; 
-}
-.ml-1 { margin-left: 0.25rem; }
-
-// Table Styling
-h3:contains("Lista") {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: $dark;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  &::before {
-    content: '\f03a';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-  }
-}
-
-.table-bordered {
+// Table Styles
+.table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
   background: $white;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 5px 20px $shadow;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+
+  &.table-bordered {
+    border: none;
+  }
 
   thead {
-    th {
-      @include gradient($primary);
+    @include gradient($primary);
+
+    tr th {
+      padding: 20px 15px;
       color: $white;
-      padding: 15px;
-      text-align: left;
       font-weight: 600;
+      text-align: left;
       border: none;
-      position: relative;
-
-      &::before {
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        margin-right: 8px;
-      }
-
-      &:nth-child(1)::before { content: '\f292'; } // ID
-      &:nth-child(2)::before { content: '\f52b'; } // Número
-      &:nth-child(3)::before { content: '\f205'; } // Estado
-      &:nth-child(4)::before { content: '\f02c'; } // Tipo
-      &:nth-child(5)::before { content: '\f085'; } // Acciones
+      background: transparent;
     }
   }
 
   tbody {
-    td {
-      padding: 15px;
-      border-bottom: 1px solid #e0e0e0;
-      vertical-align: middle;
-
-      // Status styling
-      &:nth-child(3) {
-        font-weight: 600;
-        
-        &:contains("Sí") {
-          color: $success;
-          
-          &::before {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            margin-right: 5px;
-          }
-        }
-        
-        &:contains("No") {
-          color: $danger;
-          
-          &::before {
-            content: '\f00d';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            margin-right: 5px;
-          }
-        }
-      }
-    }
-
     tr {
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
       &:hover {
-        background-color: rgba($primary, 0.05);
+        background: rgba($primary, 0.05);
+        transform: translateY(-1px);
       }
 
-      &:last-child td {
+      &:last-child {
         border-bottom: none;
       }
+
+      td {
+        padding: 15px;
+        border: none;
+        vertical-align: middle;
+        color: $dark;
+        background: transparent;
+
+        &:first-child {
+          font-weight: 600;
+          color: $primary;
+        }
+      }
     }
   }
 }
 
-// Status Badge Alternative (if you want to use badges instead)
-.status-badge {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-
-  &.status-active {
-    background: rgba($success, 0.1);
-    color: $success;
-
-    &::before {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
-  }
-
-  &.status-inactive {
-    background: rgba($danger, 0.1);
-    color: $danger;
-
-    &::before {
-      content: '\f00d';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
-  }
+// Utility Classes
+.mb-4 {
+  margin-bottom: 2rem !important;
 }
 
-// Actions cell
-td:last-child {
-  white-space: nowrap;
+.mt-2 {
+  margin-top: 0.5rem !important;
+}
+
+.ml-1 {
+  margin-left: 0.25rem !important;
+}
+
+.ml-2 {
+  margin-left: 0.5rem !important;
+}
+
+.my-2 {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 // Responsive Design
 @media (max-width: 768px) {
-  .container {
-    padding: 15px;
+  .container { 
+    padding: 20px; 
+  }
+  
+  .buttons-section {
+    flex-direction: column;
+    align-items: center;
     
-    h2 {
-      font-size: 2rem;
-      flex-direction: column;
-      gap: 10px;
+    .btn {
+      width: 100%;
+      max-width: 300px;
+      justify-content: center;
     }
   }
 
-  .form-group, .edit-form {
+  .header {
     padding: 20px;
+    h2 { 
+      font-size: 2rem; 
+    }
+  }
+
+  .form-group,
+  .edit-form { 
+    padding: 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .header h2 { 
+    font-size: 1.8rem; 
+  }
+  
+  .section-title { 
+    font-size: 1.1rem; 
+  }
+  
+  .form-group,
+  .edit-form { 
+    padding: 20px; 
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 
   .btn {
     width: 100%;
     justify-content: center;
     margin: 5px 0;
-  }
-
-  .table-bordered {
-    font-size: 0.9rem;
-    
-    th, td {
-      padding: 10px 8px;
-    }
-  }
-
-  // Stack buttons vertically on mobile
-  td:last-child {
-    .btn {
-      display: block;
-      width: 100%;
-      margin: 2px 0;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .container h2 { 
-    font-size: 1.8rem; 
-  }
-  
-  .form-group, .edit-form { 
-    padding: 15px; 
-  }
-  
-  .table-bordered {
-    font-size: 0.8rem;
   }
 }

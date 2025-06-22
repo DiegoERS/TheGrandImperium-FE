@@ -1,129 +1,416 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 .admin-home {
-  font-family: 'Arial', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+  color: #ffffff;
+  overflow-x: hidden;
   position: relative;
-  background: url('../../../assets/logo.jpg') no-repeat center center;
-  background-size: 60%;
 }
 
+// Animated Background Overlay
 .admin-home::before {
-  content: "";
+  content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(245, 244, 244, 0.795); /* Overlay blanco semitransparente */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(201, 176, 55, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(255, 215, 0, 0.06) 0%, transparent 50%);
   pointer-events: none;
-  z-index: 1;
+  animation: backgroundPulse 8s ease-in-out infinite;
 }
 
 .welcome-section {
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
   z-index: 2;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.27);
-  border-radius: 15px;
-  padding: 50px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
-  width: 80%;
-  max-width: 500px;
-  opacity: 0;
-  transform: scale(1.2);
-  animation: shrinkIn 1s ease-out forwards, fadeIn 2s ease-in-out forwards;
 }
 
-/* El resto igual, no cambia nada */
+.greeting {
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+  padding: 60px 40px;
+  
+  // Glass morphism effect
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(201, 176, 55, 0.2);
+  
+  // Subtle shadows and glow
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  // Animation entrance
+  opacity: 0;
+  transform: translateY(50px);
+  animation: greetingSlideIn 1.5s ease-out 0.3s forwards;
+  
+  // Shimmer effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201, 176, 55, 0.1), transparent);
+    border-radius: 20px;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  
+  // Floating glow
+  &::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, rgba(201, 176, 55, 0.15) 0%, transparent 70%);
+    border-radius: 30px;
+    opacity: 0;
+    animation: glowPulse 6s ease-in-out infinite;
+    z-index: -1;
+  }
+}
 
 .greeting h3 {
-  font-size: 2.5rem;
-  color: #00796b;
-  margin-bottom: 15px;
-  font-weight: bold;
-  animation: colorPulse 3s infinite alternate, slideIn 1.5s ease-out forwards;
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  margin: 0 0 30px 0;
+  position: relative;
+  
+  // Gradient text effect
+  background: linear-gradient(135deg, #ffffff 0%, #c9b037 30%, #ffd700 70%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  
+  // Animated gradient and glow
+  animation: 
+    titleGradientShift 4s ease-in-out infinite,
+    titleGlow 3s ease-in-out infinite alternate,
+    titleSlideIn 1.2s ease-out 0.6s both;
+  
+  // Subtle text decoration
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #c9b037, #ffd700, #c9b037);
+    border-radius: 2px;
+    animation: underlineExpand 1.5s ease-out 1.2s both;
+  }
+}
+
+.greeting .hotel-name {
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 3px;
+  margin: 20px 0 30px 0;
+  position: relative;
+  
+  // Elegant gold gradient
+  background: linear-gradient(135deg, #c9b037 0%, #ffd700 50%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  // Entrance animation
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hotelNameSlideIn 1.2s ease-out 0.9s both;
+  
+  // Subtle glow effect
+  filter: drop-shadow(0 0 10px rgba(201, 176, 55, 0.3));
+  
+  &::before {
+    content: '✦';
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #c9b037;
+    font-size: 0.8em;
+    animation: starTwinkle 3s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '✦';
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #c9b037;
+    font-size: 0.8em;
+    animation: starTwinkle 3s ease-in-out infinite 1.5s;
+  }
 }
 
 .greeting p {
-  font-size: 1.2rem;
-  color: #37474f;
-  margin-top: 0;
-  font-weight: 400;
+  font-size: 1.3rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: #cccccc;
+  margin: 40px 0 0 0;
   opacity: 0;
-  animation: fadeInText 1.5s 1s forwards;
-}
-.content-oficial{
-  padding: 0;
-}
-@keyframes shrinkIn {
-  0% {
-    opacity: 0;
-    transform: scale(1.2);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
+  transform: translateY(20px);
+  animation: paragraphFadeIn 1s ease-out 1.5s both;
+  
+  // Subtle hover effect
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: #e0e0e0;
   }
 }
 
-@keyframes colorPulse {
-  0% {
-    color: #00796b;
+// Floating particles
+.admin-home .particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.admin-home .particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #c9b037;
+  border-radius: 50%;
+  animation: particleFloat 12s linear infinite;
+  
+  &:nth-child(1)  { left: 5%;   top: 10%;  animation-delay: 0s;    animation-duration: 14s; }
+  &:nth-child(2)  { left: 15%;  top: 30%;  animation-delay: 2s;    animation-duration: 16s; }
+  &:nth-child(3)  { left: 25%;  top: 50%;  animation-delay: 4s;    animation-duration: 13s; }
+  &:nth-child(4)  { left: 35%;  top: 70%;  animation-delay: 1s;    animation-duration: 15s; }
+  &:nth-child(5)  { left: 45%;  top: 20%;  animation-delay: 3s;    animation-duration: 17s; }
+  &:nth-child(6)  { left: 55%;  top: 40%;  animation-delay: 5s;    animation-duration: 12s; }
+  &:nth-child(7)  { left: 65%;  top: 60%;  animation-delay: 0.5s;  animation-duration: 14s; }
+  &:nth-child(8)  { left: 75%;  top: 80%;  animation-delay: 2.5s;  animation-duration: 16s; }
+  &:nth-child(9)  { left: 85%;  top: 15%;  animation-delay: 4.5s;  animation-duration: 13s; }
+  &:nth-child(10) { left: 95%;  top: 35%;  animation-delay: 1.5s;  animation-duration: 15s; }
+}
+
+// Decorative elements
+.admin-home::after {
+  content: '';
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, rgba(201, 176, 55, 0.1), transparent);
+  border-radius: 50%;
+  animation: decorativeFloat 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+// Animations
+@keyframes backgroundPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes greetingSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
   }
-  50% {
-    color: #FFD700;
-  }
-  100% {
-    color: #4a554cd7;
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes slideIn {
-  0% {
-    transform: translateX(-50px);
-    opacity: 0;
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes titleGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes titleGlow {
+  0% { 
+    text-shadow: 
+      0 0 20px rgba(201, 176, 55, 0.3),
+      0 0 40px rgba(201, 176, 55, 0.1);
   }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
+  100% { 
+    text-shadow: 
+      0 0 30px rgba(201, 176, 55, 0.5),
+      0 0 60px rgba(201, 176, 55, 0.2);
   }
 }
 
-@keyframes fadeInText {
-  0% {
+@keyframes hotelNameSlideIn {
+  from {
     opacity: 0;
+    transform: translateY(20px) scale(0.95);
   }
-  100% {
+  to {
     opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes fadeIn {
+@keyframes starTwinkle {
+  0%, 100% { 
+    opacity: 0.6;
+    transform: translateY(-50%) scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: translateY(-50%) scale(1.2);
+  }
+}
+
+@keyframes titleSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes underlineExpand {
+  from {
+    width: 0;
+  }
+  to {
+    width: 120px;
+  }
+}
+
+@keyframes paragraphFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes particleFloat {
   0% {
+    transform: translateY(100vh) rotate(0deg);
     opacity: 0;
   }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
   100% {
-    opacity: 1;
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes decorativeFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.3;
+  }
+  50% { 
+    transform: translateY(-20px) rotate(180deg); 
+    opacity: 0.6;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .greeting h3 {
+    font-size: 3rem;
+  }
+  
+  .greeting p {
+    font-size: 1.2rem;
+  }
+  
+  .greeting .hotel-name {
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    
+    &::before,
+    &::after {
+      display: none;
+    }
   }
 }
 
 @media (max-width: 768px) {
   .welcome-section {
-    padding: 30px;
-    width: 90%;
-    max-width: 400px;
+    padding: 20px 15px;
   }
+  
+  .greeting {
+    padding: 40px 30px;
+  }
+  
+  .greeting h3 {
+    font-size: 2.5rem;
+  }
+  
+  .greeting p {
+    font-size: 1.1rem;
+  }
+}
 
+@media (max-width: 480px) {
+  .greeting {
+    padding: 30px 20px;
+  }
+  
   .greeting h3 {
     font-size: 2rem;
   }
-
+  
   .greeting p {
     font-size: 1rem;
+  }
+  
+  .admin-home::after {
+    display: none;
   }
 }
