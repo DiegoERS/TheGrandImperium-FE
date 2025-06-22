@@ -1,1 +1,159 @@
-<p>Arreglando errorews</p>
+<div class="advertising-container">
+  <h2 class="advertising-title">Gestión de Publicidad</h2>
+
+  <!-- Formulario -->
+  <form [formGroup]="advertisingForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nombre:</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="form-control"
+        [class.is-invalid]="name?.invalid && name?.touched"
+      />
+      <div *ngIf="name?.invalid && name?.touched" class="error-message">
+        {{ getErrorMessage('name') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="link">Enlace:</label>
+      <input
+        type="url"
+        id="link"
+        formControlName="link"
+        placeholder="https://ejemplo.com"
+        class="form-control"
+        [class.is-invalid]="link?.invalid && link?.touched"
+      />
+      <div *ngIf="link?.invalid && link?.touched" class="error-message">
+        {{ getErrorMessage('link') }}
+      </div>
+    </div>
+
+    <!-- Selector de imagen -->
+    <div class="form-group">
+      <label for="imageInput">Imagen de Publicidad:</label>
+      <div class="file-input-container">
+        <input
+          type="file"
+          id="imageInput"
+          name="imageInput"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          class="file-input"
+        />
+        <label for="imageInput" class="file-input-label">
+          <span class="file-input-text">
+            {{ selectedFile ? selectedFile.name : 'Seleccionar imagen' }}
+          </span>
+          <span class="file-input-button">Buscar</span>
+        </label>
+      </div>
+      <div class="file-input-info">
+        Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 5MB
+      </div>
+    </div>
+
+    <!-- Vista previa de la imagen -->
+    <div class="form-group" *ngIf="imagePreviewUrl">
+      <label>Vista previa:</label>
+      <div class="image-preview">
+        <img 
+          [src]="imagePreviewUrl" 
+          alt="Vista previa" 
+          (error)="onImageError($event)"
+          (load)="onImageLoad($event)"
+        />
+        <button 
+          type="button" 
+          class="remove-image-button"
+          (click)="removeSelectedImage()"
+          title="Quitar imagen"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="clearForm()"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="accept-button"
+        [disabled]="advertisingForm.invalid"
+      >
+        {{ isEditing ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" class="loading-indicator">
+    Cargando publicidades...
+  </div>
+
+  <!-- Tabla de publicidades -->
+  <div *ngIf="!loading && advertisings.length > 0">
+    <table class="advertising-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Enlace</th>
+          <th>Imagen</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ad of advertisings">
+          <td>{{ ad.advertisingId }}</td>
+          <td>{{ ad.name }}</td>
+          <td>
+            <a [href]="ad.link" target="_blank" class="link-preview">
+              {{ ad.link | slice:0:50 }}{{ ad.link.length > 50 ? '...' : '' }}
+            </a>
+          </td>
+          <td>
+            <div class="table-image" *ngIf="ad.advertisingImageDTO?.imageDTO?.url">
+              <img 
+                [src]="ad.advertisingImageDTO.imageDTO.url" 
+                [alt]="ad.name"
+                (error)="onImageError($event)"
+              />
+            </div>
+            <span *ngIf="!ad.advertisingImageDTO?.imageDTO?.url" class="no-image">Sin imagen</span>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="edit-button"
+              (click)="editAdvertising(ad)"
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              class="delete-button"
+              (click)="deleteAdvertising(ad)"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mensaje cuando no hay datos -->
+  <div *ngIf="!loading && advertisings.length === 0" class="no-data">
+    No hay publicidades registradas
+  </div>
+</div>
