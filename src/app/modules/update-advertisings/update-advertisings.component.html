@@ -95,61 +95,10 @@
     </div>
   </form>
 
-
-  <!-- Tabla de publicidades -->
-  <div *ngIf="!loading && advertisings.length > 0">
-    <table class="advertising-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Enlace</th>
-          <th>Imagen</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ad of advertisings">
-          <td>{{ ad.advertisingId }}</td>
-          <td>{{ ad.name }}</td>
-          <td>
-            <a [href]="ad.link" target="_blank" class="link-preview">
-              {{ ad.link | slice:0:50 }}{{ ad.link.length > 50 ? '...' : '' }}
-            </a>
-          </td>
-          <td>
-            <div class="table-image" *ngIf="ad.advertisingImageDTO?.imageDTO?.url">
-              <img 
-                [src]="ad.advertisingImageDTO.imageDTO.url" 
-                [alt]="ad.name"
-                (error)="onImageError($event)"
-              />
-            </div>
-            <span *ngIf="!ad.advertisingImageDTO?.imageDTO?.url" class="no-image">Sin imagen</span>
-          </td>
-          <td>
-            <button
-              type="button"
-              class="edit-button"
-              (click)="editAdvertising(ad)"
-            >
-              Editar
-            </button>
-            <button
-              type="button"
-              class="delete-button"
-              (click)="deleteAdvertising(ad)"
-            >
-              Eliminar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" class="loading-indicator">
+    Cargando publicidades...
   </div>
 
-  <!-- Mensaje cuando no hay datos -->
-  <div *ngIf="!loading && advertisings.length === 0" class="no-data">
-    No hay publicidades registradas
-  </div>
+
 </div>
