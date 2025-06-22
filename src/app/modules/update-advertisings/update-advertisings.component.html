@@ -2,19 +2,18 @@
   <h2 class="advertising-title">Gestión de Publicidad</h2>
 
   <!-- Formulario -->
-  <form (ngSubmit)="onSubmit()" #advertisingForm="ngForm">
+  <form [formGroup]="advertisingForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Nombre:</label>
       <input
         type="text"
         id="name"
-        name="name"
-        [(ngModel)]="advertising.name"
-        required
-        #nameInput="ngModel"
+        formControlName="name"
+        class="form-control"
+        [class.is-invalid]="name?.invalid && name?.touched"
       />
-      <div *ngIf="nameInput.invalid && nameInput.touched" class="error-message">
-        El nombre es requerido
+      <div *ngIf="name?.invalid && name?.touched" class="error-message">
+        {{ getErrorMessage('name') }}
       </div>
     </div>
 
@@ -23,14 +22,13 @@
       <input
         type="url"
         id="link"
-        name="link"
-        [(ngModel)]="advertising.link"
-        required
-        #linkInput="ngModel"
+        formControlName="link"
         placeholder="https://ejemplo.com"
+        class="form-control"
+        [class.is-invalid]="link?.invalid && link?.touched"
       />
-      <div *ngIf="linkInput.invalid && linkInput.touched" class="error-message">
-        El enlace es requerido y debe ser una URL válida
+      <div *ngIf="link?.invalid && link?.touched" class="error-message">
+        {{ getErrorMessage('link') }}
       </div>
     </div>
 

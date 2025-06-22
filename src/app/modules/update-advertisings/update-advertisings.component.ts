@@ -1,20 +1,20 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AdvertisingDTO } from '../../core/models/AdvertisingDTO';
 import Swal from 'sweetalert2';
 import { AdvertisingService } from '../../core/services/advertising.service';
 import { CloudinaryService } from '../../core/services/cloudinary.service';
-import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-update-advertisings',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './update-advertisings.component.html',
   styleUrl: './update-advertisings.component.scss'
 })
 export class UpdateAdvertisingsComponent implements OnInit {
   
-  @ViewChild('advertisingForm') advertisingForm!: NgForm;
+  advertisingForm: FormGroup;
   
   onSubmit() {
     if (this.isEditing) {
@@ -26,14 +26,22 @@ export class UpdateAdvertisingsComponent implements OnInit {
 
   isEditing = false;
   advertisings: AdvertisingDTO[] = [];
-  advertising: AdvertisingDTO = this.createEmptyAdvertising();
   loading = true;
   selectedFile: File | null = null;
   imagePreviewUrl: string = '';
-  error: string = ''; // Para mostrar errores al usuario
+  error: string = '';
   
   private advertisingService = inject(AdvertisingService);
   private cloudinaryService = inject(CloudinaryService);
+  private formBuilder = inject(FormBuilder);
+
+  constructor() {
+    this.advertisingForm = this.formBuilder.group({
+      advertisingId: [0],
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      link: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]]
+    });
+  }
 
   ngOnInit(): void {
     this.loadAdvertisings();
@@ -135,10 +143,11 @@ export class UpdateAdvertisingsComponent implements OnInit {
 
   async saveAdvertising() {
     if (!this.advertisingForm.valid) {
+      this.markFormGroupTouched();
       Swal.fire({
         icon: 'warning',
         title: 'Formulario incompleto',
-        text: 'Por favor completa todos los campos requeridos'
+        text: 'Por favor completa todos los campos requeridos correctamente'
       });
       return;
     }
@@ -156,19 +165,21 @@ export class UpdateAdvertisingsComponent implements OnInit {
         backdrop: true
       });
 
+      const advertising = this.createAdvertisingFromForm();
+
       // Si hay una imagen seleccionada, subirla primero
       if (this.selectedFile) {
         try {
           const imageUrl = await this.cloudinaryService.uploadImage(this.selectedFile);
-          this.advertising.advertisingImageDTO.imageDTO.url = imageUrl;
+          advertising.advertisingImageDTO.imageDTO.url = imageUrl;
         } catch (imageError) {
           throw new Error('Error al subir la imagen');
         }
       }
 
-      this.advertisingService.create(this.advertising).subscribe({
+      this.advertisingService.create(advertising).subscribe({
         next: (createdId: number) => {
-          const newAdvertising = { ...this.advertising, advertisingId: createdId };
+          const newAdvertising = { ...advertising, advertisingId: createdId };
           this.advertisings.push(newAdvertising);
           this.clearForm();
           
@@ -203,10 +214,11 @@ export class UpdateAdvertisingsComponent implements OnInit {
 
   async updateAdvertising() {
     if (!this.advertisingForm.valid) {
+      this.markFormGroupTouched();
       Swal.fire({
         icon: 'warning',
         title: 'Formulario incompleto',
-        text: 'Por favor completa todos los campos requeridos'
+        text: 'Por favor completa todos los campos requeridos correctamente'
       });
       return;
     }
@@ -224,21 +236,29 @@ export class UpdateAdvertisingsComponent implements OnInit {
         backdrop: true
       });
 
+      const advertising = this.createAdvertisingFromForm();
+
       // Si hay una nueva imagen seleccionada, subirla
       if (this.selectedFile) {
         try {
           const imageUrl = await this.cloudinaryService.uploadImage(this.selectedFile);
-          this.advertising.advertisingImageDTO.imageDTO.url = imageUrl;
+          advertising.advertisingImageDTO.imageDTO.url = imageUrl;
         } catch (imageError) {
           throw new Error('Error al subir la imagen');
         }
+      } else {
+        // Mantener la imagen existente si no se seleccionó una nueva
+        const existingAd = this.advertisings.find(ad => ad.advertisingId === advertising.advertisingId);
+        if (existingAd?.advertisingImageDTO?.imageDTO?.url) {
+          advertising.advertisingImageDTO.imageDTO.url = existingAd.advertisingImageDTO.imageDTO.url;
+        }
       }
 
-      this.advertisingService.update(this.advertising).subscribe({
+      this.advertisingService.update(advertising).subscribe({
         next: () => {
-          const index = this.advertisings.findIndex(ad => ad.advertisingId === this.advertising.advertisingId);
+          const index = this.advertisings.findIndex(ad => ad.advertisingId === advertising.advertisingId);
           if (index !== -1) {
-            this.advertisings[index] = { ...this.advertising };
+            this.advertisings[index] = { ...advertising };
           }
           
           Swal.fire({
@@ -309,25 +329,27 @@ export class UpdateAdvertisingsComponent implements OnInit {
   }
 
   editAdvertising(ad: AdvertisingDTO) {
-    this.advertising = { 
-      ...ad,
-      advertisingImageDTO: {
-        ...ad.advertisingImageDTO,
-        imageDTO: {
-          ...ad.advertisingImageDTO.imageDTO
-        }
-      }
-    };
+    this.advertisingForm.patchValue({
+      advertisingId: ad.advertisingId,
+      name: ad.name,
+      link: ad.link
+    });
+    
     this.isEditing = true;
     
     // Si tiene imagen, mostrarla como preview
-    if (this.advertising.advertisingImageDTO?.imageDTO?.url) {
-      this.imagePreviewUrl = this.advertising.advertisingImageDTO.imageDTO.url;
+    if (ad.advertisingImageDTO?.imageDTO?.url) {
+      this.imagePreviewUrl = ad.advertisingImageDTO.imageDTO.url;
     }
   }
 
   clearForm() {
-    this.advertising = this.createEmptyAdvertising();
+    this.advertisingForm.reset({
+      advertisingId: 0,
+      name: '',
+      link: ''
+    });
+    
     this.isEditing = false;
     this.selectedFile = null;
     this.imagePreviewUrl = '';
@@ -338,11 +360,55 @@ export class UpdateAdvertisingsComponent implements OnInit {
     if (fileInput) {
       fileInput.value = '';
     }
-    
-    // Resetear el estado del formulario para quitar los mensajes de validación
-    if (this.advertisingForm) {
-      this.advertisingForm.resetForm();
+  }
+
+  private createAdvertisingFromForm(): AdvertisingDTO {
+    const formValue = this.advertisingForm.value;
+    return {
+      advertisingId: formValue.advertisingId || 0,
+      name: formValue.name,
+      link: formValue.link,
+      advertisingImageDTO: {
+        advertisingImageId: 0,
+        imageDTO: {
+          imageId: 0,
+          url: this.imagePreviewUrl || ''
+        }
+      }
+    };
+  }
+
+  private markFormGroupTouched() {
+    Object.keys(this.advertisingForm.controls).forEach(key => {
+      const control = this.advertisingForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
+  // Getters para facilitar el acceso a los controles en el template
+  get name() { return this.advertisingForm.get('name'); }
+  get link() { return this.advertisingForm.get('link'); }
+
+  // Métodos para verificar errores específicos
+  hasError(fieldName: string, errorType: string): boolean {
+    const field = this.advertisingForm.get(fieldName);
+    return !!(field?.errors?.[errorType] && field?.touched);
+  }
+
+  getErrorMessage(fieldName: string): string {
+    const field = this.advertisingForm.get(fieldName);
+    if (field?.errors && field.touched) {
+      if (field.errors['required']) {
+        return `${fieldName === 'name' ? 'El nombre' : 'El enlace'} es requerido`;
+      }
+      if (field.errors['minlength']) {
+        return 'El nombre debe tener al menos 2 caracteres';
+      }
+      if (field.errors['pattern']) {
+        return 'El enlace debe ser una URL válida (debe comenzar con http:// o https://)';
+      }
     }
+    return '';
   }
 
   onImageError(event: Event) {
