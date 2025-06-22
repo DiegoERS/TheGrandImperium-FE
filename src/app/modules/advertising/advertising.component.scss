@@ -169,7 +169,7 @@ form {
 
   &:hover {
   background: rgba($primary, 0.1); // esto sí está bien
-  border-color: color.adjust($primary, $lightness: -10%);
+  border-color: rgba($primary, 0.8); // Menor opacidad = más oscuro
 }
 }
 
