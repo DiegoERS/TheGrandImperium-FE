@@ -1,58 +1,414 @@
-.content-container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 16px;
-  background-color: #ffffff; /* Fondo blanco general */
-  border-radius: 12px;
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$accent: #FF6B35;      // Color accent para acciones
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins Simplificados
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
 }
 
-.custom-card {
-  padding: 24px; /* Fondo oscuro elegante para tarjeta interna */
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
 }
 
-h2 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-mat-form-field {
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Main Container
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
+}
+
+// Spinner Container
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  animation: slideUp 0.6s ease-out;
+}
+
+// Material Cards
+::ng-deep mat-card {
+  @include card;
+  margin-bottom: 30px;
+  animation: slideUp 0.6s ease-out;
+  
+  mat-card-title,
+  h2 {
+    color: $dark;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    &::before {
+      content: '\f0c2';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $primary;
+      font-size: 1.2rem;
+    }
+  }
+  
+  &[style*="background: #f9f9f9"] {
+    background: rgba($primary, 0.05) !important;
+    border: 2px solid rgba($primary, 0.1);
+    
+    h2::before {
+      content: '\f067';
+    }
+  }
+}
+
+// Material Form Fields
+::ng-deep mat-form-field {
   width: 100%;
   margin-bottom: 20px;
+  
+  &.mat-form-field-appearance-fill {
+    .mat-form-field-flex {
+      background-color: $white;
+      border-radius: 10px;
+      border: 2px solid #e0e0e0;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        border-color: rgba($primary, 0.5);
+        transform: translateY(-1px);
+      }
+    }
+    
+    &.mat-focused .mat-form-field-flex {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      transform: translateY(-1px);
+    }
+    
+    .mat-form-field-underline {
+      display: none;
+    }
+    
+    .mat-form-field-ripple {
+      display: none;
+    }
+  }
+  
+  .mat-form-field-label {
+    color: $dark;
+    font-weight: 600;
+    
+    &.mat-focused {
+      color: $primary;
+    }
+  }
+  
+  input,
+  textarea {
+    padding: 15px;
+    font-size: 1rem;
+    color: $dark;
+    font-family: inherit;
+    
+    &::placeholder {
+      color: rgba($dark, 0.6);
+    }
+  }
 }
 
-.mat-form-field-label {
-  color: #ffeb3b !important;
+// Material Buttons
+::ng-deep mat-button,
+::ng-deep mat-raised-button,
+::ng-deep mat-icon-button {
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  
+  &.mat-primary {
+    @include gradient($primary);
+    color: $white;
+    box-shadow: 0 4px 15px $shadow;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba($primary, 0.3);
+    }
+    
+    &:disabled {
+      background: $secondary !important;
+      color: rgba($white, 0.7) !important;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+  
+  &.mat-warn {
+    @include gradient($danger);
+    color: $white;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba($danger, 0.3);
+    }
+  }
+  
+  &.mat-accent {
+    @include gradient($accent);
+    color: $white;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba($accent, 0.3);
+    }
+  }
+  
+  &:not(.mat-raised-button) {
+    color: $primary;
+    background: transparent;
+    border: 2px solid $primary;
+    
+    &:hover {
+      background: rgba($primary, 0.1);
+      transform: translateY(-1px);
+    }
+  }
 }
 
-.mat-input-element {
-  color: #2c2c2c;
-  background-color: #ffffff !important;
-  border-radius: 4px;
-  padding: 6px 8px;
+// Material Table
+::ng-deep mat-table {
+  background: $white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px $shadow;
+  
+  mat-header-row {
+    background: linear-gradient(135deg, $primary 0%, color.adjust($primary, $lightness: -10%) 100%);
+    
+    mat-header-cell {
+      color: $white;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 20px 15px;
+      border: none;
+    }
+  }
+  
+  mat-row {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba($primary, 0.05);
+      transform: translateY(-1px);
+    }
+    
+    &:nth-child(even) {
+      background: rgba($light, 0.3);
+      
+      &:hover {
+        background: rgba($primary, 0.05);
+      }
+    }
+    
+    mat-cell {
+      padding: 15px;
+      border: none;
+      color: $dark;
+      font-size: 0.95rem;
+      
+      img {
+        border-radius: 8px;
+        box-shadow: 0 2px 8px $shadow;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
 }
 
-.mat-form-field-appearance-fill .mat-form-field-flex {
-  background-color: #ffffff !important;
+// Material Paginator
+::ng-deep mat-paginator {
+  background: transparent;
+  border-radius: 0 0 15px 15px;
+  
+  .mat-paginator-container {
+    padding: 15px;
+    background: rgba($primary, 0.05);
+  }
+  
+  .mat-paginator-page-size-select {
+    .mat-select-trigger {
+      background: $white;
+      border-radius: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba($primary, 0.3);
+    }
+  }
+  
+  button {
+    border-radius: 50%;
+    margin: 0 2px;
+    
+    &:not([disabled]) {
+      color: $primary;
+      
+      &:hover {
+        background: rgba($primary, 0.1);
+        transform: scale(1.1);
+      }
+    }
+  }
 }
 
-.mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: #ffeb3b;
+// Material Spinner
+::ng-deep mat-spinner {
+  circle {
+    stroke: $primary;
+  }
 }
 
-button {
-  font-weight: bold;
+// Material Icons
+::ng-deep mat-icon {
+  color: inherit;
+  font-size: 1.2rem;
+}
 
-  background-color: #ffeb3b;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+// File Input Styling
+input[type="file"] {
+  padding: 15px;
+  border: 2px dashed $primary;
+  border-radius: 10px;
+  background: rgba($primary, 0.05);
+  color: $primary;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: inherit;
+  
+  &:hover {
+    background: rgba($primary, 0.1);
+    border-color: color.adjust($primary, $lightness: -10%);
+    transform: translateY(-1px);
+  }
+  
+  &::file-selector-button {
+    @include gradient($primary);
+    color: $white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($primary, 0.3);
+    }
+  }
 }
 
-button:hover {
-  background-color: #fdd835;
+// Utility Classes
+.w-100 {
+  width: 100% !important;
+}
+
+// Button Groups
+div[style*="margin-top: 12px"] {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 20px !important;
+  
+  button {
+    min-width: 120px;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  :host {
+    padding: 10px;
+  }
+  
+  ::ng-deep mat-card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  ::ng-deep mat-table {
+    font-size: 0.9rem;
+    
+    mat-header-cell,
+    mat-cell {
+      padding: 10px 8px;
+    }
+  }
+  
+  div[style*="margin-top: 12px"] {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  ::ng-deep mat-card h2 {
+    font-size: 1.3rem;
+  }
+  
+  ::ng-deep mat-form-field {
+    margin-bottom: 15px;
+  }
+  
+  ::ng-deep mat-table {
+    mat-header-cell,
+    mat-cell {
+      padding: 8px 5px;
+      font-size: 0.8rem;
+    }
+  }
 }

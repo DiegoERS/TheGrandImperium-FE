@@ -1,6 +1,7 @@
 <div class="container">
   <h2>Administración de Habitaciones</h2>
 
+  
   <!-- Formulario para AGREGAR habitación -->
   <div *ngIf="mostrarFormularioNueva" class="form-group mb-4">
     <h3>Nueva Habitación</h3>
@@ -87,6 +88,9 @@
 
   <!-- Tabla de habitaciones -->
   <h3>Lista de Habitaciones</h3>
+   <button class="btn btn-primary mt-2" (click)="mostrarFormularioNueva = true">
+            Agregar
+          </button>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -111,9 +115,7 @@
             Editar
           </button>
           <button class="btn btn-danger btn-sm" (click)="deleteRoom(room.roomId)">Eliminar</button>
-          <button class="btn btn-success btn-sm ml-1" (click)="mostrarFormularioNueva = true">
-            Agregar
-          </button>
+
         </td>
       </tr>
     </tbody>
