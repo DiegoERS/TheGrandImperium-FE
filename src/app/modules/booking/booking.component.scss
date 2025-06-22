@@ -39,23 +39,17 @@ $shadow: rgba(0, 0, 0, 0.1);
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-// Main Styles
-.content {
+// Main Container
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
   @include gradient($secondary, $dark);
   min-height: 100vh;
   padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
-.content-container {
-  max-width: 900px;
+.content {
+  max-width: 1200px;
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -63,479 +57,416 @@ $shadow: rgba(0, 0, 0, 0.1);
   box-shadow: 0 20px 40px $shadow;
   overflow: hidden;
   animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
 }
 
-.text-content {
-  @include card;
-  margin: 0;
+.content-container {
   padding: 40px;
 }
 
-h2 {
-  font-size: 2rem;
-  font-weight: 300;
-  color: $dark;
-  text-align: center;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  &::before {
-    content: '\f15c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    font-size: 1.5rem;
-  }
-}
-
-.formulario {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  justify-content: space-between;
-  margin-bottom: 30px;
-}
-
-.form-group {
-  flex: 1 1 calc(33.333% - 20px);
-  min-width: 220px;
-  display: flex;
-  flex-direction: column;
-
-  &.full-width {
-    flex: 1 1 100%;
-  }
-}
-
-.formulario label {
-  font-weight: 600;
-  color: $dark;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.95rem;
-
-  i {
-    color: $primary;
-    width: 16px;
-  }
-
-  // Iconos específicos para diferentes tipos de campos
-  &[for*="nombre"]::before,
-  &[for*="name"]::before {
-    content: '\f007';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for*="email"]::before,
-  &[for*="correo"]::before {
-    content: '\f0e0';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for*="telefono"]::before,
-  &[for*="phone"]::before {
-    content: '\f095';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for*="fecha"]::before,
-  &[for*="date"]::before {
-    content: '\f073';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for*="categoria"]::before,
-  &[for*="category"]::before,
-  &[for*="tipo"]::before {
-    content: '\f02b';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for*="direccion"]::before,
-  &[for*="address"]::before {
-    content: '\f3c5';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for*="empresa"]::before,
-  &[for*="company"]::before {
-    content: '\f1ad';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-
-  &[for*="documento"]::before,
-  &[for*="cedula"]::before,
-  &[for*="id"]::before {
-    content: '\f2bb';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    width: 16px;
-  }
-}
-
-.formulario input, 
-.formulario select {
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: $white;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  margin-bottom: 0;
-
-  &:focus {
-    outline: none;
-    border-color: $primary;
-    box-shadow: 0 0 0 3px rgba($primary, 0.1);
-    transform: translateY(-1px);
-  }
-
-  &:hover {
-    border-color: color.adjust($primary, $lightness: 10%);
-  }
-}
-
-.formulario button {
-  padding: 15px 40px;
-  border: none;
-  border-radius: 50px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: 0 4px 15px $shadow;
-  @include gradient($primary);
-  color: $white;
-  @include hover-lift;
-  transition: all 0.3s ease;
-  margin: 20px auto 0;
-
-  &::before {
-    content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-  }
-
-  &:hover {
-    @include gradient(color.adjust($primary, $lightness: 5%));
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba($primary, 0.4);
-  }
-}
-
-// Table Styling
-h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: $dark;
-  margin: 30px 0 20px 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  &::before {
-    content: '\f03a';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-  }
-}
-
-.table-container {
-  @include card;
-  padding: 0;
-  overflow: hidden;
-  margin-top: 20px;
-}
-
-.table-bordered {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0;
-  background: $white;
-  border-radius: 0;
-  box-shadow: none;
-
-  thead {
-    th {
-      @include gradient($primary);
-      color: $white;
-      padding: 15px;
-      text-align: left;
-      font-weight: 600;
-      border: none;
-      position: relative;
-
-      &::before {
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        margin-right: 8px;
-      }
-
-      &:nth-child(1)::before { content: '\f292'; } // ID
-      &:nth-child(2)::before { content: '\f007'; } // Nombre
-      &:nth-child(3)::before { content: '\f0e0'; } // Email
-      &:nth-child(4)::before { content: '\f095'; } // Teléfono
-      &:nth-child(5)::before { content: '\f073'; } // Fecha
-      &:nth-child(6)::before { content: '\f02b'; } // Categoría
-      &:nth-child(7)::before { content: '\f3c5'; } // Dirección
-      &:nth-child(8)::before { content: '\f085'; } // Acciones
-    }
-  }
-
-  tbody {
-    td {
-      padding: 15px;
-      border-bottom: 1px solid #e0e0e0;
-      vertical-align: middle;
-      
-      // Si hay estado activo/inactivo
-      &.status-cell {
-        font-weight: 600;
-        
-        &.status-active {
-          color: $success;
-          
-          &::before {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            margin-right: 5px;
-          }
-        }
-        
-        &.status-inactive {
-          color: $danger;
-          
-          &::before {
-            content: '\f00d';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            margin-right: 5px;
-          }
-        }
-      }
-    }
-
-    tr {
-      &:hover {
-        background-color: rgba($primary, 0.05);
-      }
-
-      &:last-child td {
-        border-bottom: none;
-      }
-    }
-  }
-}
-
-// Action Buttons in Table
-.btn-table {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 25px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin: 2px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  &.btn-edit {
+// Text Content Section
+.text-content {
+  margin-bottom: 40px;
+  
+  h2 {
     @include gradient($primary);
     color: $white;
-
+    text-align: center;
+    padding: 30px;
+    margin: -40px -40px 40px -40px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    border-radius: 20px 20px 0 0;
+    
     &::before {
-      content: '\f044';
+      content: '\f019'; // search icon
       font-family: 'Font Awesome 6 Free';
       font-weight: 900;
-    }
-  }
-
-  &.btn-delete {
-    @include gradient($danger);
-    color: $white;
-
-    &::before {
-      content: '\f2ed';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-    }
-  }
-
-  &.btn-view {
-    @include gradient($secondary);
-    color: $white;
-
-    &::before {
-      content: '\f06e';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
+      margin-right: 15px;
     }
   }
 }
 
-// Actions cell
-td:last-child {
-  white-space: nowrap;
-}
-
-// Status Badge (alternativa para estados)
-.status-badge {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-
-  &.status-active {
-    background: rgba($success, 0.1);
-    color: $success;
-
-    &::before {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
+// Form Styles
+.formulario {
+  @include card;
+  margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  align-items: end;
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    
+    label {
+      font-weight: 600;
+      color: $dark;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      
+      &[for="llegada"]::before {
+        content: '\f073'; // calendar icon
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: $primary;
+      }
+      
+      &[for="salida"]::before {
+        content: '\f073'; // calendar icon
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: $primary;
+      }
+      
+      &[for="habitacion"]::before {
+        content: '\f236'; // bed icon
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: $primary;
+      }
+    }
+    
+    input, select {
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: $white;
+      font-family: inherit;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba($primary, 0.1);
+        transform: translateY(-1px);
+      }
+      
+      &:disabled {
+        background: $light;
+        color: $secondary;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      
+      &[type="date"] {
+        &::-webkit-calendar-picker-indicator {
+          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>') no-repeat;
+          background-size: 16px;
+          cursor: pointer;
+        }
+      }
+    }
+    
+    select {
+      cursor: pointer;
+      
+      option {
+        padding: 10px;
+        
+        &:disabled {
+          color: $secondary;
+          font-style: italic;
+        }
+      }
     }
   }
-
-  &.status-inactive {
-    background: rgba($danger, 0.1);
-    color: $danger;
-
+  
+  button[type="submit"] {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    @include gradient($primary);
+    color: $white;
+    box-shadow: 0 4px 15px $shadow;
+    @include hover-lift;
+    align-self: end;
+    
     &::before {
-      content: '\f00d';
+      content: '\f002'; // search icon
       font-family: 'Font Awesome 6 Free';
       font-weight: 900;
+      margin-right: 8px;
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      @include gradient($secondary);
+      
+      &:hover {
+        transform: none;
+        box-shadow: 0 4px 15px $shadow;
+      }
+    }
+  }
+}
+
+// Material Table Overrides
+.mat-elevation-z8 {
+  @include card;
+  margin-bottom: 20px;
+  border-radius: 15px !important;
+  overflow: hidden;
+  box-shadow: 0 5px 20px $shadow !important;
+  
+  .mat-table {
+    background: transparent !important;
+    
+    .mat-header-row {
+      @include gradient($primary);
+      
+      .mat-header-cell {
+        color: $white !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none !important;
+        padding: 20px 24px !important;
+        
+        &:first-child {
+          &::before {
+            content: '\f015'; // home icon for room number
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 8px;
+          }
+        }
+        
+        &:last-child {
+          &::before {
+            content: '\f236'; // bed icon for room type
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+    
+    .mat-row {
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+      
+      &:hover {
+        background: rgba($primary, 0.05) !important;
+        transform: translateX(5px);
+      }
+      
+      &:last-child {
+        border-bottom: none !important;
+      }
+      
+      .mat-cell {
+        color: $dark !important;
+        font-size: 0.95rem !important;
+        padding: 18px 24px !important;
+        border: none !important;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Material Paginator Overrides
+mat-paginator {
+  @include card;
+  border-radius: 15px !important;
+  margin-top: 20px;
+  
+  .mat-paginator-container {
+    background: transparent !important;
+    padding: 20px !important;
+    
+    .mat-paginator-page-size,
+    .mat-paginator-range-label {
+      color: $dark !important;
+      font-weight: 500 !important;
+    }
+    
+    .mat-paginator-navigation-previous,
+    .mat-paginator-navigation-next,
+    .mat-paginator-navigation-first,
+    .mat-paginator-navigation-last {
+      color: $primary !important;
+      
+      &:hover {
+        background: rgba($primary, 0.1) !important;
+      }
+      
+      &[disabled] {
+        color: $secondary !important;
+        opacity: 0.5;
+      }
+    }
+    
+    .mat-select {
+      .mat-select-trigger {
+        color: $dark !important;
+        
+        .mat-select-value {
+          color: $dark !important;
+        }
+        
+        .mat-select-arrow {
+          color: $primary !important;
+        }
+      }
+      
+      &:focus .mat-select-trigger {
+        color: $primary !important;
+      }
+    }
+  }
+}
+
+// Material Select Panel Override (for page size selector)
+.mat-select-panel {
+  background: $white !important;
+  border-radius: 10px !important;
+  box-shadow: 0 5px 20px $shadow !important;
+  
+  .mat-option {
+    color: $dark !important;
+    font-family: 'Segoe UI', system-ui, sans-serif !important;
+    
+    &:hover {
+      background: rgba($primary, 0.1) !important;
+    }
+    
+    &.mat-selected {
+      background: rgba($primary, 0.2) !important;
+      color: $primary !important;
+    }
+  }
+}
+
+// Empty State
+.mat-table .mat-no-data-row {
+  td {
+    text-align: center !important;
+    color: $secondary !important;
+    font-style: italic;
+    padding: 40px !important;
+    
+    &::before {
+      content: '\f119'; // no data icon
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 10px;
+      color: $primary;
     }
   }
 }
 
 // Responsive Design
 @media (max-width: 768px) {
-  .content {
-    padding: 15px;
-  }
-
   .content-container {
-    margin: 0;
+    padding: 20px;
   }
-
-  .text-content {
-    padding: 25px;
+  
+  .text-content h2 {
+    font-size: 2rem;
+    margin: -20px -20px 30px -20px;
+    padding: 20px;
   }
-
+  
   .formulario {
+    padding: 20px;
+    grid-template-columns: 1fr;
     gap: 20px;
-  }
-
-  .form-group {
-    flex: 1 1 calc(50% - 15px);
-    min-width: 150px;
-  }
-
-  h2 {
-    font-size: 1.7rem;
-  }
-
-  .table-container {
-    padding: 0;
-  }
-
-  .table-bordered {
-    font-size: 0.9rem;
     
-    th, td {
-      padding: 10px 8px;
+    button[type="submit"] {
+      width: 100%;
+      justify-self: stretch;
     }
   }
-
-  // Stack buttons vertically on mobile
-  td:last-child {
-    .btn-table {
-      display: block;
-      width: 100%;
-      margin: 2px 0;
+  
+  .mat-elevation-z8 {
+    .mat-table {
+      .mat-header-cell,
+      .mat-cell {
+        padding: 12px 16px !important;
+        font-size: 0.9rem !important;
+      }
+    }
+  }
+  
+  mat-paginator {
+    .mat-paginator-container {
+      flex-wrap: wrap;
+      gap: 10px;
       justify-content: center;
     }
   }
 }
 
 @media (max-width: 480px) {
-  .text-content {
-    padding: 20px;
+  .text-content h2 {
+    font-size: 1.8rem;
+    padding: 15px;
   }
-
+  
+  .content-container {
+    padding: 15px;
+  }
+  
   .formulario {
-    flex-direction: column;
-    gap: 15px;
+    padding: 15px;
   }
-
-  .form-group {
-    flex: 1 1 100%;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .formulario button {
-    width: 100%;
-    padding: 18px;
-  }
-
-  .table-bordered {
-    font-size: 0.8rem;
-  }
-
-  h3 {
-    font-size: 1.1rem;
-    flex-direction: column;
-    gap: 5px;
+  
+  // Stack table columns on very small screens
+  .mat-elevation-z8 {
+    .mat-table {
+      .mat-header-row {
+        display: none;
+      }
+      
+      .mat-row {
+        display: block;
+        border: 2px solid $light;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        padding: 15px;
+        background: $white;
+        transform: none !important;
+        
+        &:hover {
+          background: rgba($primary, 0.05) !important;
+          transform: none !important;
+        }
+        
+        .mat-cell {
+          display: block !important;
+          border: none !important;
+          padding: 8px 0 !important;
+          position: relative;
+          padding-left: 40% !important;
+          
+          &::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            width: 35%;
+            font-weight: 600;
+            color: $primary;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+          }
+          
+          &:nth-child(1)::before { content: "Habitación:"; }
+          &:nth-child(2)::before { content: "Tipo:"; }
+        }
+      }
+    }
   }
 }

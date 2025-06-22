@@ -1,162 +1,514 @@
 // Font Awesome Import
+@use "sass:color";
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
-// Variables de color
+// Color Variables - Tema Gris y Dorado
 $primary: #D4AF37;     // Dorado
-$danger: #f44336;
-$danger-dark: #d32f2f;
-$dark: #333;
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
 $white: #ffffff;
-$light-gray: #f9f9f9;
-$border-color: #ddd;
+$success: #28a745;
+$danger: #dc3545;
 $shadow: rgba(0, 0, 0, 0.1);
 
-// Mixins
+// Mixins Simplificados
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
 @mixin hover-lift {
   transition: all 0.3s ease;
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba($primary, 0.3);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
   }
 }
 
-@mixin card-shadow {
-  box-shadow: 0 4px 20px $shadow;
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-// Contenedor principal de edición "Acerca de"
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Main Container
+:host {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
+}
+
 .edit-about-us-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: $white;
-  border-radius: 12px;
-  @include card-shadow;
-  font-family: 'Segoe UI', sans-serif;
-  color: $dark;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
+
+  // Header similar al componente original
+  h2 {
+    @include gradient($primary);
+    padding: 30px;
+    text-align: center;
+    color: $white;
+    font-size: 2.2rem;
+    margin: 0 0 30px 0;
+    font-weight: 300;
+    border-radius: 20px 20px 0 0;
+    
+    &::before {
+      content: '\f044';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 15px;
+    }
+  }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-
-    mat-form-field {
-      width: 100%;
-
-      mat-label {
-        font-weight: 600;
-        color: $primary;
-      }
-
-      input, textarea {
-        font-size: 16px;
-        color: $dark;
-        background-color: $white;
-      }
-    }
-
-    // Lista de imágenes
-    .image-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1rem;
-
-      div {
-        position: relative;
-        background: $light-gray;
-        border: 1px solid $border-color;
-        border-radius: 8px;
-        padding: 0.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        img {
-          width: 100%;
-          height: auto;
-          max-height: 120px;
-          object-fit: cover;
-          border-radius: 6px;
-          margin-bottom: 0.5rem;
-        }
-
-        button {
-          background-color: $danger;
-          color: $white;
-          border: none;
-          border-radius: 4px;
-          padding: 0.25rem 0.5rem;
-          font-size: 0.875rem;
-          cursor: pointer;
-          transition: background-color 0.2s ease-in-out;
-
-          &:hover {
-            background-color: $danger-dark;
-          }
-        }
-      }
-    }
-
-    input[type="file"] {
-      margin-top: 0.5rem;
-      font-size: 0.95rem;
-    }
-
-    button[type="submit"] {
-      align-self: flex-start;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      background-color: $primary;
-      color: $white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      @include hover-lift;
-    }
+    gap: 30px;
+    padding: 40px;
   }
 }
 
-// Spinner centralizado
+// Spinner Container
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
+  min-height: 50vh;
+  
+  // Override Angular Material spinner colors
+  ::ng-deep .mat-spinner {
+    circle {
+      stroke: $primary !important;
+    }
+  }
 }
 
+// Angular Material Form Fields Override
+::ng-deep .mat-form-field {
+  width: 100%;
+  
+  .mat-form-field-wrapper {
+    background: $white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px $shadow;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 4px 15px rgba($primary, 0.2);
+    }
+  }
+  
+  .mat-form-field-flex {
+    padding: 0.75em 1em;
+    background: transparent;
+  }
+  
+  .mat-form-field-infix {
+    padding: 0.5em 0;
+    border-top: none;
+  }
+  
+  .mat-form-field-label {
+    color: $secondary !important;
+    font-weight: 600;
+    
+    &.mat-focused {
+      color: $primary !important;
+    }
+  }
+  
+  .mat-input-element {
+    color: $dark;
+    font-size: 1rem;
+    
+    &:focus {
+      color: $dark;
+    }
+    
+    &::placeholder {
+      color: $secondary;
+    }
+  }
+  
+  .mat-form-field-underline {
+    background-color: rgba($primary, 0.3);
+    
+    .mat-form-field-ripple {
+      background-color: $primary;
+    }
+  }
+  
+  &.mat-focused {
+    .mat-form-field-wrapper {
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      transform: translateY(-1px);
+    }
+  }
+  
+  &.mat-form-field-appearance-fill {
+    .mat-form-field-flex {
+      background-color: rgba($light, 0.5);
+      border-radius: 10px 10px 0 0;
+    }
+  }
+}
+
+// Textarea specific styles
+::ng-deep .mat-form-field {
+  textarea.mat-input-element {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+}
+
+// Image List
+.image-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+  
+  > div {
+    @include card;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    @include hover-lift;
+    
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px $shadow;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+      border: 3px solid $light;
+      
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+    
+    button {
+      @include gradient($danger);
+      color: $white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px $shadow;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      
+      &::before {
+        content: '\f2ed';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+      }
+      
+      &:hover {
+        background: color.adjust($danger, $lightness: -10%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba($danger, 0.4);
+      }
+    }
+  }
+}
+
+// File Upload
 .file-upload {
-  margin-top: 16px;
-  text-align: center;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin: 20px 0;
 
   input[type="file"] {
-    display: none;
-  }
-
-  .file-upload-label {
-    display: inline-block;
-    padding: 10px 24px;
-    background-color: #e3af4b;
-    color: #fff;
-    border-radius: 4px;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 16px;
-    transition: background 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-
-    i {
-      margin-right: 8px;
-    }
-
-    &:hover {
-      background-color: #c99a3a;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    }
   }
 }
 
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  border: 2px dashed $primary;
+  border-radius: 10px;
+  background: rgba($primary, 0.05);
+  color: $primary;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  @include hover-lift;
+
+  &:hover {
+    background: rgba($primary, 0.1);
+    border-color: color.adjust($primary, $lightness: -10%);
+  }
+  
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+// Save Button Container
 .save-button-container {
   display: flex;
   justify-content: center;
+  margin-top: 30px;
+  
+  // Override Angular Material button
+  ::ng-deep .mat-raised-button {
+    @include gradient($primary);
+    color: $white !important;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px $shadow;
+    @include hover-lift;
+    min-width: 200px;
+    
+    .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      
+      &::before {
+        content: '\f0c7';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 1rem;
+      }
+    }
+    
+    &:hover {
+      background: color.adjust($primary, $lightness: -10%) !important;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba($primary, 0.4);
+    }
+    
+    &.mat-primary {
+      background: $primary !important;
+      
+      &:hover {
+        background: color.adjust($primary, $lightness: -10%) !important;
+      }
+    }
+    
+    &:disabled {
+      background: $secondary !important;
+      color: rgba(255, 255, 255, 0.6) !important;
+      box-shadow: none;
+      transform: none;
+    }
+  }
+}
+
+// Regular buttons (non-Material)
+button:not(.mat-button):not(.mat-raised-button):not(.mat-stroked-button) {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px $shadow;
+  @include hover-lift;
+  
+  &[type="submit"] {
+    @include gradient($primary);
+    color: $white;
+  }
+  
+  &[type="button"] {
+    @include gradient($secondary);
+    color: $white;
+  }
+}
+
+// Forms
+form {
+  @include card;
+  
+  .form-group {
+    margin-bottom: 25px;
+    
+    label {
+      font-weight: 600;
+      color: $dark;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      i {
+        color: $primary;
+        width: 16px;
+      }
+    }
+  }
+}
+
+// Standard inputs (non-Material)
+input:not(.mat-input-element), 
+select:not(.mat-select), 
+textarea:not(.mat-input-element) {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: $white;
+  font-family: inherit;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+// Tables
+table {
+  width: 100%;
+  @include card;
+  border-collapse: collapse;
+  margin: 20px 0;
+  
+  thead {
+    @include gradient($primary);
+    
+    th {
+      color: $white;
+      font-weight: 600;
+      padding: 15px;
+      text-align: left;
+      
+      &:first-child {
+        border-radius: 10px 0 0 0;
+      }
+      
+      &:last-child {
+        border-radius: 0 10px 0 0;
+      }
+    }
+  }
+  
+  tbody {
+    tr {
+      transition: all 0.3s ease;
+      
+      &:nth-child(even) {
+        background-color: rgba($light, 0.5);
+      }
+      
+      &:hover {
+        background-color: rgba($primary, 0.1);
+        transform: translateY(-1px);
+      }
+      
+      td {
+        padding: 15px;
+        border-bottom: 1px solid rgba($secondary, 0.2);
+        
+        &:first-child {
+          font-weight: 600;
+          color: $dark;
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .edit-about-us-container {
+    margin: 10px;
+    border-radius: 15px;
+    
+    h2 {
+      font-size: 1.8rem;
+      padding: 20px;
+    }
+    
+    form {
+      padding: 20px;
+    }
+  }
+  
+  .image-list {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .save-button-container {
+    ::ng-deep .mat-raised-button {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-about-us-container {
+    h2 {
+      font-size: 1.5rem;
+      padding: 15px;
+    }
+    
+    form {
+      padding: 15px;
+    }
+  }
+  
+  .image-list > div {
+    padding: 15px;
+    
+    img {
+      height: 150px;
+    }
+  }
 }

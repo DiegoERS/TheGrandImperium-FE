@@ -10,12 +10,9 @@ $light: #F5F5F5;       // Gris muy claro
 $white: #ffffff;
 $success: #28a745;
 $danger: #dc3545;
-$warning: #ffc107;
-$info: #17a2b8;
 $shadow: rgba(0, 0, 0, 0.1);
-$hover-bg: rgba(212, 175, 55, 0.1); // Hover dorado suave
 
-// Mixins
+// Mixins Simplificados
 @mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
   background: linear-gradient(135deg, $color1 0%, $color2 100%);
 }
@@ -28,8 +25,12 @@ $hover-bg: rgba(212, 175, 55, 0.1); // Hover dorado suave
   }
 }
 
-@mixin card-shadow {
-  box-shadow: 0 8px 32px rgba($primary, 0.15), 0 4px 16px $shadow;
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 // Animations
@@ -38,323 +39,187 @@ $hover-bg: rgba(212, 175, 55, 0.1); // Hover dorado suave
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-// Container Principal
-.container {
-  max-width: 900px;
-  margin: 32px auto;
-  padding: 32px;
-  border: 1px solid rgba($primary, 0.2);
-  border-radius: 15px;
-  background: $white;
-  @include card-shadow;
+// Main Styles
+:host {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  animation: slideUp 0.8s ease-out;
-  position: relative;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
+}
 
-  // Decorative top border
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
+.container {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+  
+  &.mat-elevation-z2 {
+    box-shadow: 0 20px 40px $shadow;
+  }
+
+  h2 {
     @include gradient($primary);
-    border-radius: 15px 15px 0 0;
+    color: $white;
+    text-align: center;
+    padding: 30px;
+    margin: 0 0 30px 0;
+    font-size: 2.5rem;
+    font-weight: 300;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    &::before {
+      content: '\f013';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
   }
 
-  // Add subtle pattern overlay
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 20%, rgba($primary, 0.02) 0%, transparent 50%);
-    pointer-events: none;
-    border-radius: 15px;
-  }
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: $dark;
+    margin: 30px 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-  // Spacing between containers
-  + .container {
-    margin-top: 48px;
-  }
-}
-
-// Títulos
-h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 32px;
-  color: $dark;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  animation: slideUp 0.8s ease-out 0.2s both;
-
-  &::before {
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    font-size: 1.2rem;
-  }
-
-  &::after {
-    content: '';
-    flex: 1;
-    height: 2px;
-    @include gradient($primary);
-    border-radius: 2px;
-    margin-left: 10px;
-  }
-
-  // Iconos específicos para cada sección
-  &:first-of-type::before {
-    content: '\f085'; // Gestión de características
-  }
-}
-
-h3 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 24px 0 16px 0;
-  color: $dark;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &::before {
-    content: '\f0c1';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    font-size: 1rem;
-  }
-}
-
-// Form Styling
-form {
-  margin-bottom: 32px;
-  animation: slideUp 0.8s ease-out 0.3s both;
-}
-
-// Angular Material Form Field Override
-.mat-form-field {
-  &.w-100 {
-    width: 100%;
-    margin-bottom: 16px;
-  }
-
-  .mat-form-field-wrapper {
-    padding-bottom: 1.25em;
-  }
-
-  .mat-form-field-underline {
-    background-color: rgba($primary, 0.2);
-  }
-
-  .mat-form-field-ripple {
-    background-color: $primary;
-  }
-
-  &.mat-focused {
-    .mat-form-field-label {
+    &::before {
+      content: '\f0c1';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
       color: $primary;
     }
   }
-
-  .mat-form-field-label {
-    color: $secondary;
-    font-weight: 500;
-  }
-
-  .mat-input-element {
-    color: $dark;
-    font-family: inherit;
-  }
 }
 
-// Button Styling
-.mb-3 {
-  margin-bottom: 24px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  animation: slideUp 0.8s ease-out 0.4s both;
+.p-4 {
+  padding: 40px;
 }
 
-// Angular Material Button Override
-.mat-flat-button {
-  @include gradient($primary);
-  color: $white;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  @include hover-lift;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    margin-right: 8px;
-  }
-
-  &:hover {
-    box-shadow: 0 8px 25px rgba($primary, 0.4);
-  }
+// Forms
+form {
+  margin-bottom: 30px;
 }
 
-.mat-button {
-  color: $secondary;
-  border: 2px solid rgba($secondary, 0.3);
-  border-radius: 8px;
-  padding: 10px 22px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
+// Angular Material Form Fields
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
 
-  &::before {
-    content: '\f12d';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    margin-right: 8px;
+  .mat-form-field-wrapper {
+    background: $white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   }
 
-  &:hover {
-    background-color: rgba($secondary, 0.1);
-    border-color: $secondary;
-    transform: translateY(-1px);
-  }
-}
-
-.mat-raised-button {
-  @include gradient($primary);
-  color: $white;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  @include hover-lift;
-  box-shadow: 0 4px 15px rgba($primary, 0.3);
-
-  &::before {
-    content: '\f0c1';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    margin-right: 8px;
-  }
-
-  &:hover {
-    box-shadow: 0 8px 25px rgba($primary, 0.4);
-  }
-}
-
-// Angular Material Table Override
-.mat-table {
-  border-radius: 12px;
-  overflow: hidden;
-  @include card-shadow;
-  margin-top: 32px;
-  animation: slideUp 0.8s ease-out 0.5s both;
-  position: relative;
-
-  // Decorative top border
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    @include gradient($primary);
-    z-index: 1;
-  }
-
-  .mat-header-cell {
-    @include gradient($primary);
-    color: $white;
-    font-weight: 700;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: none;
-    position: relative;
-
-    // Iconos para headers
-    &:first-child::before {
-      content: '\f02b ';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      margin-right: 8px;
-    }
-
-    &:last-child::before {
-      content: '\f085 ';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      margin-right: 8px;
-    }
-  }
-
-  .mat-cell {
-    color: $dark;
-    font-size: 14px;
-    border-bottom: 1px solid rgba($primary, 0.1);
-  }
-
-  .mat-row {
+  .mat-form-field-flex {
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
     transition: all 0.3s ease;
 
-    &:nth-child(even) {
-      background-color: rgba($primary, 0.03);
-    }
-
     &:hover {
-      background-color: $hover-bg;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba($primary, 0.15);
-
-      .mat-cell {
-        color: $dark;
-        font-weight: 500;
-      }
+      border-color: rgba($primary, 0.5);
     }
+  }
+
+  &.mat-focused .mat-form-field-flex {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .mat-form-field-label {
+    color: $dark;
+    font-weight: 600;
+  }
+
+  .mat-input-element,
+  .mat-select-value {
+    color: $dark;
+    font-size: 1rem;
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  .mat-form-field-subscript-wrapper {
+    display: none;
   }
 }
 
-// Material Icon Buttons
-.mat-icon-button {
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  margin: 0 4px;
+.w-100 {
+  width: 100%;
+}
+
+// Buttons - Angular Material
+.mat-flat-button,
+.mat-button,
+.mat-raised-button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px $shadow;
+  @include hover-lift;
+  margin: 5px;
+
+  &[color="primary"] {
+    @include gradient($primary);
+    color: $white;
+  }
 
   &[color="accent"] {
-    background: rgba($primary, 0.1);
-    color: $primary;
+    @include gradient($secondary);
+    color: $white;
+  }
+
+  &[color="warn"] {
+    @include gradient($danger);
+    color: $white;
+  }
+
+  &.mat-button {
+    @include gradient($secondary);
+    color: $white;
+  }
+}
+
+.mat-icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  @include hover-lift;
+  margin: 0 5px;
+
+  &[color="accent"] {
+    background: rgba($secondary, 0.1);
+    color: $secondary;
 
     &:hover {
-      background: rgba($primary, 0.2);
-      transform: translateY(-2px) scale(1.1);
-      box-shadow: 0 4px 12px rgba($primary, 0.3);
+      background: $secondary;
+      color: $white;
     }
   }
 
@@ -363,18 +228,70 @@ form {
     color: $danger;
 
     &:hover {
-      background: rgba($danger, 0.2);
-      transform: translateY(-2px) scale(1.1);
-      box-shadow: 0 4px 12px rgba($danger, 0.3);
+      background: $danger;
+      color: $white;
     }
   }
 }
 
-// Paginator
+// Angular Material Table
+.mat-table {
+  width: 100%;
+  background: $white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px $shadow;
+  margin: 20px 0;
+
+  &.mat-elevation-z1 {
+    box-shadow: 0 5px 20px $shadow;
+  }
+
+  .mat-header-row {
+    @include gradient($primary);
+    
+    .mat-header-cell {
+      color: $white;
+      font-weight: 600;
+      padding: 20px 15px;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  .mat-row {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      background: rgba($primary, 0.05);
+      transform: translateY(-1px);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .mat-cell {
+      padding: 15px;
+      border: none;
+      color: $dark;
+      background: transparent;
+
+      &:first-child {
+        font-weight: 600;
+        color: $primary;
+      }
+    }
+  }
+}
+
+// Angular Material Paginator
 .mat-paginator {
-  border-top: 1px solid rgba($primary, 0.1);
-  background: rgba($primary, 0.02);
-  border-radius: 0 0 12px 12px;
+  background: $white;
+  border-radius: 0 0 15px 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  color: $dark;
 
   .mat-paginator-page-size-label,
   .mat-paginator-range-label {
@@ -384,249 +301,169 @@ form {
 
   .mat-icon-button {
     color: $primary;
-
+    
     &:hover {
       background: rgba($primary, 0.1);
     }
   }
-}
 
-// Chip Container
-.chip-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 16px 0 24px 0;
-  padding: 16px;
-  background: rgba($primary, 0.03);
-  border-radius: 12px;
-  border: 1px solid rgba($primary, 0.1);
-  animation: slideInLeft 0.6s ease-out;
-  min-height: 60px;
-  align-items: flex-start;
-  align-content: flex-start;
-
-  &:empty::before {
-    content: 'No hay características vinculadas';
-    color: $secondary;
-    font-style: italic;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 40px;
-  }
-}
-
-// Individual Chips
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: $white;
-  border: 2px solid rgba($primary, 0.2);
-  border-radius: 20px;
-  color: $dark;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  animation: slideUp 0.4s ease-out;
-  position: relative;
-
-  &::before {
-    content: '\f02b';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: $primary;
-    font-size: 12px;
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba($primary, 0.2);
-    border-color: $primary;
-  }
-
-  .chip-remove-btn {
-    background: transparent;
-    border: none;
-    color: $danger;
-    cursor: pointer;
-    padding: 2px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      background: rgba($danger, 0.1);
-      transform: scale(1.2);
-    }
-
-    .mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-    }
-  }
-}
-
-// Select Styling
-.mat-select {
-  .mat-select-trigger {
+  .mat-select-value {
     color: $dark;
   }
+}
 
-  .mat-select-arrow {
-    color: $primary;
-  }
+// Angular Material Select
+.mat-select {
+  .mat-select-trigger {
+    .mat-select-value {
+      color: $dark;
+    }
 
-  &.mat-focused {
     .mat-select-arrow {
       color: $primary;
     }
   }
 }
 
-// HR Separator
-hr {
-  &.my-4 {
-    margin: 48px 0;
-    border: none;
-    height: 2px;
-    @include gradient($primary);
-    border-radius: 2px;
-    opacity: 0.3;
+// Chip Styles
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba($primary, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba($primary, 0.1);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background: $white;
+  border: 2px solid $primary;
+  border-radius: 25px;
+  color: $dark;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba($primary, 0.3);
   }
+
+  .chip-remove-btn {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    padding: 0;
+    background: rgba($danger, 0.1);
+    color: $danger;
+    margin: 0;
+
+    &:hover {
+      background: $danger;
+      color: $white;
+      transform: none;
+    }
+
+    .mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+    }
+  }
+}
+
+// Utility Classes
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.my-4 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+hr {
+  border: none;
+  height: 2px;
+  @include gradient($primary);
+  border-radius: 2px;
+  margin: 40px 0;
+  opacity: 0.3;
 }
 
 // Responsive Design
 @media (max-width: 768px) {
   .container {
-    margin: 16px auto;
+    margin: 10px auto 20px auto;
+    
+    h2 {
+      font-size: 2rem;
+      padding: 20px;
+    }
+  }
+
+  .p-4 {
     padding: 20px;
-    max-width: 90%;
-  }
-
-  h2 {
-    font-size: 20px;
-    flex-direction: column;
-    gap: 8px;
-
-    &::after {
-      display: none;
-    }
-  }
-
-  h3 {
-    font-size: 16px;
-  }
-
-  .mb-3 {
-    flex-direction: column;
-    align-items: stretch;
-
-    button {
-      width: 100%;
-      margin-bottom: 8px;
-    }
   }
 
   .chip-container {
-    padding: 12px;
+    padding: 15px;
   }
 
   .chip {
-    font-size: 12px;
+    font-size: 0.9rem;
     padding: 6px 12px;
-
-    &::before {
-      display: none;
-    }
   }
 
   .mat-table {
-    font-size: 12px;
+    font-size: 0.9rem;
 
     .mat-header-cell,
     .mat-cell {
-      padding: 8px 12px;
-
-      &::before {
-        display: none;
-      }
+      padding: 10px 8px;
     }
+  }
+
+  .mat-flat-button,
+  .mat-button,
+  .mat-raised-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    margin: 2px;
   }
 }
 
 @media (max-width: 480px) {
-  .container {
-    margin: 12px auto;
-    padding: 16px;
-    max-width: 95%;
+  .container h2 {
+    font-size: 1.8rem;
   }
 
-  h2 {
-    font-size: 18px;
+  .p-4 {
+    padding: 15px;
+  }
+
+  .chip-container {
+    flex-direction: column;
+    gap: 8px;
   }
 
   .chip {
-    font-size: 11px;
-    padding: 4px 8px;
+    justify-content: space-between;
+    width: 100%;
   }
 
-  .mat-table {
-    font-size: 11px;
-
-    .mat-header-cell,
-    .mat-cell {
-      padding: 6px 8px;
-    }
-  }
-}
-
-// Loading state
-.loading-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  color: $primary;
-  font-size: 16px;
-  font-weight: 500;
-
-  &::before {
-    content: '\f1ce';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    margin-right: 10px;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-}
-
-// Empty state
-.empty-state {
-  text-align: center;
-  padding: 40px;
-  color: $secondary;
-  font-size: 16px;
-
-  &::before {
-    content: '\f085';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    font-size: 48px;
-    color: rgba($primary, 0.3);
-    display: block;
-    margin-bottom: 16px;
+  .mat-flat-button,
+  .mat-button,
+  .mat-raised-button {
+    width: 100%;
+    justify-content: center;
+    margin: 5px 0;
   }
 }
