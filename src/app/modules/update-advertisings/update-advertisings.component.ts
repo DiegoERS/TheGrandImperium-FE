@@ -1,19 +1,18 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
-import { AdvertisingService } from '../../core/services/advertising.service';
-import { CloudinaryService } from '../../core/services/cloudinary.service';
 import { AdvertisingDTO } from '../../core/models/AdvertisingDTO';
 import Swal from 'sweetalert2';
+import { AdvertisingService } from '../../core/services/advertising.service';
+import { CloudinaryService } from '../../core/services/cloudinary.service';
+import { FormsModule, NgForm } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-advertising',
-  standalone: true,
+  selector: 'app-update-advertisings',
   imports: [CommonModule, FormsModule],
-  templateUrl: './advertising.component.html',
-  styleUrl: './advertising.component.scss'
+  templateUrl: './update-advertisings.component.html',
+  styleUrl: './update-advertisings.component.scss'
 })
-export class UpdateAdvertisingComponent implements OnInit {
+export class UpdateAdvertisingsComponent implements OnInit {
   
   @ViewChild('advertisingForm') advertisingForm!: NgForm;
   
