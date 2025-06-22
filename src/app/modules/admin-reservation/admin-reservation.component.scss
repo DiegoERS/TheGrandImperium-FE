@@ -1,104 +1,485 @@
+// Font Awesome Import
+@use "sass:color";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Color Variables - Tema Gris y Dorado
+$primary: #D4AF37;     // Dorado
+$secondary: #8B8B8B;   // Gris medio
+$dark: #4A4A4A;        // Gris oscuro
+$light: #F5F5F5;       // Gris muy claro
+$white: #ffffff;
+$success: #28a745;
+$danger: #dc3545;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// Mixins Simplificados
+@mixin gradient($color1, $color2: color.adjust($color1, $lightness: -15%)) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+
+@mixin hover-lift {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
+  }
+}
+
+@mixin card {
+  background: $white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Animations
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Host Styles
 :host {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  @include gradient($secondary, $dark);
+  min-height: 100vh;
   padding: 20px;
+  display: block;
 }
 
+// Main Container
 .contenedor-principal {
-  width: 100%;
-  max-width: 1900px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px $shadow;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+  min-height: calc(100vh - 40px);
+  padding: 40px;
+
+  > h2 {
+    @include gradient($primary);
+    padding: 30px;
+    text-align: center;
+    color: $white;
+    font-size: 2.5rem;
+    margin: -40px -40px 40px -40px;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    &::before {
+      content: '\f274';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+  }
 }
 
-h2 {
-  text-align: center;
-  color: #2c3e50;
+// Form Section
+.formulario {
+  @include card;
+  margin-bottom: 30px;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $dark;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &::before {
+      content: '\f044';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $primary;
+    }
+  }
+}
+
+// Material Card
+mat-card {
+  @include card;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px $shadow;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  .mat-mdc-card {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+  }
+}
+
+// Material Form Fields
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+
+  &.full-width {
+    width: 100%;
+  }
+
+  .mat-mdc-form-field-flex {
+    background: $white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: rgba($primary, 0.5);
+    }
+  }
+
+  &.mat-focused .mat-mdc-form-field-flex {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .mat-mdc-form-field-label {
+    color: $dark;
+    font-weight: 500;
+  }
+
+  .mat-mdc-form-field-label.mat-focused {
+    color: $primary;
+    font-weight: 600;
+  }
+
+  .mat-mdc-input-element {
+    padding: 15px 0;
+    font-size: 1rem;
+    color: $dark;
+    background: transparent;
+
+    &::placeholder {
+      color: rgba($dark, 0.6);
+    }
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 5px;
+  }
+
+  .mat-datepicker-toggle {
+    .mat-icon-button {
+      color: $primary;
+      @include hover-lift;
+    }
+  }
+}
+
+// Buttons Section
+.botones {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+// Material Buttons
+.mat-mdc-raised-button {
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px $shadow;
+  @include hover-lift;
+
+  &.boton-verde {
+    @include gradient($success);
+    color: $white;
+    border: none;
+  }
+
+  &.boton-rojo {
+    @include gradient($danger);
+    color: $white;
+    border: none;
+  }
+
+  .mat-mdc-button-touch-target {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Material Table
+.mat-elevation-z8 {
+  @include card;
+  margin-bottom: 30px;
+  padding: 0;
+  overflow: hidden;
+
+  .mat-mdc-table {
+    width: 100%;
+    background: transparent;
+    
+    .mat-mdc-header-row {
+      @include gradient($primary);
+      
+      .mat-mdc-header-cell {
+        color: $white;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 20px 16px;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: transparent;
+      }
+    }
+
+    .mat-mdc-row {
+      background: $white;
+      border-bottom: 1px solid rgba($light, 0.8);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba($primary, 0.05);
+        transform: translateX(2px);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .mat-mdc-cell {
+        padding: 20px 16px;
+        font-size: 1rem;
+        color: $dark;
+        border: none;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Material Icon Buttons
+.mat-mdc-icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 4px;
+  @include hover-lift;
+  box-shadow: 0 2px 8px $shadow;
+
+  &[color="primary"] {
+    background: rgba($primary, 0.1);
+    border: 2px solid rgba($primary, 0.3);
+
+    &:hover {
+      background: rgba($primary, 0.2);
+      border-color: $primary;
+    }
+
+    .mat-icon {
+      color: $primary;
+    }
+  }
+
+  &[color="warn"] {
+    background: rgba($danger, 0.1);
+    border: 2px solid rgba($danger, 0.3);
+
+    &:hover {
+      background: rgba($danger, 0.2);
+      border-color: $danger;
+    }
+
+    .mat-icon {
+      color: $danger;
+    }
+  }
+
+  .mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+  }
+}
+
+// Material Datepicker
+.mat-datepicker-popup {
+  .mat-calendar {
+    background: $white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px $shadow;
+
+    .mat-calendar-header {
+      background: rgba($primary, 0.1);
+      color: $primary;
+      padding: 20px;
+      border-radius: 15px 15px 0 0;
+
+      .mat-calendar-controls {
+        .mat-icon-button {
+          color: $primary;
+          @include hover-lift;
+        }
+      }
+    }
+
+    .mat-calendar-content {
+      padding: 20px;
+
+      .mat-calendar-table {
+        .mat-calendar-body-cell {
+          &:hover {
+            background: rgba($primary, 0.1);
+            border-radius: 50%;
+          }
+
+          &.mat-calendar-body-selected {
+            background: $primary;
+            color: $white;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Section Titles
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $dark;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  i {
+    color: $primary;
+  }
+}
+
+// Loading Spinner
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: $primary;
+  font-weight: 600;
+  padding: 15px 25px;
+  background: rgba($primary, 0.1);
+  border-radius: 50px;
   margin: 20px 0;
 }
 
-.formulario {
-  width: 50%;
-  margin-bottom: 30px;
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba($primary, 0.3);
+  border-top: 2px solid $primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
 
-  mat-card {
-    padding: 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-     display: flex;
-  align-items: center;
+// Responsive Design
+@media (max-width: 768px) {
+  .contenedor-principal {
+    padding: 20px;
+    
+    > h2 {
+      font-size: 2rem;
+      margin: -20px -20px 30px -20px;
+      padding: 20px;
+    }
   }
 
-  .full-width {
-    width: 30%;
-    margin-bottom: 15px;
+  .formulario {
+    padding: 20px;
 
+    h2 {
+      font-size: 1.3rem;
+    }
   }
 
-.botones {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
+  .botones {
+    flex-direction: column;
+    align-items: center;
+    
+    .mat-mdc-raised-button {
+      width: 100%;
+      max-width: 300px;
+      justify-content: center;
+    }
+  }
+  
+  .mat-elevation-z8 {
+    .mat-mdc-table {
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+      }
+    }
+  }
 
-  button {
-    margin: 0 10px;
+  mat-form-field {
+    .mat-mdc-form-field-flex {
+      padding: 3px 10px;
+    }
+
+    .mat-mdc-input-element {
+      padding: 12px 0;
+      font-size: 0.9rem;
+    }
   }
 }
 
-.boton-verde {
-  background-color: #4caf50;
-  color: white;
-
-  &:hover {
-    background-color: #43a047;
-  }
-}
-
-.boton-rojo {
-  background-color: #f44336;
-  color: white;
-
-  &:hover {
-    background-color: #e53935;
-  }
-}
-}
-
-// Tabla Angular Material
-mat-table {
-  width: 100%;
-  max-width: 700px;
-  font-size: 14px;
-  border-radius: 4px;
-  overflow: hidden;
-  background-color: #fff;
-
-  mat-header-cell {
-    background-color: #e1b151;
-    color: white;
-    font-weight: bold;
-    padding: 8px 10px;
+@media (max-width: 480px) {
+  .contenedor-principal {
+    > h2 {
+      font-size: 1.8rem;
+    }
   }
 
-  mat-cell {
-    padding: 8px 10px;
+  .formulario {
+    padding: 15px;
+  }
+  
+  .mat-elevation-z8 {
+    .mat-mdc-table {
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding: 8px 4px;
+        font-size: 0.8rem;
+      }
+    }
   }
 
-  mat-row:nth-child(even) {
-    background-color: #f9f9f9;
-  }
+  .mat-mdc-icon-button {
+    width: 35px;
+    height: 35px;
+    margin: 0 2px;
 
-  mat-row:hover {
-    background-color: #e0f7fa;
-  }
-}
-
-// Íconos de acción
-button[mat-icon-button] {
-  margin-right: 5px;
-
-  mat-icon {
-    font-size: 20px;
+    .mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
   }
 }

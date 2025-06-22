@@ -1,6 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-import { ImageUploaderComponent } from '../../shared/components/image-uploader/image-uploader.component';
-import { CloudinaryService } from '../../core/services/cloudinary.service';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -89,55 +87,5 @@ export class LoginComponent implements OnInit {
       
     });
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //TODO LO RELACIONADO CON EL DRAG AND DROP DE IMAGENES
-  @ViewChild('uploader') uploaderComponent!: ImageUploaderComponent;
-  uploadedUrls: string[] = [];
-  isUploading = false;
-
-  private cloudinaryService=inject(CloudinaryService);
-
-  onImagesChanged(images: File[]) {
-    console.log('Imágenes seleccionadas:', images);
-    // Aquí puedes subirlas al servidor, guardarlas, etc.
-  }
-
-  onSave(images: File[]) {
-    console.log('Guardar imágenes:', images);
-
-    this.isUploading = true;
-
-    this.cloudinaryService.uploadMultipleImages(images)
-      .then(urls => {
-        this.uploadedUrls = urls;
-        console.log('Imágenes subidas:', urls);
-
-      this.uploaderComponent.reset();
-      })
-      .catch(error => {
-        console.error('Error al subir imágenes:', error);
-      })
-      .finally(() => {
-        this.isUploading = false;
-      });
-  }
-    
 }
 

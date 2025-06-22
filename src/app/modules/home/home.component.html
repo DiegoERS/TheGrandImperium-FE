@@ -1,20 +1,57 @@
-<div *ngIf="loading" class="spinner-container">
-  <mat-spinner diameter="80" color="primary"></mat-spinner>
-</div>
-
-<div  *ngIf="!loading" class="content">
-  <div class="content-container">
-    <div class="image-placeholder">
-      <img
-        class="selected-image"
-        [src]="selectedImage"
-        [alt]="'Imagen seleccionada: ' + selectedImage"
-      />
+<div class="burj-khalifa-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loader-wrapper">
+      <div class="burj-loader">
+        <div class="loader-ring"></div>
+        <div class="loader-ring"></div>
+        <div class="loader-ring"></div>
+        <div class="loader-text">Grand Imperium</div>
+      </div>
     </div>
+  </div>
 
-    <div class="text-content">
-      <h2>{{pageInformation?.subtitle}}</h2>
-      <p>{{pageInformation?.description}} </p>
+  <!-- Main Content -->
+  <div *ngIf="!loading" class="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-image-container">
+          <div class="image-frame">
+            <img 
+              class="hero-image" 
+              [src]="selectedImage" 
+              [alt]="'Imagen seleccionada: ' + selectedImage"
+            />
+            <div class="image-glow"></div>
+          </div>
+        </div>
+        
+        <div class="hero-text">
+          <h1 class="hero-title">{{pageInformation?.subtitle}}</h1>
+          <div class="title-underline"></div>
+          <p class="hero-description">{{pageInformation?.description}}</p>
+          <div class="explore-button">
+             <a class="button-text" [routerLink]="['rooms']" routerLinkActive="rooms">
+              Ver habitaciones
+            </a>
+            <div class="button-glow"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Floating particles -->
+      <div class="particles">
+        <div class="particle" *ngFor="let particle of particles"></div>
+      </div>
+    </section>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <div class="scroll-dot"></div>
     </div>
   </div>
 </div>
+

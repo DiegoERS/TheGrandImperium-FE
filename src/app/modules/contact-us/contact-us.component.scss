@@ -1,65 +1,424 @@
-.contact-us-container {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+// Loading Spinner Styles
+.spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: 'Montserrat', sans-serif;
+  
+  &::before {
+    content: '';
     position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 600px; /* Limita el ancho máximo */
-    width: 90%; /* Asegura que el contenedor se ajuste en pantallas pequeñas */
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-    background-color: #d9a55c;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .contact-us-container h2 {
-    font-size: 2rem;
-    color: #0e0e0e;
-    margin-bottom: 20px;
-  }
-  
-  .contact-card {
-    background-color: #fbfafa;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .contact-info p {
-    font-size: 1.1rem;
-    color: #333;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    word-wrap: break-word;
-    overflow: break-word;
-    text-overflow: ellipsis;
-  }
-  
-  .contact-info i {
-    color: #040404;
-    font-size: 1.2rem;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 30% 30%, rgba(201, 176, 55, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+    pointer-events: none;
   }
 
-  .contact-info a {
-    color: #0b0b0b; /* Color del enlace */
-    word-break: break-word; /* Permite que el correo se divida */
-    overflow-wrap: anywhere; /* Asegura que el texto largo se ajuste */
+  mat-spinner {
+    position: relative;
+    z-index: 2;
+    
+    ::ng-deep circle {
+      stroke: #c9b037;
+      stroke-width: 3;
+      filter: drop-shadow(0 0 10px rgba(201, 176, 55, 0.5));
+      animation: spinnerGlow 2s ease-in-out infinite alternate;
+    }
   }
+
+  // Custom loading text
+  &::after {
+    content: 'Cargando información de contacto...';
+    position: absolute;
+    bottom: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #c9b037;
+    text-transform: uppercase;
+    animation: loadingTextPulse 2s ease-in-out infinite;
+  }
+}
+
+// Main Container
+.contact-us-container {
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+  color: #ffffff;
+  padding: 60px 20px;
+  position: relative;
+  overflow-x: hidden;
+  animation: containerFadeIn 1.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(201, 176, 55, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// Page Title
+.titulo-contactenos {
+  font-size: 4rem;
+  font-weight: 200;
+  line-height: 1.1;
+  color: #ffffff;
+  margin: 0 0 60px 0;
+  text-align: center;
+  position: relative;
   
-  @media (max-width: 768px) {
-    .contact-info p {
+  background: linear-gradient(135deg, #ffffff 0%, #c9b037 50%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  animation: titleSlideIn 1s ease-out 0.3s both, titleGlow 3s ease-in-out infinite alternate;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #c9b037, #ffd700, transparent);
+    animation: underlineExpand 1.5s ease-out 0.8s both;
+  }
+}
+
+// Contact Card
+.contact-card {
+  background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(201, 176, 55, 0.1);
+  animation: cardSlideUp 0.8s ease-out 0.6s both;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent, rgba(201, 176, 55, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 20px;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(201, 176, 55, 0.3),
+      0 0 30px rgba(201, 176, 55, 0.2);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+// Contact Info
+.contact-info {
+  padding: 50px 40px;
+  position: relative;
+  z-index: 3;
+
+  p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #cccccc;
+    margin: 0 0 30px 0;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    padding: 20px 25px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(201, 176, 55, 0.05), rgba(255, 215, 0, 0.02));
+    border: 1px solid rgba(201, 176, 55, 0.1);
+    animation: contactItemFadeIn 0.6s ease-out both;
+
+    &:nth-child(1) { animation-delay: 0.2s; }
+    &:nth-child(2) { animation-delay: 0.4s; }
+    &:nth-child(3) { animation-delay: 0.6s; }
+    &:nth-child(4) { animation-delay: 0.8s; }
+    &:nth-child(5) { animation-delay: 1.0s; }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+      transition: left 0.6s ease;
+    }
+
+    &:hover {
+      color: #ffffff;
+      transform: translateX(10px);
+      background: linear-gradient(135deg, rgba(201, 176, 55, 0.1), rgba(255, 215, 0, 0.05));
+      border-color: rgba(201, 176, 55, 0.2);
+      box-shadow: 0 5px 20px rgba(201, 176, 55, 0.1);
+
+      &::before {
+        left: 100%;
+      }
+
+      i {
+        transform: scale(1.1);
+        color: #ffd700;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    i {
+      font-size: 1.5rem;
+      color: #c9b037;
+      margin-right: 20px;
+      width: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 0 5px rgba(201, 176, 55, 0.3));
+    }
+  }
+}
+
+// Animations
+@keyframes spinnerGlow {
+  0% { filter: drop-shadow(0 0 10px rgba(201, 176, 55, 0.5)); }
+  100% { filter: drop-shadow(0 0 20px rgba(201, 176, 55, 0.8)); }
+}
+
+@keyframes loadingTextPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes containerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes titleSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 20px rgba(201, 176, 55, 0.5); }
+  100% { text-shadow: 0 0 30px rgba(201, 176, 55, 0.8); }
+}
+
+@keyframes underlineExpand {
+  from { width: 0; }
+  to { width: 120px; }
+}
+
+@keyframes cardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes contactItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .titulo-contactenos {
+    font-size: 3.2rem;
+  }
+
+  .contact-info {
+    padding: 40px 35px;
+
+    p {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-us-container {
+    padding: 40px 15px;
+  }
+
+  .titulo-contactenos {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
+
+  .contact-card {
+    margin: 0 10px;
+  }
+
+  .contact-info {
+    padding: 30px 25px;
+
+    p {
+      font-size: 1.1rem;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+
+      i {
+        font-size: 1.3rem;
+        margin-right: 15px;
+        width: 25px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo-contactenos {
+    font-size: 2rem;
+  }
+
+  .contact-info {
+    padding: 25px 20px;
+
+    p {
       font-size: 1rem;
-      gap: 5px; /* Reduce el espacio entre los elementos */
+      padding: 12px 15px;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+
+      i {
+        font-size: 1.2rem;
+        margin-right: 0;
+        margin-bottom: 8px;
+        width: auto;
+      }
     }
   }
-  
-  @media (max-width: 480px) {
-    .contact-info p {
-      font-size: 0.9rem;
-      gap: 5px;
-      text-align: center; /* Centra el texto para mejorar la apariencia */
+}
+
+// Dark theme enhancements
+@media (prefers-color-scheme: dark) {
+  .contact-us-container {
+    background: linear-gradient(135deg, #050505 0%, #151515 50%, #000000 100%);
+  }
+
+  .contact-card {
+    background: linear-gradient(145deg, #151515, #0a0a0a);
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(201, 176, 55, 0.15);
+  }
+}
+
+// Loading state for contact card (if needed)
+.contact-card.loading {
+  .contact-info p {
+    background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+    background-size: 200% 100%;
+    animation: cardShimmer 1.5s infinite;
+    color: transparent;
+    border-radius: 4px;
+
+    i {
+      background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+      background-size: 200% 100%;
+      animation: cardShimmer 1.5s infinite;
+      color: transparent;
     }
   }
+}
+
+@keyframes cardShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// Special icon animations
+.contact-info p i {
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+.contact-info p:nth-child(2n) i {
+  animation-delay: 0.5s;
+}
+
+.contact-info p:nth-child(3n) i {
+  animation-delay: 1s;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
