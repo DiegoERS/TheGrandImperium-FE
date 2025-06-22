@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   templateUrl: './advertising.component.html',
   styleUrl: './advertising.component.scss'
 })
-export class AdvertisingComponent implements OnInit {
+export class UpdateAdvertisingComponent implements OnInit {
   
   @ViewChild('advertisingForm') advertisingForm!: NgForm;
   
