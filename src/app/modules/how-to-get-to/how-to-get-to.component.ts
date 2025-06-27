@@ -1,4 +1,10 @@
-import {  Component,  AfterViewInit,  Inject,  inject,  PLATFORM_ID,} from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  Inject,
+  inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -24,7 +30,7 @@ export class HowToGetToComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
-      const page = JSON.parse(localStorage.getItem('selectedPage') || '{}');
+      const page = JSON.parse(sessionStorage.getItem('selectedPage') || '{}');
       this.pageInformationService
         .getByPage(page.pageId)
         .subscribe((data: PageInformationDTO) => {
@@ -33,13 +39,14 @@ export class HowToGetToComponent implements AfterViewInit {
           this.loading = false;
         });
 
-      const L = await import('leaflet');
-      await import('leaflet-routing-machine');
+      // Import Leaflet modules
+      const [L, routing] = await Promise.all([
+        import('leaflet'),
+        import('leaflet-routing-machine')
+      ]);
 
-      // Asegura que L.Routing esté disponible
-      if (!L.Routing && (window as any).L && (window as any).L.Routing) {
-        L.Routing = (window as any).L.Routing;
-      }
+      // Get the routing control from the imported module
+      const RoutingControl = (routing as any).default || routing;
 
       const destinationLat = 10.296854045618298;
       const destinationLng = -85.83878938212567;
@@ -80,8 +87,9 @@ export class HowToGetToComponent implements AfterViewInit {
                 fillOpacity: 0.8,
               }
             ).addTo(map);
-            // Ruta desde tu ubicación al destino
-            L.Routing.control({
+
+            // Create routing control using the imported routing module
+            const routingControl = RoutingControl.control({
               waypoints: [
                 L.latLng(userLat, userLng),
                 L.latLng(destinationLat, destinationLng),
@@ -93,8 +101,10 @@ export class HowToGetToComponent implements AfterViewInit {
                 missingRouteTolerance: 0,
               },
               show: true,
-              createMarker: () => null, // 👈 eliminar marcadores por defecto
-            } as any).addTo(map);
+              createMarker: () => null, // eliminar marcadores por defecto
+            });
+
+            routingControl.addTo(map);
             this.loading = false;
           },
           (error) => {
