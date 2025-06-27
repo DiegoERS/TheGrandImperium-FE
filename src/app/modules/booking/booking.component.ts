@@ -43,7 +43,8 @@ export class BookingComponent {
   private roomService = inject(RoomService);
   roomTypes: roomTypeDTO[] = [];
   private roomTypeService = inject(RoomTypeService);
-  minDate: string = '';
+  minFechaHoy: Date = new Date();
+  minFechaSalida: Date = new Date();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -57,9 +58,17 @@ export class BookingComponent {
       this.roomTypes = data;
     });
 
-    const today = new Date();
-    today.setDate(today.getDate() - 1);
-    this.minDate = today.toISOString().split('T')[0];
+  }
+   onFechaEntradaChange() {
+    if (this.consultForm.get('entryDate')?.value) {
+      this.minFechaSalida = new Date(this.consultForm.get('entryDate')?.value);
+      this.minFechaSalida.setDate(this.minFechaSalida.getDate() + 1);
+      if (this.consultForm.get('departureDate')?.value && this.consultForm.get('departureDate')?.value < this.consultForm.get('entryDate')?.value) {
+        this.consultForm.get('departureDate')?.setValue(this.minFechaSalida);
+      }
+    } else {
+      this.minFechaSalida = new Date(this.minFechaHoy);
+    }
   }
 
   onSubmit(): void {

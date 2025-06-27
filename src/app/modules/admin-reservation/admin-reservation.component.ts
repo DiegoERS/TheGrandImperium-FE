@@ -49,7 +49,8 @@ export class AdminReservationComponent implements OnInit {
   dataSource = new MatTableDataSource<ReservationDTO>();
   editando: boolean = false;
   reservaActual: ReservationDTO = this.nuevaReserva();
-
+   minFechaHoy: Date = new Date();
+  minFechaSalida: Date = new Date();
   constructor(
     private reservaService: ReservationService,
     private snackBar: MatSnackBar
@@ -57,6 +58,17 @@ export class AdminReservationComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarReservas();
+  }
+
+    onFechaEntradaChange() {
+    if (this.reservaActual.startDate) {
+      this.minFechaSalida = new Date(this.reservaActual.startDate);
+      if (this.reservaActual.endDate && this.reservaActual.endDate < this.reservaActual.startDate) {
+        
+      }
+    } else {
+      this.minFechaSalida = new Date(this.minFechaHoy);
+    }
   }
 
   cargarReservas(): void {

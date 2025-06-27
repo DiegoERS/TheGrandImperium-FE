@@ -130,6 +130,7 @@ export class AdminHotelRoomsComponent implements OnInit {
   selectRoomForEdit(room: RoomsDTO): void {
     this.selectedRoom = JSON.parse(JSON.stringify(room));
     this.selectedRoomTypeId = this.selectedRoom?.roomTypeDTO.roomTypeId ?? null;
+    this.selectedRoomTypeEdit = this.roomTypes.find(room => room.roomTypeId ===  this.selectedRoomTypeId) as roomTypeDTO;
   }
 
   updateRoom(): void {
@@ -242,7 +243,7 @@ cancelarEdicion() {
     this.selectedRoomType = this.roomTypes.find(room => room.roomTypeId === id) as roomTypeDTO;
   }
     onRoomChangeEdit(): void {
-    const id = Number(this.selectedRoomTypeIdEdit);
+    const id = Number(this.selectedRoomTypeId);
     this.selectedRoomTypeEdit = this.roomTypes.find(room => room.roomTypeId === id) as roomTypeDTO;
   }
 
