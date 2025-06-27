@@ -30,9 +30,8 @@ export class HowToGetToComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
-      const page = JSON.parse(sessionStorage.getItem('selectedPage') || '{}');
       this.pageInformationService
-        .getByPage(page.pageId)
+        .getByPage(4)
         .subscribe((data: PageInformationDTO) => {
           this.pageInformation = data;
           console.log(data);
@@ -40,13 +39,8 @@ export class HowToGetToComponent implements AfterViewInit {
         });
 
       // Import Leaflet modules
-      const [L, routing] = await Promise.all([
-        import('leaflet'),
-        import('leaflet-routing-machine')
-      ]);
-
-      // Get the routing control from the imported module
-      const RoutingControl = (routing as any).default || routing;
+      const L = (await import('leaflet')).default;
+      const routing = await import('leaflet-routing-machine');
 
       const destinationLat = 10.296854045618298;
       const destinationLng = -85.83878938212567;
@@ -88,21 +82,58 @@ export class HowToGetToComponent implements AfterViewInit {
               }
             ).addTo(map);
 
-            // Create routing control using the imported routing module
-            const routingControl = RoutingControl.control({
-              waypoints: [
-                L.latLng(userLat, userLng),
-                L.latLng(destinationLat, destinationLng),
-              ],
-              routeWhileDragging: true,
-              lineOptions: {
-                styles: [{ color: 'black', weight: 6 }],
-                extendToWaypoints: false,
-                missingRouteTolerance: 0,
-              },
-              show: true,
-              createMarker: () => null, // eliminar marcadores por defecto
-            });
+            // FIX: Try different ways to access the routing control
+            let routingControl;
+            if ((routing as any).default && (routing as any).default.control) {
+              routingControl = (routing as any).default.control({
+                waypoints: [
+                  L.latLng(userLat, userLng),
+                  L.latLng(destinationLat, destinationLng),
+                ],
+                routeWhileDragging: true,
+                lineOptions: {
+                  styles: [{ color: 'black', weight: 6 }],
+                  extendToWaypoints: false,
+                  missingRouteTolerance: 0,
+                },
+                show: true,
+                createMarker: () => null, // eliminar marcadores por defecto
+              });
+            } else if ((routing as any).control) {
+              routingControl = (routing as any).control({
+                waypoints: [
+                  L.latLng(userLat, userLng),
+                  L.latLng(destinationLat, destinationLng),
+                ],
+                routeWhileDragging: true,
+                lineOptions: {
+                  styles: [{ color: 'black', weight: 6 }],
+                  extendToWaypoints: false,
+                  missingRouteTolerance: 0,
+                },
+                show: true,
+                createMarker: () => null, // eliminar marcadores por defecto
+              });
+            } else if ((L as any).Routing && (L as any).Routing.control) {
+              routingControl = (L as any).Routing.control({
+                waypoints: [
+                  L.latLng(userLat, userLng),
+                  L.latLng(destinationLat, destinationLng),
+                ],
+                routeWhileDragging: true,
+                lineOptions: {
+                  styles: [{ color: 'black', weight: 6 }],
+                  extendToWaypoints: false,
+                  missingRouteTolerance: 0,
+                },
+                show: true,
+                createMarker: () => null, // eliminar marcadores por defecto
+              });
+            } else {
+              console.error('No se pudo cargar leaflet-routing-machine');
+              this.loading = false;
+              return;
+            }
 
             routingControl.addTo(map);
             this.loading = false;
