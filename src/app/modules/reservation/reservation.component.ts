@@ -310,7 +310,6 @@ export class ReservationComponent implements OnInit {
   }).then(result => {
     if (result.isConfirmed) {
       this.procesarReservas();
-      this.router.navigate(['/']);
     }
   });
 }
@@ -341,6 +340,7 @@ private procesarReservas() {
     .then(() => {
       Swal.fire('Reservas Confirmadas', 'La reserva ha sido realizada con éxito.', 'success');
       this.resetFormulario();
+      this.router.navigate(['/']);
     })
     .catch(error => {
       Swal.fire('Error', 'Ocurrió un error al confirmar las reservas.', 'error');
