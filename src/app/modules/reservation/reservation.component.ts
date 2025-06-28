@@ -161,7 +161,7 @@ export class ReservationComponent implements OnInit {
     if (!this.fechaEntrada || !this.fechaSalida || !this.tipoSeleccionado) {
       Swal.fire(
         'Fechas requeridas',
-        'Debes seleccionar fecha de entrada y salida.',
+        'Debes seleccionar fecha de entrada y salida, tambien escoja un tipo de habitación, por favor.',
         'warning'
       );
       return;
@@ -181,6 +181,14 @@ export class ReservationComponent implements OnInit {
             habitacion.roomTypeDTO
           ),
         }));
+        if (this.habitaciones.length === 0) {
+          Swal.fire(
+            'Sin habitaciones disponibles',
+            'No hay habitaciones disponibles para las fechas seleccionadas, te recomiendo habitaciones Junior para estas fechas.',
+            'info'
+          );
+          
+        }
         this.dataSource = new MatTableDataSource(this.habitaciones);
         this.dataSource.paginator = this.paginator;
         this.total = this.habitaciones.length;
