@@ -21,7 +21,6 @@
       <mat-form-field appearance="outline">
         <mat-label>Tipo de Habitación</mat-label>
         <mat-select [(ngModel)]="tipoSeleccionado">
-          <mat-option [value]="null">Todas</mat-option>
           <mat-option *ngFor="let tipo of tiposHabitacion" [value]="tipo.roomTypeId">
             {{ tipo.name }}
           </mat-option>

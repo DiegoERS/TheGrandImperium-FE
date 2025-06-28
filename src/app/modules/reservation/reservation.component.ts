@@ -29,6 +29,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-reservation',
   standalone: true,
@@ -59,6 +60,7 @@ export class ReservationComponent implements OnInit {
   private reservationService = inject(ReservationService);
   private promotionService = inject(promotionService);
   private seasonService = inject(SeasonService);
+  private router = inject(Router);
 
   tiposHabitacion: roomTypeDTO[] = [];
   tipoSeleccionado: number | null = null;
@@ -308,6 +310,7 @@ export class ReservationComponent implements OnInit {
   }).then(result => {
     if (result.isConfirmed) {
       this.procesarReservas();
+      this.router.navigate(['/']);
     }
   });
 }
